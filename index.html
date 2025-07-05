@@ -80,7 +80,7 @@
         .section .card:nth-of-type(2) { background: #2acaea; color: #fff; }
         .section .card:nth-of-type(3) { background: #afeeee; color: #222; }
         .section .card:nth-of-type(4) { background: #ffd700; color: #222; }
-        .card:hover, .card.selected {
+        .card:hover {
             filter: brightness(1.07);
             box-shadow: 0 0 0 2px #8883 inset;
         }
@@ -231,19 +231,19 @@
                 <div class="section">
                     <h3>Key characteristics</h3>
                     <p>A strong research topic should meet these criteria:</p>
-                    <div class="card" onclick="selectCard(this)">
+                    <div class="card">
                         <h4>Specific</h4>
                         <p>Focused enough to be manageable</p>
                     </div>
-                    <div class="card" onclick="selectCard(this)">
+                    <div class="card">
                         <h4>Measurable</h4>
                         <p>Can be studied using quantitative methods</p>
                     </div>
-                    <div class="card" onclick="selectCard(this)">
+                    <div class="card">
                         <h4>Achievable</h4>
                         <p>Realistic given your resources</p>
                     </div>
-                    <div class="card" onclick="selectCard(this)">
+                    <div class="card">
                         <h4>Relevant</h4>
                         <p>Addresses current public health challenges</p>
                     </div>
@@ -259,19 +259,19 @@
                 <div class="section">
                     <h3>Public health research areas</h3>
                     <p>Select areas that interest you:</p>
-                    <div class="card" onclick="selectCard(this)">
+                    <div class="card">
                         <h4>Disease & Conditions</h4>
                         <p>Chronic disease, infectious disease, mental health</p>
                     </div>
-                    <div class="card" onclick="selectCard(this)">
+                    <div class="card">
                         <h4>Population Health</h4>
                         <p>Aging populations, maternal health, women's health</p>
                     </div>
-                    <div class="card" onclick="selectCard(this)">
+                    <div class="card">
                         <h4>Environment & Systems</h4>
                         <p>Environmental health, food safety, community health</p>
                     </div>
-                    <div class="card" onclick="selectCard(this)">
+                    <div class="card">
                         <h4>Social & Policy</h4>
                         <p>Health disparities, social determinants, policy</p>
                     </div>
@@ -462,9 +462,7 @@
                 showStep(currentStep);
             }
         }
-        function selectCard(card) {
-            card.classList.toggle('selected');
-        }
+        // Card selection for question type (Step 5) only
         function selectQuestionType(card, type) {
             document.querySelectorAll('#step5 .card').forEach(c => c.classList.remove('selected'));
             card.classList.add('selected');

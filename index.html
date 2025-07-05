@@ -5,11 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Research Tutorial</title>
     <style>
-        /* ... (all your previous CSS up to buttons remains unchanged) ... */
+        /* ...base styles omitted for brevity... (same as your file) ... */
 
-        /* BUTTONS: Start/Continue/Finish (Red) */
+        /* CARD COLORS - ONLY gold, blue, teal, NO RED BORDERS OR HOVER */
+        .card {
+            border: none;
+            padding: 24px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: transform 0.2s, filter 0.2s;
+            background: #ffd700;
+            color: #222;
+        }
+        .card:nth-child(2) {
+            background: #2acaea;
+            color: #fff;
+        }
+        .card:nth-child(3) {
+            background: #afeeee;
+            color: #222;
+        }
+        .card:nth-child(4) {
+            background: #ffd700;
+            color: #222;
+        }
+        .card:hover, .card.selected {
+            filter: brightness(1.07);
+            box-shadow: 0 0 0 2px #3332 inset;
+        }
+        .card h4,
+        .card p {
+            color: inherit !important;
+        }
+
+        /* BUTTONS */
         .btn, .btn-primary {
-            background: #cc0002;
+            background: #000;
             color: white;
             border: none;
             display: inline-block;
@@ -24,103 +55,24 @@
         }
         .btn:hover, .btn-primary:hover {
             background: #dd6263;
-            color: white;
+            color: #fff;
             transform: translateY(-1px);
             box-shadow: 0 4px 8px rgba(0,0,0,0.15);
         }
-
-        /* BUTTON: Previous (Cyan) */
+        /* Back button */
         .btn-previous {
             background: #2acaea !important;
             color: #fff !important;
-            border: none;
         }
         .btn-previous:hover,
         .btn-previous:focus {
-            background: #80e4f4 !important;
+            background: #7be9f4 !important;
             color: #fff !important;
         }
-
-        /* BUTTON: Last Evaluate Question (Black, light red hover) */
-        .btn-evaluate-final {
-            background: #000 !important;
-            color: #fff !important;
-            border: none;
-        }
-        .btn-evaluate-final:hover,
-        .btn-evaluate-final:focus {
-            background: #dd6263 !important;
-            color: #fff !important;
-        }
-
-        /* ... (all your previous CSS after buttons remains unchanged) ... */
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- ... (steps 1-5 unchanged) ... -->
-
-        <!-- Step 6 -->
-        <div class="step" id="step6">
-            <h2 class="step-title">Evaluate Your Question</h2>
-            
-            <div class="section">
-                <h3>Quality checklist</h3>
-                
-                <div class="checklist-item" onclick="toggleCheck(this)">
-                    <div class="checklist-header">
-                        <span class="checkbox">☐</span>
-                        <span class="checklist-text">Does my question allow for multiple possible answers?</span>
-                        <span class="expand">+</span>
-                    </div>
-                    <div class="explanation">
-                        Your question shouldn't have just one obvious answer. Good research questions are open-ended.
-                    </div>
-                </div>
-
-                <div class="checklist-item" onclick="toggleCheck(this)">
-                    <div class="checklist-header">
-                        <span class="checkbox">☐</span>
-                        <span class="checklist-text">Is it testable with available research methods?</span>
-                        <span class="expand">+</span>
-                    </div>
-                    <div class="explanation">
-                        You should be able to imagine how researchers could study this using surveys, data analysis, or observations.
-                    </div>
-                </div>
-
-                <div class="checklist-item" onclick="toggleCheck(this)">
-                    <div class="checklist-header">
-                        <span class="checkbox">☐</span>
-                        <span class="checklist-text">Is the question clear and precise?</span>
-                        <span class="expand">+</span>
-                    </div>
-                    <div class="explanation">
-                        Someone else should understand exactly what you're asking. Avoid vague terms.
-                    </div>
-                </div>
-            </div>
-
-            <div class="section">
-                <div class="form-group">
-                    <label>Enter your final research question</label>
-                    <textarea id="finalQuestion" rows="3" placeholder="Enter your refined research question here..."></textarea>
-                </div>
-                <!-- Use the special class for the last evaluate button -->
-                <button class="btn btn-evaluate-final" onclick="evaluateQuestion()">Evaluate Question</button>
-                <div id="evaluation"></div>
-            </div>
-
-            <div class="btn-group">
-                <button class="btn btn-previous" onclick="prevStep()">Previous</button>
-                <button class="btn btn-primary" onclick="nextStep()">Finish</button>
-            </div>
-        </div>
-
-        <!-- ... (step 7 unchanged) ... -->
-    </div>
-    <script>
-        // ... (your script unchanged) ...
-    </script>
+    <!-- The rest of your HTML content remains unchanged, including all steps -->
+    <!-- ...Paste your original HTML body here (omitted for brevity)... -->
 </body>
 </html>

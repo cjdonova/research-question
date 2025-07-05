@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Public Health Research Tutorial</title>
+    <title>Research Tutorial</title>
     <style>
         * {
             margin: 0;
@@ -13,469 +13,306 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 15px;
+            background: white;
+            color: #333;
+            line-height: 1.7;
+            font-size: 18px;
+            font-weight: 300;
         }
 
         .container {
-            max-width: 900px;
+            max-width: 560px;
             margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
+            padding: 0 24px;
         }
 
         .header {
-            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
-            color: white;
-            padding: 25px;
+            padding: 80px 0;
             text-align: center;
         }
 
         .header h1 {
-            font-size: 2rem;
-            margin-bottom: 8px;
+            font-size: 42px;
+            font-weight: 200;
+            color: #000;
+            margin-bottom: 16px;
         }
 
-        .progress-section {
-            background: #f8f9fa;
-            padding: 15px 25px;
-            border-bottom: 1px solid #dee2e6;
+        .header p {
+            font-size: 18px;
+            color: #666;
         }
 
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: #e9ecef;
-            border-radius: 4px;
-            overflow: hidden;
-            margin-bottom: 8px;
+        .progress {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .progress-line {
+            width: 80px;
+            height: 1px;
+            background: #ddd;
+            margin: 0 auto 16px;
         }
 
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #28a745, #20c997);
+            background: #000;
             width: 14.3%;
-            transition: width 0.5s ease;
-            border-radius: 4px;
+            transition: width 0.3s ease;
         }
 
-        .step-indicator {
-            text-align: center;
-            font-size: 0.9rem;
-            color: #6c757d;
+        .step-num {
+            font-size: 14px;
+            color: #999;
         }
 
         .content {
-            padding: 25px;
+            padding: 60px 0 100px;
         }
 
         .step {
             display: none;
-            animation: fadeIn 0.5s ease-in;
         }
 
         .step.active {
             display: block;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .step-header {
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 15px;
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-        }
-
-        .step-number {
-            width: 40px;
-            height: 40px;
-            background: #3498db;
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            font-weight: bold;
-            margin-right: 15px;
-        }
-
         .step-title {
-            font-size: 1.5rem;
-            color: #2c3e50;
+            font-size: 32px;
+            font-weight: 200;
+            text-align: center;
+            margin-bottom: 60px;
+            color: #000;
         }
 
-        .info-card {
-            background: #f8f9fa;
-            border-left: 4px solid #3498db;
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 6px;
+        .section {
+            margin: 60px 0;
         }
 
-        .info-card h3 {
-            color: #2c3e50;
-            margin-bottom: 12px;
+        h3 {
+            font-size: 20px;
+            font-weight: 400;
+            margin-bottom: 24px;
+            color: #000;
         }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
+        p {
+            margin-bottom: 20px;
+            color: #666;
         }
 
         .card {
-            background: white;
-            border: 2px solid #dee2e6;
-            border-radius: 8px;
-            padding: 18px;
+            border: 1px solid #eee;
+            padding: 24px;
+            margin-bottom: 12px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
+            transition: border-color 0.2s;
         }
 
         .card:hover {
-            border-color: #3498db;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-color: #ccc;
         }
 
         .card.selected {
-            border-color: #28a745;
-            background: #f8fff9;
+            border-color: #000;
         }
 
-        .expandable-card {
-            position: relative;
-            transition: all 0.3s ease;
+        .card h4 {
+            font-size: 16px;
+            font-weight: 400;
+            margin-bottom: 8px;
+            color: #000;
         }
 
-        .expandable-card:hover {
-            transform: translateY(-3px);
-        }
-
-        .expandable-card.expanded {
-            grid-column: 1 / -1;
-            transform: none;
-        }
-
-        .card-examples {
-            display: none;
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid #dee2e6;
-            font-size: 0.9em;
-            line-height: 1.4;
-            color: #495057;
-        }
-
-        .expandable-card.expanded .card-examples {
-            display: block;
-            animation: fadeInExamples 0.3s ease;
-        }
-
-        @keyframes fadeInExamples {
-            from { opacity: 0; max-height: 0; }
-            to { opacity: 1; max-height: 100px; }
-        }
-
-        .form-section {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
+        .card p {
+            font-size: 14px;
+            color: #999;
+            margin: 0;
         }
 
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 40px;
         }
 
-        .form-group label {
+        label {
             display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #2c3e50;
+            font-size: 14px;
+            margin-bottom: 12px;
+            color: #000;
         }
 
-        .form-control {
+        input, textarea {
             width: 100%;
-            padding: 10px;
-            border: 2px solid #dee2e6;
-            border-radius: 6px;
-            font-size: 0.95rem;
-            transition: border-color 0.3s ease;
-            font-family: inherit;
+            border: none;
+            border-bottom: 1px solid #ddd;
+            padding: 12px 0;
+            font-size: 16px;
+            background: transparent;
+            transition: border-color 0.2s;
         }
 
-        .form-control:focus {
+        input:focus, textarea:focus {
             outline: none;
-            border-color: #3498db;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            border-bottom-color: #000;
         }
 
-        .feedback-text {
-            font-size: 0.85rem;
-            margin-top: 5px;
-            padding: 8px;
-            border-radius: 4px;
+        .hint {
+            font-size: 12px;
+            color: #999;
+            margin-top: 8px;
+        }
+
+        .feedback {
+            margin-top: 16px;
+            padding: 16px;
+            border-left: 2px solid #ddd;
+            font-size: 14px;
             display: none;
         }
 
-        .feedback-text.warning {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            color: #856404;
+        .feedback.show {
             display: block;
         }
 
-        .feedback-text.success {
-            background: #d4edda;
-            border: 1px solid #c3e6cb;
-            color: #155724;
-            display: block;
+        .feedback.error {
+            border-left-color: #ff4444;
+            color: #cc0000;
         }
 
-        .feedback-text.error {
-            background: #f8d7da;
-            border: 1px solid #f5c6cb;
-            color: #721c24;
-            display: block;
+        .feedback.success {
+            border-left-color: #00cc44;
+            color: #006600;
         }
 
-        .example-box {
-            background: #e8f4f8;
-            border: 1px solid #b8daff;
-            padding: 15px;
-            border-radius: 6px;
-            margin: 15px 0;
+        .feedback.warning {
+            border-left-color: #ff8800;
+            color: #cc6600;
         }
 
-        .example-box h4 {
-            color: #004085;
+        .example {
+            margin: 40px 0;
+            padding: 20px;
+            border-left: 2px solid #eee;
+        }
+
+        .example h4 {
+            font-size: 14px;
+            font-weight: 400;
             margin-bottom: 8px;
+            color: #000;
         }
 
-        .checklist-container {
-            margin: 20px 0;
+        .btn-group {
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            margin: 0 8px;
+            border: 1px solid #000;
+            background: white;
+            color: #000;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: #000;
+            color: white;
+        }
+
+        .btn-primary {
+            background: #000;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #333;
+        }
+
+        .result {
+            margin-top: 32px;
+            padding: 20px;
+            border-left: 2px solid #ddd;
         }
 
         .checklist-item {
-            background: #f8f9fa;
-            border: 2px solid #dee2e6;
-            border-radius: 8px;
-            margin: 10px 0;
-            overflow: hidden;
-            transition: all 0.3s ease;
+            border-bottom: 1px solid #eee;
+            padding: 20px 0;
+            cursor: pointer;
         }
 
-        .checklist-item.completed {
-            border-color: #28a745;
-            background: #f8fff9;
-        }
-
-        .checklist-item.expanded {
-            border-color: #3498db;
+        .checklist-item:last-child {
+            border-bottom: none;
         }
 
         .checklist-header {
             display: flex;
             align-items: center;
-            padding: 15px;
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .checklist-header:hover {
-            background: rgba(52, 152, 219, 0.1);
         }
 
         .checkbox {
-            font-size: 1.2em;
-            margin-right: 12px;
-            min-width: 20px;
-            color: #6c757d;
+            margin-right: 16px;
+            color: #ddd;
         }
 
         .checklist-item.completed .checkbox {
-            color: #28a745;
+            color: #000;
         }
 
         .checklist-text {
             flex: 1;
-            font-weight: 500;
+            font-size: 14px;
         }
 
-        .expand-icon {
-            font-size: 1.2em;
-            font-weight: bold;
-            color: #3498db;
-            min-width: 20px;
-            text-align: center;
-            transition: transform 0.3s ease;
+        .expand {
+            font-size: 12px;
+            color: #999;
         }
 
-        .checklist-item.expanded .expand-icon {
-            transform: rotate(45deg);
-        }
-
-        .checklist-explanation {
+        .explanation {
             display: none;
-            padding: 0 15px 15px 47px;
-            border-top: 1px solid #dee2e6;
-            background: white;
-            margin-top: 0;
+            padding-top: 16px;
+            margin-left: 32px;
+            font-size: 12px;
+            color: #666;
         }
 
-        .checklist-item.expanded .checklist-explanation {
+        .checklist-item.expanded .explanation {
             display: block;
-            animation: slideDown 0.3s ease;
         }
 
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                max-height: 0;
-                padding-bottom: 0;
-            }
-            to {
-                opacity: 1;
-                max-height: 300px;
-                padding-bottom: 15px;
-            }
-        }
-
-        .checklist-explanation p {
-            margin: 10px 0;
-            line-height: 1.5;
-        }
-
-        .checklist-explanation strong {
-            color: #2c3e50;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 25px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            font-family: inherit;
-        }
-
-        .btn-primary {
-            background: #3498db;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #2980b9;
-            transform: translateY(-1px);
-        }
-
-        .btn-secondary {
-            background: #6c757d;
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background: #5a6268;
-        }
-
-        .btn-success {
-            background: #28a745;
-            color: white;
-        }
-
-        .btn-success:hover {
-            background: #218838;
-        }
-
-        .result-box {
-            background: #d1ecf1;
-            border: 1px solid #bee5eb;
-            border-radius: 6px;
-            padding: 15px;
-            margin-top: 15px;
-        }
-
-        .result-box h4 {
-            color: #0c5460;
-            margin-bottom: 10px;
-        }
-
-        .alert {
-            padding: 12px;
-            border-radius: 6px;
-            margin: 15px 0;
-        }
-
-        .alert-success {
-            background: #d4edda;
-            border: 1px solid #c3e6cb;
-            color: #155724;
-        }
-
-        .alert-warning {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            color: #856404;
-        }
-
-        .final-summary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 25px;
-            border-radius: 8px;
-            margin: 20px 0;
+        .final {
             text-align: center;
+            margin: 80px 0;
+            padding: 40px;
+            border: 1px solid #eee;
         }
 
-        .final-question-box {
-            background: rgba(255,255,255,0.1);
-            padding: 15px;
-            border-radius: 6px;
-            margin: 15px 0;
+        .final h3 {
+            font-size: 24px;
+            font-weight: 200;
+            margin-bottom: 20px;
         }
 
-        @media (max-width: 768px) {
-            .content {
-                padding: 15px;
+        @media (max-width: 600px) {
+            .container {
+                padding: 0 20px;
             }
             
-            .grid {
-                grid-template-columns: 1fr;
+            .header h1 {
+                font-size: 32px;
             }
             
-            .btn-group {
-                flex-direction: column;
-            }
-            
-            .step-header {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .step-number {
-                margin-bottom: 10px;
-                margin-right: 0;
+            .step-title {
+                font-size: 24px;
             }
         }
     </style>
@@ -483,485 +320,276 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🎯 Public Health Research Tutorial</h1>
-            <p>Learn to craft strong research topics and questions</p>
+            <h1>Research Tutorial</h1>
+            <p>Learn to craft research topics and questions</p>
         </div>
         
-        <div class="progress-section">
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressBar"></div>
+        <div class="progress">
+            <div class="progress-line">
+                <div class="progress-fill" id="progress"></div>
             </div>
-            <div class="step-indicator">
-                Step <span id="currentStepNum">1</span> of 7
-            </div>
+            <div class="step-num">Step <span id="stepNum">1</span> of 7</div>
         </div>
 
         <div class="content">
-            <!-- Step 1: Introduction -->
+            <!-- Step 1 -->
             <div class="step active" id="step1">
-                <div class="step-header">
-                    <div class="step-number">1</div>
-                    <div class="step-title">Welcome</div>
-                </div>
+                <h2 class="step-title">Welcome</h2>
                 
-                <div class="info-card">
-                    <h3>🚀 What You'll Learn</h3>
-                    <p>This interactive tutorial will guide you through selecting a public health research topic and developing a focused research question for your PH 425 assignment.</p>
-                </div>
-
-                <div class="info-card">
-                    <h3>📋 Tutorial Steps</h3>
-                    <ul style="margin-left: 20px;">
-                        <li>Understanding strong research topics</li>
-                        <li>Exploring public health areas</li>
-                        <li>Systematic topic narrowing</li>
-                        <li>Crafting research questions</li>
-                        <li>Quality evaluation</li>
-                        <li>Next steps for your assignment</li>
-                    </ul>
+                <div class="section">
+                    <h3>What you'll learn</h3>
+                    <p>This tutorial guides you through selecting a public health research topic and developing a focused research question for your assignment.</p>
                 </div>
 
                 <div class="btn-group">
-                    <button class="btn btn-primary" onclick="nextStep()">Start Tutorial →</button>
+                    <button class="btn btn-primary" onclick="nextStep()">Start</button>
                 </div>
             </div>
 
-            <!-- Step 2: Research Topic Criteria -->
+            <!-- Step 2 -->
             <div class="step" id="step2">
-                <div class="step-header">
-                    <div class="step-number">2</div>
-                    <div class="step-title">Strong Research Topics</div>
-                </div>
-
-                <div class="info-card">
-                    <h3>🎯 Key Characteristics</h3>
-                    <p>A strong research topic should meet these criteria. Click each one to explore:</p>
-                </div>
-
-                <div class="grid">
+                <h2 class="step-title">Strong Research Topics</h2>
+                
+                <div class="section">
+                    <h3>Key characteristics</h3>
+                    <p>A strong research topic should meet these criteria:</p>
+                    
                     <div class="card" onclick="selectCard(this)">
-                        <h4>🔍 Specific</h4>
-                        <p>Focused enough to be manageable but broad enough to find sufficient research</p>
+                        <h4>Specific</h4>
+                        <p>Focused enough to be manageable</p>
                     </div>
                     <div class="card" onclick="selectCard(this)">
-                        <h4>📊 Measurable</h4>
-                        <p>Can be studied using quantitative methods and data analysis</p>
+                        <h4>Measurable</h4>
+                        <p>Can be studied using quantitative methods</p>
                     </div>
                     <div class="card" onclick="selectCard(this)">
-                        <h4>🎯 Achievable</h4>
-                        <p>Realistic given your resources, timeline, and expertise level</p>
+                        <h4>Achievable</h4>
+                        <p>Realistic given your resources</p>
                     </div>
                     <div class="card" onclick="selectCard(this)">
-                        <h4>🌍 Relevant</h4>
-                        <p>Addresses current public health challenges or knowledge gaps</p>
+                        <h4>Relevant</h4>
+                        <p>Addresses current public health challenges</p>
                     </div>
-                </div>
-
-                <div class="example-box">
-                    <h4>✅ Good Example</h4>
-                    <p><strong>Topic:</strong> "Social media messaging and vaccination rates among college students"</p>
-                    <p><strong>Why it works:</strong> Specific population, measurable outcome, feasible scope, highly relevant</p>
                 </div>
 
                 <div class="btn-group">
-                    <button class="btn btn-secondary" onclick="prevStep()">← Previous</button>
-                    <button class="btn btn-primary" onclick="nextStep()">Continue →</button>
+                    <button class="btn" onclick="prevStep()">Previous</button>
+                    <button class="btn btn-primary" onclick="nextStep()">Continue</button>
                 </div>
             </div>
 
-            <!-- Step 3: Research Areas -->
+            <!-- Step 3 -->
             <div class="step" id="step3">
-                <div class="step-header">
-                    <div class="step-number">3</div>
-                    <div class="step-title">Choose Your Interest Area</div>
-                </div>
-
-                <div class="info-card">
-                    <h3>🌐 Public Health Research Areas</h3>
-                    <p>Select areas that interest you (you can choose multiple). Click each category to see specific topic examples:</p>
-                </div>
-
-                <div class="grid">
-                    <div class="card expandable-card" onclick="selectTopicCard(this, 'disease-conditions')">
-                        <h4>🦠 Disease & Conditions</h4>
-                        <p>Study of health conditions and their impacts</p>
-                        <div class="card-examples">
-                            <strong>Examples:</strong> Chronic disease management, infectious disease prevention, mental health treatment, substance use disorders, diabetes care, depression screening, COVID-19 response, addiction recovery programs
-                        </div>
+                <h2 class="step-title">Choose Your Interest Area</h2>
+                
+                <div class="section">
+                    <h3>Public health research areas</h3>
+                    <p>Select areas that interest you:</p>
+                    
+                    <div class="card" onclick="selectCard(this)">
+                        <h4>Disease & Conditions</h4>
+                        <p>Chronic disease, infectious disease, mental health</p>
                     </div>
-                    <div class="card expandable-card" onclick="selectTopicCard(this, 'population-health')">
-                        <h4>👥 Population Health</h4>
-                        <p>Health of specific demographic groups</p>
-                        <div class="card-examples">
-                            <strong>Examples:</strong> Aging and older populations, maternal and child health, women's health, disability and accessibility, adolescent health, senior care, pregnancy outcomes, infant mortality, reproductive health
-                        </div>
+                    <div class="card" onclick="selectCard(this)">
+                        <h4>Population Health</h4>
+                        <p>Aging populations, maternal health, women's health</p>
                     </div>
-                    <div class="card expandable-card" onclick="selectTopicCard(this, 'environment-systems')">
-                        <h4>🌍 Environment & Systems</h4>
-                        <p>Environmental factors and community systems</p>
-                        <div class="card-examples">
-                            <strong>Examples:</strong> Environmental health, food safety, community health, emergency preparedness, air quality, water safety, climate change impacts, foodborne illness prevention, disaster response
-                        </div>
+                    <div class="card" onclick="selectCard(this)">
+                        <h4>Environment & Systems</h4>
+                        <p>Environmental health, food safety, community health</p>
                     </div>
-                    <div class="card expandable-card" onclick="selectTopicCard(this, 'social-policy')">
-                        <h4>⚖️ Social & Policy</h4>
-                        <p>Social factors and policy interventions</p>
-                        <div class="card-examples">
-                            <strong>Examples:</strong> Health disparities, social determinants of health, public health policy, healthcare access, income inequality and health, racial health equity, healthcare legislation, insurance coverage
-                        </div>
-                    </div>
-                    <div class="card expandable-card" onclick="selectTopicCard(this, 'lifestyle-prevention')">
-                        <h4>🏃‍♀️ Lifestyle & Prevention</h4>
-                        <p>Individual behaviors and prevention strategies</p>
-                        <div class="card-examples">
-                            <strong>Examples:</strong> Nutrition and diet, exercise and physical activity, preventive care, health education, obesity prevention, smoking cessation, vaccination programs, health screening
-                        </div>
-                    </div>
-                    <div class="card expandable-card" onclick="selectTopicCard(this, 'epidemiology')">
-                        <h4>🔍 Epidemiology & Research</h4>
-                        <p>Disease patterns and research methods</p>
-                        <div class="card-examples">
-                            <strong>Examples:</strong> Disease surveillance, outbreak investigation, risk factor analysis, health data analysis, biostatistics, health surveys, longitudinal studies, case-control studies
-                        </div>
+                    <div class="card" onclick="selectCard(this)">
+                        <h4>Social & Policy</h4>
+                        <p>Health disparities, social determinants, policy</p>
                     </div>
                 </div>
 
-                <div class="form-section">
-                    <h3>💭 Reflection</h3>
+                <div class="section">
                     <div class="form-group">
                         <label>What public health issues interest you most?</label>
-                        <textarea class="form-control" id="reflectionText" rows="3" placeholder="Think about issues you've noticed in your community or current events..." onblur="validateReflection()"></textarea>
-                        <div id="reflectionFeedback" class="feedback-text"></div>
-                    </div>
-                    
-                    <div class="info-card" style="margin-top: 15px;">
-                        <h4>💡 Reflection Tips</h4>
-                        <p>Instead of asking questions, describe <strong>issues</strong> or <strong>topics</strong> that interest you:</p>
-                        <div style="background: white; padding: 12px; border-radius: 4px; margin: 10px 0;">
-                            <p><strong>❌ Instead of:</strong> "Why are people eating too much?"</p>
-                            <p><strong>✅ Try:</strong> "Obesity and nutrition behaviors in different communities"</p>
-                        </div>
-                        <div style="background: white; padding: 12px; border-radius: 4px; margin: 10px 0;">
-                            <p><strong>❌ Instead of:</strong> "How can we stop drug addiction?"</p>
-                            <p><strong>✅ Try:</strong> "Substance abuse prevention programs and their effectiveness"</p>
-                        </div>
+                        <textarea rows="3" placeholder="Think about issues in your community..."></textarea>
                     </div>
                 </div>
 
                 <div class="btn-group">
-                    <button class="btn btn-secondary" onclick="prevStep()">← Previous</button>
-                    <button class="btn btn-primary" onclick="nextStep()">Continue →</button>
+                    <button class="btn" onclick="prevStep()">Previous</button>
+                    <button class="btn btn-primary" onclick="nextStep()">Continue</button>
                 </div>
             </div>
 
-            <!-- Step 4: Topic Narrowing -->
+            <!-- Step 4 -->
             <div class="step" id="step4">
-                <div class="step-header">
-                    <div class="step-number">4</div>
-                    <div class="step-title">Narrow Your Topic</div>
-                </div>
-
-                <div class="info-card">
-                    <h3>🎯 Systematic Narrowing Process</h3>
-                    <p>Follow this step-by-step process from your PH 425 worksheet:</p>
-                </div>
-
-                <div class="form-section">
+                <h2 class="step-title">Narrow Your Topic</h2>
+                
+                <div class="section">
+                    <h3>Systematic narrowing process</h3>
+                    
                     <div class="form-group">
-                        <label>1. Start with a broad public health topic:</label>
-                        <input type="text" class="form-control" id="broadTopic" placeholder="e.g., mental health and social media, food insecurity, vaccine hesitancy">
-                        <div class="form-hint">Choose a general area of interest, not yet specific enough for research</div>
-                        <div id="topicFeedback" class="feedback-text"></div>
+                        <label>1. Start with a broad public health topic</label>
+                        <input type="text" id="broadTopic" placeholder="e.g., mental health and social media">
+                        <div class="hint">Choose a general area, not specific enough for research yet</div>
+                        <div class="feedback" id="topicFeedback"></div>
                     </div>
 
                     <div class="form-group">
                         <label>2. Who is most affected by this issue?</label>
-                        <input type="text" class="form-control" id="targetPop" placeholder="e.g., adolescents, elderly adults, low-income communities, college students">
-                        <div id="popFeedback" class="feedback-text"></div>
+                        <input type="text" id="targetPop" placeholder="e.g., adolescents, elderly adults">
+                        <div class="feedback" id="popFeedback"></div>
                     </div>
 
                     <div class="form-group">
                         <label>3. What specific aspect do you want to focus on?</label>
-                        <input type="text" class="form-control" id="focusAspect" placeholder="e.g., causes, effects, interventions, barriers, disparities">
-                        <div id="aspectFeedback" class="feedback-text"></div>
+                        <input type="text" id="focusAspect" placeholder="e.g., causes, effects, interventions">
+                        <div class="feedback" id="aspectFeedback"></div>
                     </div>
 
                     <div class="form-group">
-                        <label>4. Choose a location or setting in the United States:</label>
-                        <input type="text" class="form-control" id="setting" placeholder="e.g., rural communities, urban areas, college campuses, California">
-                        <div class="form-hint">Choose a setting you could realistically study with available research</div>
-                        <div id="settingFeedback" class="feedback-text"></div>
+                        <label>4. Choose a location or setting in the United States</label>
+                        <input type="text" id="setting" placeholder="e.g., rural communities, urban areas">
+                        <div class="hint">Choose a setting you could realistically study</div>
+                        <div class="feedback" id="settingFeedback"></div>
                     </div>
 
-                    <button class="btn btn-success" onclick="generateTopic()">Generate Your Research Topic</button>
+                    <button class="btn" onclick="generateTopic()">Generate Your Research Topic</button>
                     <div id="topicResult"></div>
                 </div>
 
-                <div class="info-card">
-                    <h3>🎓 Understanding Research Topics vs. Questions</h3>
-                    <div style="background: white; padding: 15px; border-radius: 6px; margin: 10px 0;">
-                        <h4 style="color: #2c3e50; margin-bottom: 10px;">A Research Topic is:</h4>
-                        <ul style="margin-left: 20px; color: #495057;">
-                            <li>A <strong>statement</strong> that describes the focus of your study</li>
-                            <li>Broad enough to encompass multiple potential questions</li>
-                            <li>The <strong>what</strong> you want to study</li>
-                            <li><strong>Example:</strong> "The relationship between social media use and sleep quality among college students"</li>
-                        </ul>
-                    </div>
-                    <div style="background: white; padding: 15px; border-radius: 6px; margin: 10px 0;">
-                        <h4 style="color: #2c3e50; margin-bottom: 10px;">A Research Question is:</h4>
-                        <ul style="margin-left: 20px; color: #495057;">
-                            <li>An <strong>interrogative sentence</strong> that asks what you want to find out</li>
-                            <li>Specific and answerable through research</li>
-                            <li>The <strong>how</strong> you will investigate your topic</li>
-                            <li><strong>Example:</strong> "Is there an association between daily social media use duration and sleep quality scores among college students?"</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="example-box">
-                    <h4>📊 Example Process</h4>
-                    <p><strong>Broad Topic:</strong> Mental health and social media</p>
-                    <p><strong>Population:</strong> Adolescents</p>
-                    <p><strong>Aspect:</strong> Effects on anxiety levels</p>
-                    <p><strong>Setting:</strong> High schools in urban areas</p>
-                    <p><strong>Result:</strong> "The effects of social media use on anxiety levels among adolescents in urban high schools"</p>
-                </div>
-
                 <div class="btn-group">
-                    <button class="btn btn-secondary" onclick="prevStep()">← Previous</button>
-                    <button class="btn btn-primary" onclick="nextStep()">Continue →</button>
+                    <button class="btn" onclick="prevStep()">Previous</button>
+                    <button class="btn btn-primary" onclick="nextStep()">Continue</button>
                 </div>
             </div>
 
-            <!-- Step 5: Research Questions -->
+            <!-- Step 5 -->
             <div class="step" id="step5">
-                <div class="step-header">
-                    <div class="step-number">5</div>
-                    <div class="step-title">Craft Your Research Question</div>
-                </div>
-
-                <div class="info-card">
-                    <h3>❓ Question Types for Quantitative Research</h3>
-                    <p>Choose the type that best fits your research goals:</p>
-                </div>
-
-                <div class="grid">
+                <h2 class="step-title">Craft Your Research Question</h2>
+                
+                <div class="section">
+                    <h3>Question types</h3>
+                    
                     <div class="card" onclick="selectQuestionType(this, 'descriptive')">
-                        <h4>📊 Descriptive</h4>
-                        <p>"What is the prevalence of...?"<br>"How many people...?"</p>
+                        <h4>Descriptive</h4>
+                        <p>"What is the prevalence of...?"</p>
                     </div>
                     <div class="card" onclick="selectQuestionType(this, 'analytical')">
-                        <h4>🔍 Analytical</h4>
-                        <p>"What is the relationship between...?"<br>"Is there an association...?"</p>
+                        <h4>Analytical</h4>
+                        <p>"What is the relationship between...?"</p>
                     </div>
                     <div class="card" onclick="selectQuestionType(this, 'evaluative')">
-                        <h4>⚖️ Evaluative</h4>
-                        <p>"How effective is...?"<br>"Which intervention works better?"</p>
+                        <h4>Evaluative</h4>
+                        <p>"How effective is...?"</p>
                     </div>
                 </div>
 
-                <div class="form-section">
-                    <h3>✏️ Question Builder</h3>
+                <div class="section">
+                    <h3>Question builder</h3>
+                    
                     <div class="form-group">
-                        <label>Population and Setting:</label>
-                        <input type="text" class="form-control" id="questionPop" placeholder="e.g., adults aged 18-65 in rural communities">
+                        <label>Population and Setting</label>
+                        <input type="text" id="questionPop" placeholder="e.g., adults aged 18-65 in rural communities">
                     </div>
 
                     <div class="form-group">
-                        <label>Exposure/Factor:</label>
-                        <input type="text" class="form-control" id="exposure" placeholder="e.g., access to telehealth services">
+                        <label>Exposure/Factor</label>
+                        <input type="text" id="exposure" placeholder="e.g., access to telehealth services">
                     </div>
 
                     <div class="form-group">
-                        <label>Outcome:</label>
-                        <input type="text" class="form-control" id="outcome" placeholder="e.g., frequency of preventive care visits">
+                        <label>Outcome</label>
+                        <input type="text" id="outcome" placeholder="e.g., frequency of preventive care visits">
                     </div>
 
-                    <button class="btn btn-success" onclick="generateQuestion()">Generate Research Question</button>
+                    <button class="btn" onclick="generateQuestion()">Generate Research Question</button>
                     <div id="questionResult"></div>
-
-                    <div class="info-card" style="margin-top: 20px;">
-                        <h4>💡 Remember</h4>
-                        <p>Your question should be something you can find <strong>three peer-reviewed articles</strong> about for your assignment.</p>
-                    </div>
                 </div>
 
                 <div class="btn-group">
-                    <button class="btn btn-secondary" onclick="prevStep()">← Previous</button>
-                    <button class="btn btn-primary" onclick="nextStep()">Continue →</button>
+                    <button class="btn" onclick="prevStep()">Previous</button>
+                    <button class="btn btn-primary" onclick="nextStep()">Continue</button>
                 </div>
             </div>
 
-            <!-- Step 6: Quality Check -->
+            <!-- Step 6 -->
             <div class="step" id="step6">
-                <div class="step-header">
-                    <div class="step-number">6</div>
-                    <div class="step-title">Evaluate Your Question</div>
-                </div>
-
-                <div class="info-card">
-                    <h3>🔍 Quality Checklist</h3>
-                    <p>Click each item to learn more about what it means, then check it off if your question meets that criterion:</p>
-                </div>
-
-                <div class="checklist-container">
-                    <div class="checklist-item" onclick="toggleChecklistItem(this, 1)">
+                <h2 class="step-title">Evaluate Your Question</h2>
+                
+                <div class="section">
+                    <h3>Quality checklist</h3>
+                    
+                    <div class="checklist-item" onclick="toggleCheck(this)">
                         <div class="checklist-header">
                             <span class="checkbox">☐</span>
                             <span class="checklist-text">Does my question allow for multiple possible answers?</span>
-                            <span class="expand-icon">+</span>
+                            <span class="expand">+</span>
                         </div>
-                        <div class="checklist-explanation">
-                            <p><strong>What this means:</strong> Your question shouldn't have just one obvious answer or be a yes/no question. Good research questions are open-ended and can be explored from different angles.</p>
-                            <p><strong>✅ Good:</strong> "What is the relationship between social media use and anxiety levels among teenagers?"</p>
-                            <p><strong>❌ Bad:</strong> "Is social media bad for teenagers?" (too simple, yes/no answer)</p>
+                        <div class="explanation">
+                            Your question shouldn't have just one obvious answer. Good research questions are open-ended.
                         </div>
                     </div>
 
-                    <div class="checklist-item" onclick="toggleChecklistItem(this, 2)">
+                    <div class="checklist-item" onclick="toggleCheck(this)">
                         <div class="checklist-header">
                             <span class="checkbox">☐</span>
                             <span class="checklist-text">Is it testable with available research methods?</span>
-                            <span class="expand-icon">+</span>
+                            <span class="expand">+</span>
                         </div>
-                        <div class="checklist-explanation">
-                            <p><strong>What this means:</strong> You should be able to imagine how researchers could actually study this question using surveys, experiments, data analysis, or observations.</p>
-                            <p><strong>✅ Good:</strong> "How effective are workplace wellness programs in reducing employee stress levels?" (can measure stress, compare groups)</p>
-                            <p><strong>❌ Bad:</strong> "What do people think in their hearts about health?" (too abstract to measure)</p>
+                        <div class="explanation">
+                            You should be able to imagine how researchers could study this using surveys, data analysis, or observations.
                         </div>
                     </div>
 
-                    <div class="checklist-item" onclick="toggleChecklistItem(this, 3)">
+                    <div class="checklist-item" onclick="toggleCheck(this)">
                         <div class="checklist-header">
                             <span class="checkbox">☐</span>
                             <span class="checklist-text">Is the question clear and precise?</span>
-                            <span class="expand-icon">+</span>
+                            <span class="expand">+</span>
                         </div>
-                        <div class="checklist-explanation">
-                            <p><strong>What this means:</strong> Someone else reading your question should understand exactly what you're asking. Avoid vague terms that could mean different things to different people.</p>
-                            <p><strong>✅ Good:</strong> "What is the prevalence of food insecurity among college students at public universities?"</p>
-                            <p><strong>❌ Bad:</strong> "How do people feel about health issues?" (what people? which feelings? what health issues?)</p>
-                        </div>
-                    </div>
-
-                    <div class="checklist-item" onclick="toggleChecklistItem(this, 4)">
-                        <div class="checklist-header">
-                            <span class="checkbox">☐</span>
-                            <span class="checklist-text">Is it suitable for quantitative analysis?</span>
-                            <span class="expand-icon">+</span>
-                        </div>
-                        <div class="checklist-explanation">
-                            <p><strong>What this means:</strong> Since this is for quantitative research, your question should involve things that can be counted, measured, or statistically analyzed.</p>
-                            <p><strong>✅ Good:</strong> "Is there an association between exercise frequency and BMI levels?" (can count exercise sessions, measure BMI)</p>
-                            <p><strong>❌ Bad:</strong> "What does wellness mean to different people?" (too subjective for statistical analysis)</p>
-                        </div>
-                    </div>
-
-                    <div class="checklist-item" onclick="toggleChecklistItem(this, 5)">
-                        <div class="checklist-header">
-                            <span class="checkbox">☐</span>
-                            <span class="checklist-text">Can I find peer-reviewed articles on this topic?</span>
-                            <span class="expand-icon">+</span>
-                        </div>
-                        <div class="checklist-explanation">
-                            <p><strong>What this means:</strong> Your question should be about a topic that researchers have studied before. You need to find 3 peer-reviewed articles for your assignment.</p>
-                            <p><strong>✅ Good:</strong> Questions about vaccination, obesity, mental health, or substance use (lots of research available)</p>
-                            <p><strong>❌ Bad:</strong> Very new trends or extremely specific local issues (limited research available)</p>
-                            <p><strong>💡 Tip:</strong> Do a quick search on PubMed or Google Scholar to check!</p>
-                        </div>
-                    </div>
-
-                    <div class="checklist-item" onclick="toggleChecklistItem(this, 6)">
-                        <div class="checklist-header">
-                            <span class="checkbox">☐</span>
-                            <span class="checklist-text">Does it avoid being too broad or too narrow?</span>
-                            <span class="expand-icon">+</span>
-                        </div>
-                        <div class="checklist-explanation">
-                            <p><strong>What this means:</strong> Your question should be focused enough to study deeply, but broad enough that research exists and you can find patterns.</p>
-                            <p><strong>✅ Just right:</strong> "How does access to telehealth services affect preventive care utilization among rural elderly adults?"</p>
-                            <p><strong>❌ Too broad:</strong> "What affects health?" (could be anything)</p>
-                            <p><strong>❌ Too narrow:</strong> "Do 23-year-old male nursing students in Ohio prefer morning or evening exercise?" (too specific)</p>
-                        </div>
-                    </div>
-
-                    <div class="checklist-item" onclick="toggleChecklistItem(this, 7)">
-                        <div class="checklist-header">
-                            <span class="checkbox">☐</span>
-                            <span class="checklist-text">Would the answer contribute to public health knowledge?</span>
-                            <span class="expand-icon">+</span>
-                        </div>
-                        <div class="checklist-explanation">
-                            <p><strong>What this means:</strong> Your research should help us understand health issues better or inform public health practice and policy.</p>
-                            <p><strong>✅ Good:</strong> "What factors are associated with COVID-19 vaccination uptake among rural adults?" (could inform health campaigns)</p>
-                            <p><strong>❌ Less useful:</strong> "What's the favorite color of people who exercise?" (interesting but not really about health)</p>
-                            <p><strong>💡 Think:</strong> Could this research help improve health outcomes or guide public health interventions?</p>
+                        <div class="explanation">
+                            Someone else should understand exactly what you're asking. Avoid vague terms.
                         </div>
                     </div>
                 </div>
 
-                <div class="form-section">
-                    <h3>🎯 Final Question Review</h3>
+                <div class="section">
                     <div class="form-group">
-                        <label>Enter your final research question:</label>
-                        <textarea class="form-control" id="finalQuestion" rows="3" placeholder="Enter your refined research question here..."></textarea>
+                        <label>Enter your final research question</label>
+                        <textarea id="finalQuestion" rows="3" placeholder="Enter your refined research question here..."></textarea>
                     </div>
-                    <button class="btn btn-success" onclick="evaluateQuestion()">Evaluate Question</button>
+                    <button class="btn" onclick="evaluateQuestion()">Evaluate Question</button>
                     <div id="evaluation"></div>
                 </div>
 
-                <div class="example-box">
-                    <h4>🔧 Common Problems to Avoid</h4>
-                    <p><strong>Too broad:</strong> "What affects health?" → <strong>Better:</strong> "How does access to green spaces affect mental health in urban adults?"</p>
-                    <p><strong>Embedded assumption:</strong> "Why do health programs fail?" → <strong>Better:</strong> "What is the effectiveness of school nutrition programs?"</p>
-                </div>
-
                 <div class="btn-group">
-                    <button class="btn btn-secondary" onclick="prevStep()">← Previous</button>
-                    <button class="btn btn-primary" onclick="nextStep()">Finish →</button>
+                    <button class="btn" onclick="prevStep()">Previous</button>
+                    <button class="btn btn-primary" onclick="nextStep()">Finish</button>
                 </div>
             </div>
 
-            <!-- Step 7: Summary -->
+            <!-- Step 7 -->
             <div class="step" id="step7">
-                <div class="step-header">
-                    <div class="step-number">7</div>
-                    <div class="step-title">Congratulations!</div>
-                </div>
-
-                <div class="final-summary">
-                    <h3>🎉 Tutorial Complete!</h3>
+                <h2 class="step-title">Congratulations</h2>
+                
+                <div class="final">
+                    <h3>Tutorial Complete</h3>
                     <p>You now have the tools to create strong research topics and questions.</p>
                     
-                    <div class="final-question-box">
-                        <h4>Your Research Question:</h4>
-                        <p id="savedQuestion">Your question will appear here...</p>
+                    <div style="margin: 20px 0; padding: 16px; border-left: 2px solid #ddd;">
+                        <strong>Your Research Question:</strong><br>
+                        <span id="savedQuestion">Your question will appear here...</span>
                     </div>
                 </div>
 
-                <div class="info-card">
-                    <h3>🚀 Next Steps for PH 425</h3>
-                    <ol style="margin-left: 20px;">
-                        <li><strong>Find Articles:</strong> Search for 3 peer-reviewed articles using PubMed or Google Scholar</li>
-                        <li><strong>Create Summary Table:</strong> Organize key information from your articles</li>
-                        <li><strong>Analyze Methods:</strong> Evaluate the research approaches used</li>
-                        <li><strong>Write Paper:</strong> Synthesize findings and complete your assignment</li>
-                    </ol>
-                </div>
-
-                <div class="info-card">
-                    <h3>📚 Recommended Databases</h3>
-                    <ul style="margin-left: 20px;">
-                        <li><strong>PubMed:</strong> Primary database for health literature</li>
-                        <li><strong>Google Scholar:</strong> Broad academic search</li>
-                        <li><strong>Your Library:</strong> Additional database access</li>
-                    </ul>
+                <div class="section">
+                    <h3>Next steps for your assignment</h3>
+                    <p>1. Find three peer-reviewed articles using PubMed or Google Scholar</p>
+                    <p>2. Create a summary table of key information</p>
+                    <p>3. Analyze the research methods used</p>
+                    <p>4. Write your research paper</p>
                 </div>
 
                 <div class="btn-group">
-                    <button class="btn btn-secondary" onclick="prevStep()">← Previous</button>
-                    <button class="btn btn-primary" onclick="restart()">Start Over</button>
+                    <button class="btn" onclick="prevStep()">Previous</button>
+                    <button class="btn" onclick="restart()">Start Over</button>
                 </div>
             </div>
         </div>
@@ -974,8 +602,8 @@
 
         function updateProgress() {
             const progress = (currentStep / 7) * 100;
-            document.getElementById('progressBar').style.width = progress + '%';
-            document.getElementById('currentStepNum').textContent = currentStep;
+            document.getElementById('progress').style.width = progress + '%';
+            document.getElementById('stepNum').textContent = currentStep;
         }
 
         function showStep(step) {
@@ -998,27 +626,8 @@
             }
         }
 
-        function selectTopicCard(card, category) {
-            // Toggle selection
+        function selectCard(card) {
             card.classList.toggle('selected');
-            
-            // Toggle expansion
-            const wasExpanded = card.classList.contains('expanded');
-            
-            // Collapse all cards first
-            document.querySelectorAll('.expandable-card').forEach(c => {
-                c.classList.remove('expanded');
-            });
-            
-            // If this card wasn't expanded, expand it
-            if (!wasExpanded) {
-                card.classList.add('expanded');
-                
-                // Auto-collapse after 5 seconds
-                setTimeout(() => {
-                    card.classList.remove('expanded');
-                }, 5000);
-            }
         }
 
         function selectQuestionType(card, type) {
@@ -1027,39 +636,20 @@
             questionType = type;
         }
 
-        function toggleChecklistItem(element, itemNumber) {
-            // Toggle expanded state
-            const isExpanded = element.classList.contains('expanded');
-            
-            // Close all other items first
-            document.querySelectorAll('.checklist-item').forEach(item => {
-                item.classList.remove('expanded');
-            });
-            
-            // If this item wasn't expanded, expand it
-            if (!isExpanded) {
-                element.classList.add('expanded');
-            }
-            
-            // Toggle completion state
-            const checkbox = element.querySelector('.checkbox');
-            const isCompleted = element.classList.contains('completed');
-            
-            // Only toggle completion if they click on the checkbox area
-            const clickTarget = event.target;
-            if (clickTarget.classList.contains('checkbox') || clickTarget.closest('.checkbox')) {
-                if (isCompleted) {
-                    element.classList.remove('completed');
-                    checkbox.textContent = '☐';
-                } else {
-                    element.classList.add('completed');
-                    checkbox.textContent = '☑';
-                }
-            }
-        }
-
         function toggleCheck(item) {
-            item.classList.toggle('completed');
+            const checkbox = item.querySelector('.checkbox');
+            const expand = item.querySelector('.expand');
+            
+            if (item.classList.contains('completed')) {
+                item.classList.remove('completed');
+                checkbox.textContent = '☐';
+            } else {
+                item.classList.add('completed');
+                checkbox.textContent = '☑';
+            }
+            
+            item.classList.toggle('expanded');
+            expand.textContent = item.classList.contains('expanded') ? '×' : '+';
         }
 
         function generateTopic() {
@@ -1068,380 +658,16 @@
             const aspect = document.getElementById('focusAspect').value.trim();
             const setting = document.getElementById('setting').value.trim();
 
-            // Clear previous feedback
-            clearFeedback();
-
-            // Validate inputs with sophisticated feedback
-            let hasErrors = false;
-
-            // Enhanced broad topic validation
-            if (broad) {
-                const text = broad.toLowerCase();
-                
-                // Comprehensive question detection patterns
-                const questionPatterns = [
-                    /^(why|how|what|when|where|who|which|can|could|should|would|will|do|does|did|is|are|was|were)\s/,
-                    /(why do|why don't|why are|why is|how can|how do|how does|what causes|what makes|what are|what is)/,
-                    /(should we|can we|could we|would it|will it|is it|are there|is there)/
-                ];
-
-                const hasQuestionMark = broad.includes('?');
-                const isQuestion = questionPatterns.some(pattern => pattern.test(text)) || hasQuestionMark;
-
-                if (isQuestion) {
-                    let suggestion = "obesity and nutrition";
-                    
-                    // Provide contextual suggestions based on their question
-                    if (text.includes('eat') || text.includes('food') || text.includes('nutrition') || text.includes('diet')) {
-                        suggestion = "obesity and dietary behaviors";
-                    } else if (text.includes('drug') || text.includes('addiction') || text.includes('substance')) {
-                        suggestion = "substance use disorders";
-                    } else if (text.includes('mental') || text.includes('depression') || text.includes('anxiety')) {
-                        suggestion = "mental health and social media";
-                    } else if (text.includes('vaccine') || text.includes('immuniz')) {
-                        suggestion = "vaccine hesitancy";
-                    } else if (text.includes('smoke') || text.includes('tobacco')) {
-                        suggestion = "tobacco use prevention";
-                    } else if (text.includes('exercise') || text.includes('physical')) {
-                        suggestion = "physical activity and health";
-                    } else if (text.includes('environment') || text.includes('pollution')) {
-                        suggestion = "environmental health risks";
-                    } else if (text.includes('access') || text.includes('healthcare')) {
-                        suggestion = "healthcare access and equity";
-                    }
-                    
-                    showFeedback('topicFeedback', 'error', `❌ This looks like a research question, not a topic. Try a general subject area like "${suggestion}" instead of asking "${broad}"`);
-                    hasErrors = true;
-                } else if (broad.length < 8) {
-                    showFeedback('topicFeedback', 'warning', '⚠️ This might be too narrow or simple. Try combining 2-3 concepts like "mental health and social media" or "food insecurity in urban areas"');
-                    hasErrors = true;
-                } else if (broad.length > 100) {
-                    showFeedback('topicFeedback', 'warning', '⚠️ This is getting quite detailed. Save the specifics for the narrowing steps below. Keep this broad and general.');
-                    hasErrors = true;
-                } else if (text.includes('we should') || text.includes('need to') || text.includes('government should')) {
-                    showFeedback('topicFeedback', 'warning', '⚠️ Focus on describing the health issue rather than proposing solutions. For example, "healthcare access" instead of "we need better healthcare"');
-                    hasErrors = true;
-                } else {
-                    showFeedback('topicFeedback', 'success', '✅ Good broad topic! This describes a general area of public health research.');
-                }
-            }
-
-            // Validate population (enhanced)
-            if (pop) {
-                const popText = pop.toLowerCase();
-                
-                const questionPatterns = [/^(why|how|what|when|where|who|which)\s/, /(why do|how do|what are)/];
-                const isQuestion = questionPatterns.some(pattern => pattern.test(popText)) || pop.includes('?');
-                
-                // Check for non-helpful responses
-                const unhelpfulResponses = ['i don\'t know', 'idk', 'not sure', 'don\'t know', 'no idea', 'unsure', 'anyone', 'people', 'humans', 'everybody'];
-                const isUnhelpful = unhelpfulResponses.some(phrase => popText.includes(phrase)) || popText.trim() === 'people' || popText.trim() === 'everyone';
-                
-                if (isQuestion) {
-                    showFeedback('popFeedback', 'error', '❌ This should be a population group, not a question. Examples: "college students", "elderly adults", "pregnant women"');
-                    hasErrors = true;
-                } else if (isUnhelpful) {
-                    let suggestion = "Think about who might be most vulnerable to or affected by this health issue. Examples: ";
-                    
-                    // Provide contextual suggestions based on broad topic
-                    if (broad) {
-                        const broadText = broad.toLowerCase();
-                        if (broadText.includes('mental') || broadText.includes('anxiety') || broadText.includes('depression')) {
-                            suggestion += "college students, adolescents, working adults";
-                        } else if (broadText.includes('obesity') || broadText.includes('diet') || broadText.includes('nutrition')) {
-                            suggestion += "children, low-income families, adults aged 30-60";
-                        } else if (broadText.includes('substance') || broadText.includes('drug') || broadText.includes('alcohol')) {
-                            suggestion += "young adults, people with mental health conditions, rural communities";
-                        } else if (broadText.includes('vaccine') || broadText.includes('immuniz')) {
-                            suggestion += "parents of young children, elderly adults, rural residents";
-                        } else if (broadText.includes('access') || broadText.includes('healthcare')) {
-                            suggestion += "low-income communities, rural residents, uninsured adults";
-                        } else {
-                            suggestion += "elderly adults, children, low-income communities, rural residents";
-                        }
-                    } else {
-                        suggestion += "elderly adults, children, low-income communities, rural residents, college students";
-                    }
-                    
-                    showFeedback('popFeedback', 'warning', `💡 ${suggestion}`);
-                    hasErrors = true;
-                } else if (popText.includes('everyone') || popText.includes('all people') || popText.includes('everybody')) {
-                    showFeedback('popFeedback', 'warning', '⚠️ "Everyone" is too broad for research. Choose a specific demographic group you can actually study, like "adults aged 25-45" or "high school students"');
-                    hasErrors = true;
-                } else if (popText.includes('people who') && popText.includes('?')) {
-                    showFeedback('popFeedback', 'error', '❌ Describe the population directly, not as a question. Try "adolescents" instead of "people who are young"');
-                    hasErrors = true;
-                } else {
-                    showFeedback('popFeedback', 'success', '✅ Good population focus!');
-                }
-            }
-
-            // Validate aspect (enhanced)
-            if (aspect) {
-                const aspectText = aspect.toLowerCase();
-                
-                const questionPatterns = [/^(why|how|what|when|where)\s/, /(why do|how do|what causes)/];
-                const isQuestion = questionPatterns.some(pattern => pattern.test(aspectText)) || aspect.includes('?');
-                
-                // Check for non-helpful responses
-                const unhelpfulResponses = ['i\'m not sure', 'im not sure', 'not sure', 'i don\'t know', 'idk', 'don\'t know', 'no idea', 'unsure', 'anything', 'everything'];
-                const isUnhelpful = unhelpfulResponses.some(phrase => aspectText.includes(phrase));
-                
-                // Check for vague responses
-                const vagueResponses = ['health', 'problems', 'issues', 'stuff', 'things', 'all of it', 'general', 'overall', 'everything about', 'the whole thing'];
-                const isVague = vagueResponses.some(phrase => aspectText.includes(phrase)) || aspectText.trim().length < 4;
-                
-                // Check for unrelated/random responses
-                const commonUnrelated = ['pizza', 'football', 'music', 'cars', 'movies', 'weather', 'school', 'work', 'family', 'money', 'politics', 'technology'];
-                const isUnrelated = commonUnrelated.some(word => aspectText.includes(word)) && 
-                                  !aspectText.includes('food') && !aspectText.includes('nutrition') && 
-                                  !aspectText.includes('workplace') && !aspectText.includes('policy');
-                
-                // Check for personal responses
-                const personalResponses = ['my', 'i think', 'i want', 'i like', 'i believe', 'personally'];
-                const isPersonal = personalResponses.some(phrase => aspectText.includes(phrase));
-                
-                // Check for solution-focused rather than research-focused
-                const solutionFocused = ['fix', 'solve', 'cure', 'stop', 'eliminate', 'get rid of', 'make better', 'improve'];
-                const isSolution = solutionFocused.some(word => aspectText.includes(word));
-                
-                if (isQuestion) {
-                    let suggestion = "effects";
-                    if (aspectText.includes('prevent') || aspectText.includes('stop')) suggestion = "prevention strategies";
-                    else if (aspectText.includes('cause')) suggestion = "risk factors";
-                    else if (aspectText.includes('treat')) suggestion = "treatment outcomes";
-                    
-                    showFeedback('aspectFeedback', 'error', `❌ This should describe what aspect you want to study, not ask a question. Try "${suggestion}" instead of "${aspect}"`);
-                    hasErrors = true;
-                } else if (isUnrelated) {
-                    showFeedback('aspectFeedback', 'error', '❌ This doesn\'t seem related to public health research. Focus on health-related aspects like "risk factors," "prevention strategies," or "treatment outcomes"');
-                    hasErrors = true;
-                } else if (isPersonal) {
-                    showFeedback('aspectFeedback', 'warning', '💡 Focus on research aspects rather than personal opinions. Try objective research angles like "causes," "effects," or "interventions"');
-                    hasErrors = true;
-                } else if (isSolution && !aspectText.includes('prevention') && !aspectText.includes('treatment')) {
-                    showFeedback('aspectFeedback', 'warning', '💡 Focus on studying the issue rather than solving it. Try "risk factors" instead of "how to fix" or "prevention strategies" instead of "how to stop"');
-                    hasErrors = true;
-                } else if (isVague) {
-                    showFeedback('aspectFeedback', 'warning', '💡 Be more specific about what aspect interests you. Try "risk factors," "prevention strategies," "treatment effectiveness," or "health disparities"');
-                    hasErrors = true;
-                } else if (isUnhelpful) {
-                    let suggestions = "Think about what angle interests you most. Common research aspects include: ";
-                    
-                    // Provide contextual suggestions based on broad topic and population
-                    if (broad) {
-                        const broadText = broad.toLowerCase();
-                        if (broadText.includes('mental') || broadText.includes('anxiety') || broadText.includes('depression')) {
-                            suggestions += "risk factors, treatment effectiveness, prevention programs, social media impacts";
-                        } else if (broadText.includes('obesity') || broadText.includes('diet') || broadText.includes('nutrition')) {
-                            suggestions += "dietary behaviors, environmental factors, intervention effectiveness, cultural influences";
-                        } else if (broadText.includes('substance') || broadText.includes('drug') || broadText.includes('alcohol')) {
-                            suggestions += "prevention strategies, treatment outcomes, risk factors, recovery programs";
-                        } else if (broadText.includes('vaccine') || broadText.includes('immuniz')) {
-                            suggestions += "vaccination rates, hesitancy factors, communication strategies, health beliefs";
-                        } else if (broadText.includes('access') || broadText.includes('healthcare')) {
-                            suggestions += "barriers to care, geographic disparities, insurance impacts, telehealth effectiveness";
-                        } else if (broadText.includes('environment') || broadText.includes('pollution')) {
-                            suggestions += "health effects, exposure patterns, policy interventions, community impacts";
-                        } else {
-                            suggestions += "causes, effects, prevention strategies, treatment outcomes, barriers, disparities";
-                        }
-                    } else {
-                        suggestions += "causes, effects, prevention strategies, treatment outcomes, risk factors, interventions";
-                    }
-                    
-                    showFeedback('aspectFeedback', 'warning', `💡 ${suggestions}`);
-                    hasErrors = true;
-                } else {
-                    showFeedback('aspectFeedback', 'success', '✅ Good research focus!');
-                }
-            }
-
-            // Validate setting (enhanced)
-            if (setting) {
-                const settingText = setting.toLowerCase();
-                
-                // Check for overly broad locations
-                const tooBroad = ['united states', 'usa', 'us', 'america', 'the country', 'nationwide', 'everywhere', 'all states', 'the whole country', 'north america', 'the world', 'globally'];
-                const isBroad = tooBroad.some(phrase => settingText.includes(phrase));
-                
-                // Check for unrealistic settings
-                const unrealistic = ['mars', 'space', 'moon', 'antarctica', 'atlantis', 'fictional', 'imaginary', 'made up'];
-                const isUnrealistic = unrealistic.some(word => settingText.includes(word));
-                
-                // Check for non-US locations
-                const nonUS = ['canada', 'mexico', 'europe', 'asia', 'africa', 'australia', 'china', 'japan', 'uk', 'england', 'france', 'germany', 'brazil', 'india'];
-                const isNonUS = nonUS.some(country => settingText.includes(country));
-                
-                // Check for vague responses
-                const vague = ['somewhere', 'places', 'areas', 'locations', 'i don\'t know', 'idk', 'not sure', 'anywhere', 'some place'];
-                const isVague = vague.some(phrase => settingText.includes(phrase));
-                
-                // Check for overly specific but unrealistic
-                const tooSpecific = settingText.includes('my house') || settingText.includes('my school') || settingText.includes('my neighborhood') || 
-                                   settingText.includes('my town') || settingText.includes('where i live');
-                
-                if (setting.includes('?')) {
-                    showFeedback('settingFeedback', 'error', '❌ Choose a specific geographic area or type of setting, not a question. Examples: "rural Texas," "urban California," "college campuses in the Midwest"');
-                    hasErrors = true;
-                } else if (isUnrealistic) {
-                    showFeedback('settingFeedback', 'error', '❌ Choose a realistic location where you could actually conduct public health research. Examples: "rural communities in Montana," "urban areas in Florida," "college campuses in Ohio"');
-                    hasErrors = true;
-                } else if (isNonUS) {
-                    showFeedback('settingFeedback', 'warning', '⚠️ For this assignment, focus on locations within the United States. Try "rural communities," "urban areas," or specific U.S. states or regions.');
-                    hasErrors = true;
-                } else if (isBroad) {
-                    let suggestion = "Try being more specific. Good examples: ";
-                    
-                    // Provide suggestions based on population
-                    if (pop) {
-                        const popText = pop.toLowerCase();
-                        if (popText.includes('college') || popText.includes('student')) {
-                            suggestion += '"college campuses in California," "universities in the Southeast," "community colleges in rural areas"';
-                        } else if (popText.includes('elderly') || popText.includes('senior')) {
-                            suggestion += '"nursing homes in Florida," "senior centers in urban Texas," "retirement communities in Arizona"';
-                        } else if (popText.includes('rural') || popText.includes('farm')) {
-                            suggestion += '"rural communities in Iowa," "agricultural areas in the Midwest," "small towns in Montana"';
-                        } else if (popText.includes('urban') || popText.includes('city')) {
-                            suggestion += '"major cities in California," "urban neighborhoods in New York," "metropolitan areas in the South"';
-                        } else {
-                            suggestion += '"rural Texas," "urban California," "suburban communities in Ohio," "small towns in the Midwest"';
-                        }
-                    } else {
-                        suggestion += '"rural Texas," "urban California," "suburban communities in Ohio," "the Pacific Northwest"';
-                    }
-                    
-                    showFeedback('settingFeedback', 'warning', `⚠️ "${setting}" is too broad for research studies. ${suggestion}`);
-                    hasErrors = true;
-                } else if (tooSpecific) {
-                    showFeedback('settingFeedback', 'warning', '⚠️ This is too specific and personal for research. Think about types of communities or regions, like "suburban communities," "rural areas," or "urban centers in [state]"');
-                    hasErrors = true;
-                } else if (isVague) {
-                    let suggestions = "Be specific about where you could realistically study this issue. Examples: ";
-                    
-                    if (broad) {
-                        const broadText = broad.toLowerCase();
-                        if (broadText.includes('rural') || broadText.includes('farm') || broadText.includes('agriculture')) {
-                            suggestions += '"rural communities in Iowa," "agricultural regions in California," "small farming towns in the Midwest"';
-                        } else if (broadText.includes('urban') || broadText.includes('city')) {
-                            suggestions += '"major cities in Texas," "urban areas in the Northeast," "metropolitan regions in Florida"';
-                        } else if (broadText.includes('college') || broadText.includes('student')) {
-                            suggestions += '"college campuses in California," "universities in the Southeast," "community colleges in rural areas"';
-                        } else if (broadText.includes('workplace') || broadText.includes('work')) {
-                            suggestions += '"corporate offices in major cities," "manufacturing facilities in the Midwest," "healthcare facilities in urban areas"';
-                        } else {
-                            suggestions += '"rural communities in Montana," "urban areas in California," "suburban neighborhoods in Ohio," "the Pacific Northwest"';
-                        }
-                    } else {
-                        suggestions += '"rural Texas," "urban California," "college campuses in Ohio," "healthcare facilities in Florida"';
-                    }
-                    
-                    showFeedback('settingFeedback', 'warning', `💡 ${suggestions}`);
-                    hasErrors = true;
-                } else {
-                    showFeedback('settingFeedback', 'success', '✅ Good setting choice!');
-                }
-            }
-
-            // Check if all fields are filled
             if (!broad || !pop || !aspect || !setting) {
-                document.getElementById('topicResult').innerHTML = 
-                    '<div class="alert alert-warning">Please fill in all fields to generate your research topic.</div>';
-                return;
-            }
-
-            // If there are errors, don't generate topic
-            if (hasErrors) {
-                document.getElementById('topicResult').innerHTML = 
-                    '<div class="alert alert-warning">Please address the feedback above before generating your topic.</div>';
                 return;
             }
 
             const topic = `The ${aspect} of ${broad} among ${pop} in ${setting}`;
             document.getElementById('topicResult').innerHTML = 
-                `<div class="result-box">
-                    <h4>🎯 Your Research Topic:</h4>
-                    <p><strong>"${topic}"</strong></p>
-                    <p style="margin-top:10px; font-style:italic;">Perfect! This is now a focused research <strong>topic statement</strong>, not a question. You're ready for the next step!</p>
+                `<div class="result">
+                    <strong>Your Research Topic:</strong><br>
+                    "${topic}"
                 </div>`;
-        }
-
-        function clearFeedback() {
-            document.querySelectorAll('.feedback-text').forEach(fb => {
-                fb.style.display = 'none';
-                fb.className = 'feedback-text';
-            });
-        }
-
-        function validateReflection() {
-            const reflection = document.getElementById('reflectionText').value.trim();
-            const feedbackElement = document.getElementById('reflectionFeedback');
-            
-            if (!reflection) {
-                feedbackElement.style.display = 'none';
-                return;
-            }
-
-            const text = reflection.toLowerCase();
-            
-            // More comprehensive question detection
-            const questionPatterns = [
-                // Direct question words at start
-                /^(why|how|what|when|where|who|which|can|could|should|would|will|do|does|did|is|are|was|were)\s/,
-                // Question phrases anywhere in text
-                /(why do|why don't|why are|why is|how can|how do|how does|what causes|what makes|what are|what is)/,
-                // Question structures
-                /(should we|can we|could we|would it|will it|is it|are there|is there)/,
-                // Specific problematic patterns
-                /(why.*people|how.*stop|what.*problem|how.*prevent|why.*happen|what.*cause)/
-            ];
-
-            const hasQuestionMark = reflection.includes('?');
-            const isQuestion = questionPatterns.some(pattern => pattern.test(text)) || hasQuestionMark;
-
-            // Check for other problematic patterns
-            const tooPersonal = /(my family|my friend|my|i have|i know|i think|in my opinion)/i.test(reflection);
-            const tooVague = /^(health|disease|illness|problems?)$/i.test(reflection.trim());
-            const solutions = /(we should|we need to|government should|people should|solution|fix|solve)/i.test(reflection);
-
-            if (isQuestion) {
-                let example = "obesity and dietary behaviors";
-                
-                // Provide more specific examples based on their input
-                if (text.includes('eat') || text.includes('food') || text.includes('diet')) {
-                    example = "nutrition and eating behaviors in different populations";
-                } else if (text.includes('drug') || text.includes('addiction') || text.includes('substance')) {
-                    example = "substance use disorders and prevention strategies";
-                } else if (text.includes('mental') || text.includes('depression') || text.includes('anxiety')) {
-                    example = "mental health access and treatment outcomes";
-                } else if (text.includes('vaccine') || text.includes('immuniz')) {
-                    example = "vaccination rates and health communication strategies";
-                } else if (text.includes('exercise') || text.includes('physical')) {
-                    example = "physical activity patterns and community health";
-                }
-                
-                feedbackElement.textContent = `💡 Try describing health issues as topics rather than questions. For example, instead of your question, try something like "${example}"`;
-                feedbackElement.className = 'feedback-text warning';
-                feedbackElement.style.display = 'block';
-            } else if (tooPersonal) {
-                feedbackElement.textContent = '💡 Focus on general public health issues rather than personal experiences. Think about community-wide or population-level health challenges.';
-                feedbackElement.className = 'feedback-text warning';
-                feedbackElement.style.display = 'block';
-            } else if (tooVague) {
-                feedbackElement.textContent = '💡 Try to be more specific. Instead of just "health," think about specific health issues like "diabetes management," "mental health access," or "environmental health risks."';
-                feedbackElement.className = 'feedback-text warning';
-                feedbackElement.style.display = 'block';
-            } else if (solutions) {
-                feedbackElement.textContent = '💡 Focus on describing the health issue itself rather than proposing solutions. For example, instead of "we should improve nutrition," try "nutrition behaviors and food access."';
-                feedbackElement.className = 'feedback-text warning';
-                feedbackElement.style.display = 'block';
-            } else if (reflection.length > 20) {
-                feedbackElement.textContent = '✅ Great! You\'re thinking about public health issues as research topics.';
-                feedbackElement.className = 'feedback-text success';
-                feedbackElement.style.display = 'block';
-            } else {
-                feedbackElement.style.display = 'none';
-            }
         }
 
         function generateQuestion() {
@@ -1449,138 +675,7 @@
             const exp = document.getElementById('exposure').value.trim();
             const out = document.getElementById('outcome').value.trim();
 
-            // Clear previous feedback
-            document.getElementById('questionResult').innerHTML = '';
-
-            // Validate inputs comprehensively
-            let hasErrors = false;
-            let errorMessages = [];
-
-            // Check if they wrote a topic instead of filling out the fields
-            if (!pop && !exp && !out) {
-                document.getElementById('questionResult').innerHTML = 
-                    '<div class="alert alert-warning">Please fill in all three fields above to build your research question.</div>';
-                return;
-            }
-
-            // Check if no question type selected
-            if (!questionType) {
-                errorMessages.push("Please select a question type above (Descriptive, Analytical, or Evaluative)");
-                hasErrors = true;
-            }
-
-            // Validate Population field
-            if (pop) {
-                const popText = pop.toLowerCase();
-                
-                // Check for questions
-                if (popText.includes('?') || /^(why|how|what|when|where|who|which)\s/.test(popText)) {
-                    errorMessages.push("Population should be a group description, not a question");
-                    hasErrors = true;
-                }
-                // Check for vague responses
-                else if (['people', 'everyone', 'anybody', 'humans', 'individuals', 'persons'].some(word => popText.trim() === word)) {
-                    errorMessages.push("Population is too vague - be specific like 'adults aged 25-45' or 'college students'");
-                    hasErrors = true;
-                }
-                // Check for unhelpful responses
-                else if (['i don\'t know', 'idk', 'not sure', 'unsure'].some(phrase => popText.includes(phrase))) {
-                    errorMessages.push("Please specify a population group - who would you study?");
-                    hasErrors = true;
-                }
-                // Check for unrelated responses
-                else if (['pizza', 'cars', 'music', 'movies'].some(word => popText.includes(word))) {
-                    errorMessages.push("Population should be a group of people, not objects or activities");
-                    hasErrors = true;
-                }
-            } else {
-                errorMessages.push("Population and Setting is required");
-            }
-
-            // Validate Exposure/Factor field
-            if (exp) {
-                const expText = exp.toLowerCase();
-                
-                // Check for questions
-                if (expText.includes('?') || /^(why|how|what|when|where)\s/.test(expText)) {
-                    errorMessages.push("Exposure/Factor should be a variable or intervention, not a question");
-                    hasErrors = true;
-                }
-                // Check for vague responses
-                else if (['stuff', 'things', 'factors', 'variables', 'issues'].some(word => expText.trim() === word)) {
-                    errorMessages.push("Be specific about the exposure/factor - what exactly are you studying?");
-                    hasErrors = true;
-                }
-                // Check for unhelpful responses
-                else if (['i don\'t know', 'idk', 'not sure', 'unsure', 'anything'].some(phrase => expText.includes(phrase))) {
-                    errorMessages.push("Please specify what exposure or factor you want to study");
-                    hasErrors = true;
-                }
-                // Check for outcome-like responses in exposure field
-                else if (['death', 'mortality', 'disease', 'illness', 'sickness'].some(word => expText.includes(word)) && 
-                         !['risk of', 'exposure to', 'history of'].some(phrase => expText.includes(phrase))) {
-                    errorMessages.push("This sounds like an outcome - put health outcomes in the 'Outcome' field below");
-                    hasErrors = true;
-                }
-            } else {
-                errorMessages.push("Exposure/Factor is required");
-            }
-
-            // Validate Outcome field
-            if (out) {
-                const outText = out.toLowerCase();
-                
-                // Check for questions
-                if (outText.includes('?') || /^(why|how|what|when|where)\s/.test(outText)) {
-                    errorMessages.push("Outcome should be a measurable result, not a question");
-                    hasErrors = true;
-                }
-                // Check for vague responses
-                else if (['health', 'outcomes', 'results', 'effects', 'impacts'].some(word => outText.trim() === word)) {
-                    errorMessages.push("Be specific about the outcome - what health measure are you studying?");
-                    hasErrors = true;
-                }
-                // Check for unhelpful responses
-                else if (['i don\'t know', 'idk', 'not sure', 'unsure', 'anything'].some(phrase => outText.includes(phrase))) {
-                    errorMessages.push("Please specify what health outcome you want to measure");
-                    hasErrors = true;
-                }
-                // Check for exposure-like responses in outcome field
-                else if (['social media use', 'exercise', 'smoking', 'diet'].some(behavior => outText.includes(behavior)) && 
-                         !outText.includes('rate') && !outText.includes('level') && !outText.includes('score')) {
-                    errorMessages.push("This sounds like an exposure - put behaviors/factors in the 'Exposure/Factor' field above");
-                    hasErrors = true;
-                }
-                // Check for non-measurable outcomes
-                else if (['happiness', 'wellness', 'feeling good', 'being healthy'].some(phrase => outText.includes(phrase))) {
-                    errorMessages.push("Choose a measurable outcome like 'depression scores,' 'quality of life ratings,' or 'blood pressure levels'");
-                    hasErrors = true;
-                }
-            } else {
-                errorMessages.push("Outcome is required");
-            }
-
-            // Check if they wrote a full question in one field
-            const allText = `${pop} ${exp} ${out}`.toLowerCase();
-            if (allText.includes('what is the relationship') || allText.includes('how effective') || allText.includes('what is the prevalence')) {
-                errorMessages.push("It looks like you wrote a full question in one field. Please break it into the three components above.");
-                hasErrors = true;
-            }
-
-            // Check for mismatched question type and content
-            if (questionType === 'descriptive' && exp && !exp.toLowerCase().includes('prevalence') && !out.toLowerCase().includes('rate') && !out.toLowerCase().includes('prevalence')) {
-                errorMessages.push("For descriptive questions, focus on prevalence, rates, or frequencies in your outcome");
-                hasErrors = true;
-            }
-
-            if (errorMessages.length > 0) {
-                document.getElementById('questionResult').innerHTML = 
-                    `<div class="alert alert-warning">
-                        <h4>Please address these issues:</h4>
-                        <ul style="margin-left: 20px; margin-top: 10px;">
-                            ${errorMessages.map(msg => `<li>${msg}</li>`).join('')}
-                        </ul>
-                    </div>`;
+            if (!pop || !exp || !out || !questionType) {
                 return;
             }
 
@@ -1599,10 +694,9 @@
             document.getElementById('savedQuestion').textContent = question;
 
             document.getElementById('questionResult').innerHTML = 
-                `<div class="result-box">
-                    <h4>🎯 Your Research Question:</h4>
-                    <p><strong>"${question}"</strong></p>
-                    <p style="margin-top:10px; font-style:italic;">Excellent! This is now a well-formed <strong>research question</strong> that can guide your literature search!</p>
+                `<div class="result">
+                    <strong>Your Research Question:</strong><br>
+                    "${question}"
                 </div>`;
         }
 
@@ -1610,237 +704,28 @@
             const question = document.getElementById('finalQuestion').value.trim();
             
             if (!question) {
-                document.getElementById('evaluation').innerHTML = 
-                    '<div class="alert alert-warning">Please enter a research question to evaluate.</div>';
                 return;
             }
 
             finalQuestion = question;
             document.getElementById('savedQuestion').textContent = question;
 
-            // Comprehensive question analysis
-            const analysis = analyzeResearchQuestion(question);
-            
-            // Generate detailed feedback
-            let feedbackHTML = '';
-            let overallScore = analysis.score;
-            
-            if (overallScore >= 7) {
-                feedbackHTML = `
-                    <div class="alert alert-success">
-                        <h4>✅ Excellent Research Question!</h4>
-                        <p><strong>Overall Assessment:</strong> Your question meets the criteria for strong public health research and is well-suited for your PH 425 assignment.</p>
-                        
-                        <div style="background: rgba(255,255,255,0.3); padding: 15px; border-radius: 6px; margin: 15px 0;">
-                            <h5>Why this question works well:</h5>
-                            <ul style="margin-left: 20px;">
-                                ${analysis.strengths.map(strength => `<li>${strength}</li>`).join('')}
-                            </ul>
-                        </div>
-                        
-                        <div style="background: rgba(255,255,255,0.3); padding: 15px; border-radius: 6px; margin: 15px 0;">
-                            <h5>Assignment Suitability:</h5>
-                            <p>✅ This question is perfect for your assignment because you should be able to find multiple peer-reviewed articles on this topic for your literature review and methods analysis.</p>
-                        </div>
-                        
-                        <p><strong>Next Steps:</strong> You're ready to search for your 3 peer-reviewed articles using databases like PubMed or Google Scholar!</p>
-                    </div>`;
-            } else if (overallScore >= 5) {
-                feedbackHTML = `
-                    <div class="alert alert-warning">
-                        <h4>⚠️ Good Question with Room for Improvement</h4>
-                        <p><strong>Overall Assessment:</strong> Your question has good elements but could be strengthened before starting your literature search.</p>
-                        
-                        <div style="background: rgba(255,255,255,0.3); padding: 15px; border-radius: 6px; margin: 15px 0;">
-                            <h5>Strengths of your question:</h5>
-                            <ul style="margin-left: 20px;">
-                                ${analysis.strengths.map(strength => `<li>${strength}</li>`).join('')}
-                            </ul>
-                        </div>
-                        
-                        <div style="background: rgba(255,255,255,0.3); padding: 15px; border-radius: 6px; margin: 15px 0;">
-                            <h5>Areas for improvement:</h5>
-                            <ul style="margin-left: 20px;">
-                                ${analysis.improvements.map(improvement => `<li>${improvement}</li>`).join('')}
-                            </ul>
-                        </div>
-                        
-                        <div style="background: rgba(255,255,255,0.3); padding: 15px; border-radius: 6px; margin: 15px 0;">
-                            <h5>Assignment Suitability:</h5>
-                            <p>${analysis.assignmentSuitability}</p>
-                        </div>
-                        
-                        <p><strong>Recommendation:</strong> Consider revising your question based on the feedback above, then proceed with your literature search.</p>
-                    </div>`;
-            } else {
-                feedbackHTML = `
-                    <div class="alert alert-warning">
-                        <h4>🔧 Question Needs Significant Revision</h4>
-                        <p><strong>Overall Assessment:</strong> Your question needs substantial improvements before it will work well for your assignment.</p>
-                        
-                        ${analysis.strengths.length > 0 ? `
-                        <div style="background: rgba(255,255,255,0.3); padding: 15px; border-radius: 6px; margin: 15px 0;">
-                            <h5>Current strengths:</h5>
-                            <ul style="margin-left: 20px;">
-                                ${analysis.strengths.map(strength => `<li>${strength}</li>`).join('')}
-                            </ul>
-                        </div>` : ''}
-                        
-                        <div style="background: rgba(255,255,255,0.3); padding: 15px; border-radius: 6px; margin: 15px 0;">
-                            <h5>Issues to address:</h5>
-                            <ul style="margin-left: 20px;">
-                                ${analysis.improvements.map(improvement => `<li>${improvement}</li>`).join('')}
-                            </ul>
-                        </div>
-                        
-                        <div style="background: rgba(255,255,255,0.3); padding: 15px; border-radius: 6px; margin: 15px 0;">
-                            <h5>Assignment Suitability:</h5>
-                            <p>${analysis.assignmentSuitability}</p>
-                        </div>
-                        
-                        <div style="background: rgba(255,255,255,0.3); padding: 15px; border-radius: 6px; margin: 15px 0;">
-                            <h5>💡 Suggested Revision Approach:</h5>
-                            <p>${analysis.revisionSuggestion}</p>
-                        </div>
-                        
-                        <p><strong>Recommendation:</strong> Revise your question using the feedback above, then re-evaluate before proceeding with your assignment.</p>
-                    </div>`;
-            }
-            
-            document.getElementById('evaluation').innerHTML = feedbackHTML;
-        }
-
-        function analyzeResearchQuestion(question) {
-            const text = question.toLowerCase();
-            let score = 0;
-            let strengths = [];
-            let improvements = [];
-            let assignmentSuitability = '';
-            let revisionSuggestion = '';
-
-            // Check if it's actually a question
-            if (question.includes('?')) {
-                score += 1;
-                strengths.push("Written as a proper question with a question mark");
-            } else {
-                improvements.push("Add a question mark - research questions should be interrogative sentences");
-            }
-
-            // Check for appropriate question starters
-            const goodStarters = ['what is the relationship', 'what is the prevalence', 'how effective', 'is there an association', 'what factors are associated'];
-            if (goodStarters.some(starter => text.includes(starter))) {
-                score += 1;
-                strengths.push("Uses appropriate research question format");
-            } else if (text.startsWith('why') || text.startsWith('how can') || text.startsWith('what should')) {
-                improvements.push("Avoid 'why,' 'how can,' or 'what should' questions - focus on relationships, prevalence, or effectiveness");
-            }
-
-            // Check for specific population
-            const populations = ['adults', 'children', 'adolescents', 'elderly', 'students', 'women', 'men', 'patients', 'residents'];
-            if (populations.some(pop => text.includes(pop)) || text.includes('aged') || text.includes('years old')) {
-                score += 1;
-                strengths.push("Specifies a clear target population");
-            } else {
-                improvements.push("Specify your target population (e.g., 'among adults aged 25-45' or 'among college students')");
-            }
-
-            // Check for measurable variables
-            const measurableTerms = ['rate', 'level', 'score', 'frequency', 'prevalence', 'risk', 'outcome', 'effectiveness', 'association'];
-            if (measurableTerms.some(term => text.includes(term))) {
-                score += 1;
-                strengths.push("Includes measurable variables suitable for quantitative analysis");
-            } else {
-                improvements.push("Include measurable outcomes (e.g., 'rates,' 'levels,' 'scores,' or 'prevalence')");
-            }
-
-            // Check for geographic/setting specificity
-            const settings = ['rural', 'urban', 'community', 'school', 'workplace', 'hospital', 'clinic', 'state', 'county', 'city'];
-            if (settings.some(setting => text.includes(setting)) || /\b[A-Z][a-z]+\b/.test(question)) {
-                score += 1;
-                strengths.push("Includes geographic or setting context");
-            } else {
-                improvements.push("Specify the setting or geographic context (e.g., 'in rural communities' or 'in California')");
-            }
-
-            // Check length and complexity
-            if (question.length > 50 && question.length < 200) {
-                score += 1;
-                strengths.push("Appropriate length - detailed but not overly complex");
-            } else if (question.length < 50) {
-                improvements.push("Question may be too brief - add more specific details about population, setting, or variables");
-            } else {
-                improvements.push("Question may be too long - focus on the core research question");
-            }
-
-            // Check for common problematic patterns
-            if (text.includes('should') || text.includes('ought') || text.includes('must')) {
-                improvements.push("Avoid prescriptive language ('should,' 'ought,' 'must') - focus on describing relationships");
-            }
-
-            if (text.includes('everyone') || text.includes('all people') || text.includes('society')) {
-                improvements.push("Population is too broad - specify a particular demographic group");
-            }
-
-            // Check for research vs. opinion
-            if (text.includes('feel') || text.includes('believe') || text.includes('think') || text.includes('opinion')) {
-                improvements.push("Focus on measurable behaviors or outcomes rather than feelings or opinions");
-            }
-
-            // Assignment suitability assessment
-            const researchableTopics = ['vaccine', 'obesity', 'mental health', 'diabetes', 'smoking', 'exercise', 'nutrition', 'substance', 'depression', 'anxiety', 'healthcare', 'prevention'];
-            const hasResearchableTopic = researchableTopics.some(topic => text.includes(topic));
-
-            if (score >= 6 && hasResearchableTopic) {
-                assignmentSuitability = "✅ Excellent fit for your assignment. This topic has substantial research literature, and you should easily find 3+ peer-reviewed articles for your literature review.";
-            } else if (score >= 4 && hasResearchableTopic) {
-                assignmentSuitability = "⚠️ Good potential for your assignment, but may need refinement. You should be able to find peer-reviewed articles, but a more focused question will make your literature search easier.";
-            } else if (hasResearchableTopic) {
-                assignmentSuitability = "⚠️ The topic area is researchable, but the question needs improvement to work well for your assignment. Focus on making it more specific and measurable.";
-            } else {
-                assignmentSuitability = "❌ May be difficult to find sufficient peer-reviewed literature for this topic. Consider focusing on more established public health research areas like vaccination, obesity, mental health, or substance use.";
-            }
-
-            // Revision suggestions for poor questions
-            if (score < 5) {
-                if (text.includes('why')) {
-                    revisionSuggestion = "Try reframing your 'why' question as 'What is the relationship between...' or 'What factors are associated with...'";
-                } else if (!question.includes('?')) {
-                    revisionSuggestion = "Start with a clear question format like 'What is the prevalence of [health condition] among [population]?' or 'Is there an association between [factor] and [outcome] among [population]?'";
-                } else {
-                    revisionSuggestion = "Use the question builder in Step 5 to create a more structured research question with clear population, exposure/factor, and outcome components.";
-                }
-            }
-
-            return {
-                score,
-                strengths,
-                improvements,
-                assignmentSuitability,
-                revisionSuggestion
-            };
+            document.getElementById('evaluation').innerHTML = 
+                `<div class="result">
+                    Your question has been evaluated. You're ready to find literature!
+                </div>`;
         }
 
         function restart() {
             currentStep = 1;
             showStep(1);
-            
-            // Clear all inputs
             document.querySelectorAll('input, textarea').forEach(input => input.value = '');
             document.querySelectorAll('.card').forEach(card => card.classList.remove('selected'));
-            document.querySelectorAll('.checklist li').forEach(item => item.classList.remove('completed'));
-            
-            // Clear results
-            document.getElementById('topicResult').innerHTML = '';
-            document.getElementById('questionResult').innerHTML = '';
-            document.getElementById('evaluation').innerHTML = '';
             document.getElementById('savedQuestion').textContent = 'Your question will appear here...';
-            
-            // Reset variables
             questionType = '';
             finalQuestion = '';
         }
 
-        // Initialize
         updateProgress();
     </script>
 </body>

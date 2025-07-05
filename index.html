@@ -235,39 +235,102 @@
             margin-bottom: 8px;
         }
 
-        .checklist {
-            list-style: none;
-            margin: 15px 0;
+        .checklist-container {
+            margin: 20px 0;
         }
 
-        .checklist li {
-            padding: 12px;
-            margin: 8px 0;
+        .checklist-item {
             background: #f8f9fa;
-            border-radius: 6px;
-            cursor: pointer;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            margin: 10px 0;
+            overflow: hidden;
             transition: all 0.3s ease;
-            border-left: 4px solid #dee2e6;
         }
 
-        .checklist li:hover {
-            background: #e9ecef;
+        .checklist-item.completed {
+            border-color: #28a745;
+            background: #f8fff9;
         }
 
-        .checklist li.completed {
-            background: #d4edda;
-            border-left-color: #28a745;
+        .checklist-item.expanded {
+            border-color: #3498db;
         }
 
-        .checklist li::before {
-            content: "☐ ";
-            margin-right: 8px;
-            font-size: 1.1em;
+        .checklist-header {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            cursor: pointer;
+            user-select: none;
         }
 
-        .checklist li.completed::before {
-            content: "☑ ";
+        .checklist-header:hover {
+            background: rgba(52, 152, 219, 0.1);
+        }
+
+        .checkbox {
+            font-size: 1.2em;
+            margin-right: 12px;
+            min-width: 20px;
+            color: #6c757d;
+        }
+
+        .checklist-item.completed .checkbox {
             color: #28a745;
+        }
+
+        .checklist-text {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .expand-icon {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #3498db;
+            min-width: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .checklist-item.expanded .expand-icon {
+            transform: rotate(45deg);
+        }
+
+        .checklist-explanation {
+            display: none;
+            padding: 0 15px 15px 47px;
+            border-top: 1px solid #dee2e6;
+            background: white;
+            margin-top: 0;
+        }
+
+        .checklist-item.expanded .checklist-explanation {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+                padding-bottom: 0;
+            }
+            to {
+                opacity: 1;
+                max-height: 300px;
+                padding-bottom: 15px;
+            }
+        }
+
+        .checklist-explanation p {
+            margin: 10px 0;
+            line-height: 1.5;
+        }
+
+        .checklist-explanation strong {
+            color: #2c3e50;
         }
 
         .btn-group {
@@ -520,7 +583,21 @@
                     <h3>💭 Reflection</h3>
                     <div class="form-group">
                         <label>What public health issues interest you most?</label>
-                        <textarea class="form-control" rows="3" placeholder="Think about issues you've noticed in your community or current events..."></textarea>
+                        <textarea class="form-control" id="reflectionText" rows="3" placeholder="Think about issues you've noticed in your community or current events..." onblur="validateReflection()"></textarea>
+                        <div id="reflectionFeedback" class="feedback-text"></div>
+                    </div>
+                    
+                    <div class="info-card" style="margin-top: 15px;">
+                        <h4>💡 Reflection Tips</h4>
+                        <p>Instead of asking questions, describe <strong>issues</strong> or <strong>topics</strong> that interest you:</p>
+                        <div style="background: white; padding: 12px; border-radius: 4px; margin: 10px 0;">
+                            <p><strong>❌ Instead of:</strong> "Why are people eating too much?"</p>
+                            <p><strong>✅ Try:</strong> "Obesity and nutrition behaviors in different communities"</p>
+                        </div>
+                        <div style="background: white; padding: 12px; border-radius: 4px; margin: 10px 0;">
+                            <p><strong>❌ Instead of:</strong> "How can we stop drug addiction?"</p>
+                            <p><strong>✅ Try:</strong> "Substance abuse prevention programs and their effectiveness"</p>
+                        </div>
                     </div>
                 </div>
 
@@ -678,18 +755,104 @@
 
                 <div class="info-card">
                     <h3>🔍 Quality Checklist</h3>
-                    <p>Use this checklist to evaluate your research question:</p>
+                    <p>Click each item to learn more about what it means, then check it off if your question meets that criterion:</p>
                 </div>
 
-                <ul class="checklist">
-                    <li onclick="toggleCheck(this)">Does my question allow for multiple possible answers?</li>
-                    <li onclick="toggleCheck(this)">Is it testable with available research methods?</li>
-                    <li onclick="toggleCheck(this)">Is the question clear and precise?</li>
-                    <li onclick="toggleCheck(this)">Is it suitable for quantitative analysis?</li>
-                    <li onclick="toggleCheck(this)">Can I find peer-reviewed articles on this topic?</li>
-                    <li onclick="toggleCheck(this)">Does it avoid being too broad or too narrow?</li>
-                    <li onclick="toggleCheck(this)">Would the answer contribute to public health knowledge?</li>
-                </ul>
+                <div class="checklist-container">
+                    <div class="checklist-item" onclick="toggleChecklistItem(this, 1)">
+                        <div class="checklist-header">
+                            <span class="checkbox">☐</span>
+                            <span class="checklist-text">Does my question allow for multiple possible answers?</span>
+                            <span class="expand-icon">+</span>
+                        </div>
+                        <div class="checklist-explanation">
+                            <p><strong>What this means:</strong> Your question shouldn't have just one obvious answer or be a yes/no question. Good research questions are open-ended and can be explored from different angles.</p>
+                            <p><strong>✅ Good:</strong> "What is the relationship between social media use and anxiety levels among teenagers?"</p>
+                            <p><strong>❌ Bad:</strong> "Is social media bad for teenagers?" (too simple, yes/no answer)</p>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item" onclick="toggleChecklistItem(this, 2)">
+                        <div class="checklist-header">
+                            <span class="checkbox">☐</span>
+                            <span class="checklist-text">Is it testable with available research methods?</span>
+                            <span class="expand-icon">+</span>
+                        </div>
+                        <div class="checklist-explanation">
+                            <p><strong>What this means:</strong> You should be able to imagine how researchers could actually study this question using surveys, experiments, data analysis, or observations.</p>
+                            <p><strong>✅ Good:</strong> "How effective are workplace wellness programs in reducing employee stress levels?" (can measure stress, compare groups)</p>
+                            <p><strong>❌ Bad:</strong> "What do people think in their hearts about health?" (too abstract to measure)</p>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item" onclick="toggleChecklistItem(this, 3)">
+                        <div class="checklist-header">
+                            <span class="checkbox">☐</span>
+                            <span class="checklist-text">Is the question clear and precise?</span>
+                            <span class="expand-icon">+</span>
+                        </div>
+                        <div class="checklist-explanation">
+                            <p><strong>What this means:</strong> Someone else reading your question should understand exactly what you're asking. Avoid vague terms that could mean different things to different people.</p>
+                            <p><strong>✅ Good:</strong> "What is the prevalence of food insecurity among college students at public universities?"</p>
+                            <p><strong>❌ Bad:</strong> "How do people feel about health issues?" (what people? which feelings? what health issues?)</p>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item" onclick="toggleChecklistItem(this, 4)">
+                        <div class="checklist-header">
+                            <span class="checkbox">☐</span>
+                            <span class="checklist-text">Is it suitable for quantitative analysis?</span>
+                            <span class="expand-icon">+</span>
+                        </div>
+                        <div class="checklist-explanation">
+                            <p><strong>What this means:</strong> Since this is for quantitative research, your question should involve things that can be counted, measured, or statistically analyzed.</p>
+                            <p><strong>✅ Good:</strong> "Is there an association between exercise frequency and BMI levels?" (can count exercise sessions, measure BMI)</p>
+                            <p><strong>❌ Bad:</strong> "What does wellness mean to different people?" (too subjective for statistical analysis)</p>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item" onclick="toggleChecklistItem(this, 5)">
+                        <div class="checklist-header">
+                            <span class="checkbox">☐</span>
+                            <span class="checklist-text">Can I find peer-reviewed articles on this topic?</span>
+                            <span class="expand-icon">+</span>
+                        </div>
+                        <div class="checklist-explanation">
+                            <p><strong>What this means:</strong> Your question should be about a topic that researchers have studied before. You need to find 3 peer-reviewed articles for your assignment.</p>
+                            <p><strong>✅ Good:</strong> Questions about vaccination, obesity, mental health, or substance use (lots of research available)</p>
+                            <p><strong>❌ Bad:</strong> Very new trends or extremely specific local issues (limited research available)</p>
+                            <p><strong>💡 Tip:</strong> Do a quick search on PubMed or Google Scholar to check!</p>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item" onclick="toggleChecklistItem(this, 6)">
+                        <div class="checklist-header">
+                            <span class="checkbox">☐</span>
+                            <span class="checklist-text">Does it avoid being too broad or too narrow?</span>
+                            <span class="expand-icon">+</span>
+                        </div>
+                        <div class="checklist-explanation">
+                            <p><strong>What this means:</strong> Your question should be focused enough to study deeply, but broad enough that research exists and you can find patterns.</p>
+                            <p><strong>✅ Just right:</strong> "How does access to telehealth services affect preventive care utilization among rural elderly adults?"</p>
+                            <p><strong>❌ Too broad:</strong> "What affects health?" (could be anything)</p>
+                            <p><strong>❌ Too narrow:</strong> "Do 23-year-old male nursing students in Ohio prefer morning or evening exercise?" (too specific)</p>
+                        </div>
+                    </div>
+
+                    <div class="checklist-item" onclick="toggleChecklistItem(this, 7)">
+                        <div class="checklist-header">
+                            <span class="checkbox">☐</span>
+                            <span class="checklist-text">Would the answer contribute to public health knowledge?</span>
+                            <span class="expand-icon">+</span>
+                        </div>
+                        <div class="checklist-explanation">
+                            <p><strong>What this means:</strong> Your research should help us understand health issues better or inform public health practice and policy.</p>
+                            <p><strong>✅ Good:</strong> "What factors are associated with COVID-19 vaccination uptake among rural adults?" (could inform health campaigns)</p>
+                            <p><strong>❌ Less useful:</strong> "What's the favorite color of people who exercise?" (interesting but not really about health)</p>
+                            <p><strong>💡 Think:</strong> Could this research help improve health outcomes or guide public health interventions?</p>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="form-section">
                     <h3>🎯 Final Question Review</h3>
@@ -798,6 +961,37 @@
             questionType = type;
         }
 
+        function toggleChecklistItem(element, itemNumber) {
+            // Toggle expanded state
+            const isExpanded = element.classList.contains('expanded');
+            
+            // Close all other items first
+            document.querySelectorAll('.checklist-item').forEach(item => {
+                item.classList.remove('expanded');
+            });
+            
+            // If this item wasn't expanded, expand it
+            if (!isExpanded) {
+                element.classList.add('expanded');
+            }
+            
+            // Toggle completion state
+            const checkbox = element.querySelector('.checkbox');
+            const isCompleted = element.classList.contains('completed');
+            
+            // Only toggle completion if they click on the checkbox area
+            const clickTarget = event.target;
+            if (clickTarget.classList.contains('checkbox') || clickTarget.closest('.checkbox')) {
+                if (isCompleted) {
+                    element.classList.remove('completed');
+                    checkbox.textContent = '☐';
+                } else {
+                    element.classList.add('completed');
+                    checkbox.textContent = '☑';
+                }
+            }
+        }
+
         function toggleCheck(item) {
             item.classList.toggle('completed');
         }
@@ -814,45 +1008,273 @@
             // Validate inputs with sophisticated feedback
             let hasErrors = false;
 
-            // Check if broad topic is actually a question
-            if (broad && (broad.includes('?') || broad.toLowerCase().startsWith('how') || broad.toLowerCase().startsWith('what') || broad.toLowerCase().startsWith('why'))) {
-                showFeedback('topicFeedback', 'error', '❌ This looks like a question, not a topic. Try a general subject area like "vaccine hesitancy" instead of "Why don\'t people get vaccines?"');
-                hasErrors = true;
-            } else if (broad && broad.length < 10) {
-                showFeedback('topicFeedback', 'warning', '⚠️ This might be too narrow. Try combining 2-3 concepts like "mental health and social media" or "food insecurity in urban areas"');
-                hasErrors = true;
-            } else if (broad && broad.length > 100) {
-                showFeedback('topicFeedback', 'warning', '⚠️ This is getting quite specific. Save the details for the narrowing steps below.');
-                hasErrors = true;
-            } else if (broad) {
-                showFeedback('topicFeedback', 'success', '✅ Good broad topic!');
+            // Enhanced broad topic validation
+            if (broad) {
+                const text = broad.toLowerCase();
+                
+                // Comprehensive question detection patterns
+                const questionPatterns = [
+                    /^(why|how|what|when|where|who|which|can|could|should|would|will|do|does|did|is|are|was|were)\s/,
+                    /(why do|why don't|why are|why is|how can|how do|how does|what causes|what makes|what are|what is)/,
+                    /(should we|can we|could we|would it|will it|is it|are there|is there)/
+                ];
+
+                const hasQuestionMark = broad.includes('?');
+                const isQuestion = questionPatterns.some(pattern => pattern.test(text)) || hasQuestionMark;
+
+                if (isQuestion) {
+                    let suggestion = "obesity and nutrition";
+                    
+                    // Provide contextual suggestions based on their question
+                    if (text.includes('eat') || text.includes('food') || text.includes('nutrition') || text.includes('diet')) {
+                        suggestion = "obesity and dietary behaviors";
+                    } else if (text.includes('drug') || text.includes('addiction') || text.includes('substance')) {
+                        suggestion = "substance use disorders";
+                    } else if (text.includes('mental') || text.includes('depression') || text.includes('anxiety')) {
+                        suggestion = "mental health and social media";
+                    } else if (text.includes('vaccine') || text.includes('immuniz')) {
+                        suggestion = "vaccine hesitancy";
+                    } else if (text.includes('smoke') || text.includes('tobacco')) {
+                        suggestion = "tobacco use prevention";
+                    } else if (text.includes('exercise') || text.includes('physical')) {
+                        suggestion = "physical activity and health";
+                    } else if (text.includes('environment') || text.includes('pollution')) {
+                        suggestion = "environmental health risks";
+                    } else if (text.includes('access') || text.includes('healthcare')) {
+                        suggestion = "healthcare access and equity";
+                    }
+                    
+                    showFeedback('topicFeedback', 'error', `❌ This looks like a research question, not a topic. Try a general subject area like "${suggestion}" instead of asking "${broad}"`);
+                    hasErrors = true;
+                } else if (broad.length < 8) {
+                    showFeedback('topicFeedback', 'warning', '⚠️ This might be too narrow or simple. Try combining 2-3 concepts like "mental health and social media" or "food insecurity in urban areas"');
+                    hasErrors = true;
+                } else if (broad.length > 100) {
+                    showFeedback('topicFeedback', 'warning', '⚠️ This is getting quite detailed. Save the specifics for the narrowing steps below. Keep this broad and general.');
+                    hasErrors = true;
+                } else if (text.includes('we should') || text.includes('need to') || text.includes('government should')) {
+                    showFeedback('topicFeedback', 'warning', '⚠️ Focus on describing the health issue rather than proposing solutions. For example, "healthcare access" instead of "we need better healthcare"');
+                    hasErrors = true;
+                } else {
+                    showFeedback('topicFeedback', 'success', '✅ Good broad topic! This describes a general area of public health research.');
+                }
             }
 
-            // Validate population
-            if (pop && (pop.includes('?') || pop.toLowerCase().includes('how') || pop.toLowerCase().includes('what'))) {
-                showFeedback('popFeedback', 'error', '❌ This should be a population group, not a question. Examples: "college students", "elderly adults", "pregnant women"');
-                hasErrors = true;
-            } else if (pop && pop.toLowerCase().includes('everyone') || pop.toLowerCase().includes('all people')) {
-                showFeedback('popFeedback', 'warning', '⚠️ "Everyone" is too broad for research. Choose a specific demographic group you can actually study.');
-                hasErrors = true;
-            } else if (pop) {
-                showFeedback('popFeedback', 'success', '✅ Good population focus!');
+            // Validate population (enhanced)
+            if (pop) {
+                const popText = pop.toLowerCase();
+                
+                const questionPatterns = [/^(why|how|what|when|where|who|which)\s/, /(why do|how do|what are)/];
+                const isQuestion = questionPatterns.some(pattern => pattern.test(popText)) || pop.includes('?');
+                
+                // Check for non-helpful responses
+                const unhelpfulResponses = ['i don\'t know', 'idk', 'not sure', 'don\'t know', 'no idea', 'unsure', 'anyone', 'people', 'humans', 'everybody'];
+                const isUnhelpful = unhelpfulResponses.some(phrase => popText.includes(phrase)) || popText.trim() === 'people' || popText.trim() === 'everyone';
+                
+                if (isQuestion) {
+                    showFeedback('popFeedback', 'error', '❌ This should be a population group, not a question. Examples: "college students", "elderly adults", "pregnant women"');
+                    hasErrors = true;
+                } else if (isUnhelpful) {
+                    let suggestion = "Think about who might be most vulnerable to or affected by this health issue. Examples: ";
+                    
+                    // Provide contextual suggestions based on broad topic
+                    if (broad) {
+                        const broadText = broad.toLowerCase();
+                        if (broadText.includes('mental') || broadText.includes('anxiety') || broadText.includes('depression')) {
+                            suggestion += "college students, adolescents, working adults";
+                        } else if (broadText.includes('obesity') || broadText.includes('diet') || broadText.includes('nutrition')) {
+                            suggestion += "children, low-income families, adults aged 30-60";
+                        } else if (broadText.includes('substance') || broadText.includes('drug') || broadText.includes('alcohol')) {
+                            suggestion += "young adults, people with mental health conditions, rural communities";
+                        } else if (broadText.includes('vaccine') || broadText.includes('immuniz')) {
+                            suggestion += "parents of young children, elderly adults, rural residents";
+                        } else if (broadText.includes('access') || broadText.includes('healthcare')) {
+                            suggestion += "low-income communities, rural residents, uninsured adults";
+                        } else {
+                            suggestion += "elderly adults, children, low-income communities, rural residents";
+                        }
+                    } else {
+                        suggestion += "elderly adults, children, low-income communities, rural residents, college students";
+                    }
+                    
+                    showFeedback('popFeedback', 'warning', `💡 ${suggestion}`);
+                    hasErrors = true;
+                } else if (popText.includes('everyone') || popText.includes('all people') || popText.includes('everybody')) {
+                    showFeedback('popFeedback', 'warning', '⚠️ "Everyone" is too broad for research. Choose a specific demographic group you can actually study, like "adults aged 25-45" or "high school students"');
+                    hasErrors = true;
+                } else if (popText.includes('people who') && popText.includes('?')) {
+                    showFeedback('popFeedback', 'error', '❌ Describe the population directly, not as a question. Try "adolescents" instead of "people who are young"');
+                    hasErrors = true;
+                } else {
+                    showFeedback('popFeedback', 'success', '✅ Good population focus!');
+                }
             }
 
-            // Validate aspect
-            if (aspect && (aspect.includes('?') || aspect.toLowerCase().startsWith('how') || aspect.toLowerCase().startsWith('what'))) {
-                showFeedback('aspectFeedback', 'error', '❌ This should describe what aspect you want to study, not ask a question. Examples: "prevention strategies", "risk factors", "treatment outcomes"');
-                hasErrors = true;
-            } else if (aspect) {
-                showFeedback('aspectFeedback', 'success', '✅ Good research focus!');
+            // Validate aspect (enhanced)
+            if (aspect) {
+                const aspectText = aspect.toLowerCase();
+                
+                const questionPatterns = [/^(why|how|what|when|where)\s/, /(why do|how do|what causes)/];
+                const isQuestion = questionPatterns.some(pattern => pattern.test(aspectText)) || aspect.includes('?');
+                
+                // Check for non-helpful responses
+                const unhelpfulResponses = ['i\'m not sure', 'im not sure', 'not sure', 'i don\'t know', 'idk', 'don\'t know', 'no idea', 'unsure', 'anything', 'everything'];
+                const isUnhelpful = unhelpfulResponses.some(phrase => aspectText.includes(phrase));
+                
+                // Check for vague responses
+                const vagueResponses = ['health', 'problems', 'issues', 'stuff', 'things', 'all of it', 'general', 'overall', 'everything about', 'the whole thing'];
+                const isVague = vagueResponses.some(phrase => aspectText.includes(phrase)) || aspectText.trim().length < 4;
+                
+                // Check for unrelated/random responses
+                const commonUnrelated = ['pizza', 'football', 'music', 'cars', 'movies', 'weather', 'school', 'work', 'family', 'money', 'politics', 'technology'];
+                const isUnrelated = commonUnrelated.some(word => aspectText.includes(word)) && 
+                                  !aspectText.includes('food') && !aspectText.includes('nutrition') && 
+                                  !aspectText.includes('workplace') && !aspectText.includes('policy');
+                
+                // Check for personal responses
+                const personalResponses = ['my', 'i think', 'i want', 'i like', 'i believe', 'personally'];
+                const isPersonal = personalResponses.some(phrase => aspectText.includes(phrase));
+                
+                // Check for solution-focused rather than research-focused
+                const solutionFocused = ['fix', 'solve', 'cure', 'stop', 'eliminate', 'get rid of', 'make better', 'improve'];
+                const isSolution = solutionFocused.some(word => aspectText.includes(word));
+                
+                if (isQuestion) {
+                    let suggestion = "effects";
+                    if (aspectText.includes('prevent') || aspectText.includes('stop')) suggestion = "prevention strategies";
+                    else if (aspectText.includes('cause')) suggestion = "risk factors";
+                    else if (aspectText.includes('treat')) suggestion = "treatment outcomes";
+                    
+                    showFeedback('aspectFeedback', 'error', `❌ This should describe what aspect you want to study, not ask a question. Try "${suggestion}" instead of "${aspect}"`);
+                    hasErrors = true;
+                } else if (isUnrelated) {
+                    showFeedback('aspectFeedback', 'error', '❌ This doesn\'t seem related to public health research. Focus on health-related aspects like "risk factors," "prevention strategies," or "treatment outcomes"');
+                    hasErrors = true;
+                } else if (isPersonal) {
+                    showFeedback('aspectFeedback', 'warning', '💡 Focus on research aspects rather than personal opinions. Try objective research angles like "causes," "effects," or "interventions"');
+                    hasErrors = true;
+                } else if (isSolution && !aspectText.includes('prevention') && !aspectText.includes('treatment')) {
+                    showFeedback('aspectFeedback', 'warning', '💡 Focus on studying the issue rather than solving it. Try "risk factors" instead of "how to fix" or "prevention strategies" instead of "how to stop"');
+                    hasErrors = true;
+                } else if (isVague) {
+                    showFeedback('aspectFeedback', 'warning', '💡 Be more specific about what aspect interests you. Try "risk factors," "prevention strategies," "treatment effectiveness," or "health disparities"');
+                    hasErrors = true;
+                } else if (isUnhelpful) {
+                    let suggestions = "Think about what angle interests you most. Common research aspects include: ";
+                    
+                    // Provide contextual suggestions based on broad topic and population
+                    if (broad) {
+                        const broadText = broad.toLowerCase();
+                        if (broadText.includes('mental') || broadText.includes('anxiety') || broadText.includes('depression')) {
+                            suggestions += "risk factors, treatment effectiveness, prevention programs, social media impacts";
+                        } else if (broadText.includes('obesity') || broadText.includes('diet') || broadText.includes('nutrition')) {
+                            suggestions += "dietary behaviors, environmental factors, intervention effectiveness, cultural influences";
+                        } else if (broadText.includes('substance') || broadText.includes('drug') || broadText.includes('alcohol')) {
+                            suggestions += "prevention strategies, treatment outcomes, risk factors, recovery programs";
+                        } else if (broadText.includes('vaccine') || broadText.includes('immuniz')) {
+                            suggestions += "vaccination rates, hesitancy factors, communication strategies, health beliefs";
+                        } else if (broadText.includes('access') || broadText.includes('healthcare')) {
+                            suggestions += "barriers to care, geographic disparities, insurance impacts, telehealth effectiveness";
+                        } else if (broadText.includes('environment') || broadText.includes('pollution')) {
+                            suggestions += "health effects, exposure patterns, policy interventions, community impacts";
+                        } else {
+                            suggestions += "causes, effects, prevention strategies, treatment outcomes, barriers, disparities";
+                        }
+                    } else {
+                        suggestions += "causes, effects, prevention strategies, treatment outcomes, risk factors, interventions";
+                    }
+                    
+                    showFeedback('aspectFeedback', 'warning', `💡 ${suggestions}`);
+                    hasErrors = true;
+                } else {
+                    showFeedback('aspectFeedback', 'success', '✅ Good research focus!');
+                }
             }
 
-            // Validate setting
-            if (setting && (setting.includes('?') || setting.toLowerCase().includes('everywhere'))) {
-                showFeedback('settingFeedback', 'error', '❌ Choose a specific geographic area or type of setting where you could realistically conduct research.');
-                hasErrors = true;
-            } else if (setting) {
-                showFeedback('settingFeedback', 'success', '✅ Good setting choice!');
+            // Validate setting (enhanced)
+            if (setting) {
+                const settingText = setting.toLowerCase();
+                
+                // Check for overly broad locations
+                const tooBroad = ['united states', 'usa', 'us', 'america', 'the country', 'nationwide', 'everywhere', 'all states', 'the whole country', 'north america', 'the world', 'globally'];
+                const isBroad = tooBroad.some(phrase => settingText.includes(phrase));
+                
+                // Check for unrealistic settings
+                const unrealistic = ['mars', 'space', 'moon', 'antarctica', 'atlantis', 'fictional', 'imaginary', 'made up'];
+                const isUnrealistic = unrealistic.some(word => settingText.includes(word));
+                
+                // Check for non-US locations
+                const nonUS = ['canada', 'mexico', 'europe', 'asia', 'africa', 'australia', 'china', 'japan', 'uk', 'england', 'france', 'germany', 'brazil', 'india'];
+                const isNonUS = nonUS.some(country => settingText.includes(country));
+                
+                // Check for vague responses
+                const vague = ['somewhere', 'places', 'areas', 'locations', 'i don\'t know', 'idk', 'not sure', 'anywhere', 'some place'];
+                const isVague = vague.some(phrase => settingText.includes(phrase));
+                
+                // Check for overly specific but unrealistic
+                const tooSpecific = settingText.includes('my house') || settingText.includes('my school') || settingText.includes('my neighborhood') || 
+                                   settingText.includes('my town') || settingText.includes('where i live');
+                
+                if (setting.includes('?')) {
+                    showFeedback('settingFeedback', 'error', '❌ Choose a specific geographic area or type of setting, not a question. Examples: "rural Texas," "urban California," "college campuses in the Midwest"');
+                    hasErrors = true;
+                } else if (isUnrealistic) {
+                    showFeedback('settingFeedback', 'error', '❌ Choose a realistic location where you could actually conduct public health research. Examples: "rural communities in Montana," "urban areas in Florida," "college campuses in Ohio"');
+                    hasErrors = true;
+                } else if (isNonUS) {
+                    showFeedback('settingFeedback', 'warning', '⚠️ For this assignment, focus on locations within the United States. Try "rural communities," "urban areas," or specific U.S. states or regions.');
+                    hasErrors = true;
+                } else if (isBroad) {
+                    let suggestion = "Try being more specific. Good examples: ";
+                    
+                    // Provide suggestions based on population
+                    if (pop) {
+                        const popText = pop.toLowerCase();
+                        if (popText.includes('college') || popText.includes('student')) {
+                            suggestion += '"college campuses in California," "universities in the Southeast," "community colleges in rural areas"';
+                        } else if (popText.includes('elderly') || popText.includes('senior')) {
+                            suggestion += '"nursing homes in Florida," "senior centers in urban Texas," "retirement communities in Arizona"';
+                        } else if (popText.includes('rural') || popText.includes('farm')) {
+                            suggestion += '"rural communities in Iowa," "agricultural areas in the Midwest," "small towns in Montana"';
+                        } else if (popText.includes('urban') || popText.includes('city')) {
+                            suggestion += '"major cities in California," "urban neighborhoods in New York," "metropolitan areas in the South"';
+                        } else {
+                            suggestion += '"rural Texas," "urban California," "suburban communities in Ohio," "small towns in the Midwest"';
+                        }
+                    } else {
+                        suggestion += '"rural Texas," "urban California," "suburban communities in Ohio," "the Pacific Northwest"';
+                    }
+                    
+                    showFeedback('settingFeedback', 'warning', `⚠️ "${setting}" is too broad for research studies. ${suggestion}`);
+                    hasErrors = true;
+                } else if (tooSpecific) {
+                    showFeedback('settingFeedback', 'warning', '⚠️ This is too specific and personal for research. Think about types of communities or regions, like "suburban communities," "rural areas," or "urban centers in [state]"');
+                    hasErrors = true;
+                } else if (isVague) {
+                    let suggestions = "Be specific about where you could realistically study this issue. Examples: ";
+                    
+                    if (broad) {
+                        const broadText = broad.toLowerCase();
+                        if (broadText.includes('rural') || broadText.includes('farm') || broadText.includes('agriculture')) {
+                            suggestions += '"rural communities in Iowa," "agricultural regions in California," "small farming towns in the Midwest"';
+                        } else if (broadText.includes('urban') || broadText.includes('city')) {
+                            suggestions += '"major cities in Texas," "urban areas in the Northeast," "metropolitan regions in Florida"';
+                        } else if (broadText.includes('college') || broadText.includes('student')) {
+                            suggestions += '"college campuses in California," "universities in the Southeast," "community colleges in rural areas"';
+                        } else if (broadText.includes('workplace') || broadText.includes('work')) {
+                            suggestions += '"corporate offices in major cities," "manufacturing facilities in the Midwest," "healthcare facilities in urban areas"';
+                        } else {
+                            suggestions += '"rural communities in Montana," "urban areas in California," "suburban neighborhoods in Ohio," "the Pacific Northwest"';
+                        }
+                    } else {
+                        suggestions += '"rural Texas," "urban California," "college campuses in Ohio," "healthcare facilities in Florida"';
+                    }
+                    
+                    showFeedback('settingFeedback', 'warning', `💡 ${suggestions}`);
+                    hasErrors = true;
+                } else {
+                    showFeedback('settingFeedback', 'success', '✅ Good setting choice!');
+                }
             }
 
             // Check if all fields are filled
@@ -874,7 +1296,7 @@
                 `<div class="result-box">
                     <h4>🎯 Your Research Topic:</h4>
                     <p><strong>"${topic}"</strong></p>
-                    <p style="margin-top:10px; font-style:italic;">This topic is now focused enough for research! Notice how this is a <strong>statement</strong>, not a question.</p>
+                    <p style="margin-top:10px; font-style:italic;">Perfect! This is now a focused research <strong>topic statement</strong>, not a question. You're ready for the next step!</p>
                 </div>`;
         }
 
@@ -885,11 +1307,75 @@
             });
         }
 
-        function showFeedback(elementId, type, message) {
-            const element = document.getElementById(elementId);
-            element.textContent = message;
-            element.className = `feedback-text ${type}`;
-            element.style.display = 'block';
+        function validateReflection() {
+            const reflection = document.getElementById('reflectionText').value.trim();
+            const feedbackElement = document.getElementById('reflectionFeedback');
+            
+            if (!reflection) {
+                feedbackElement.style.display = 'none';
+                return;
+            }
+
+            const text = reflection.toLowerCase();
+            
+            // More comprehensive question detection
+            const questionPatterns = [
+                // Direct question words at start
+                /^(why|how|what|when|where|who|which|can|could|should|would|will|do|does|did|is|are|was|were)\s/,
+                // Question phrases anywhere in text
+                /(why do|why don't|why are|why is|how can|how do|how does|what causes|what makes|what are|what is)/,
+                // Question structures
+                /(should we|can we|could we|would it|will it|is it|are there|is there)/,
+                // Specific problematic patterns
+                /(why.*people|how.*stop|what.*problem|how.*prevent|why.*happen|what.*cause)/
+            ];
+
+            const hasQuestionMark = reflection.includes('?');
+            const isQuestion = questionPatterns.some(pattern => pattern.test(text)) || hasQuestionMark;
+
+            // Check for other problematic patterns
+            const tooPersonal = /(my family|my friend|my|i have|i know|i think|in my opinion)/i.test(reflection);
+            const tooVague = /^(health|disease|illness|problems?)$/i.test(reflection.trim());
+            const solutions = /(we should|we need to|government should|people should|solution|fix|solve)/i.test(reflection);
+
+            if (isQuestion) {
+                let example = "obesity and dietary behaviors";
+                
+                // Provide more specific examples based on their input
+                if (text.includes('eat') || text.includes('food') || text.includes('diet')) {
+                    example = "nutrition and eating behaviors in different populations";
+                } else if (text.includes('drug') || text.includes('addiction') || text.includes('substance')) {
+                    example = "substance use disorders and prevention strategies";
+                } else if (text.includes('mental') || text.includes('depression') || text.includes('anxiety')) {
+                    example = "mental health access and treatment outcomes";
+                } else if (text.includes('vaccine') || text.includes('immuniz')) {
+                    example = "vaccination rates and health communication strategies";
+                } else if (text.includes('exercise') || text.includes('physical')) {
+                    example = "physical activity patterns and community health";
+                }
+                
+                feedbackElement.textContent = `💡 Try describing health issues as topics rather than questions. For example, instead of your question, try something like "${example}"`;
+                feedbackElement.className = 'feedback-text warning';
+                feedbackElement.style.display = 'block';
+            } else if (tooPersonal) {
+                feedbackElement.textContent = '💡 Focus on general public health issues rather than personal experiences. Think about community-wide or population-level health challenges.';
+                feedbackElement.className = 'feedback-text warning';
+                feedbackElement.style.display = 'block';
+            } else if (tooVague) {
+                feedbackElement.textContent = '💡 Try to be more specific. Instead of just "health," think about specific health issues like "diabetes management," "mental health access," or "environmental health risks."';
+                feedbackElement.className = 'feedback-text warning';
+                feedbackElement.style.display = 'block';
+            } else if (solutions) {
+                feedbackElement.textContent = '💡 Focus on describing the health issue itself rather than proposing solutions. For example, instead of "we should improve nutrition," try "nutrition behaviors and food access."';
+                feedbackElement.className = 'feedback-text warning';
+                feedbackElement.style.display = 'block';
+            } else if (reflection.length > 20) {
+                feedbackElement.textContent = '✅ Great! You\'re thinking about public health issues as research topics.';
+                feedbackElement.className = 'feedback-text success';
+                feedbackElement.style.display = 'block';
+            } else {
+                feedbackElement.style.display = 'none';
+            }
         }
 
         function generateQuestion() {
@@ -900,7 +1386,7 @@
             // Clear previous feedback
             document.getElementById('questionResult').innerHTML = '';
 
-            // Validate inputs
+            // Validate inputs comprehensively
             let hasErrors = false;
             let errorMessages = [];
 
@@ -911,35 +1397,113 @@
                 return;
             }
 
-            // Check for missing fields
-            if (!pop) errorMessages.push("Population and Setting is required");
-            if (!exp) errorMessages.push("Exposure/Factor is required");
-            if (!out) errorMessages.push("Outcome is required");
-
             // Check if no question type selected
             if (!questionType) {
                 errorMessages.push("Please select a question type above (Descriptive, Analytical, or Evaluative)");
                 hasErrors = true;
             }
 
-            // Check if they put questions instead of components
-            if (pop && pop.includes('?')) {
-                errorMessages.push("Population should be a group description, not a question");
-                hasErrors = true;
+            // Validate Population field
+            if (pop) {
+                const popText = pop.toLowerCase();
+                
+                // Check for questions
+                if (popText.includes('?') || /^(why|how|what|when|where|who|which)\s/.test(popText)) {
+                    errorMessages.push("Population should be a group description, not a question");
+                    hasErrors = true;
+                }
+                // Check for vague responses
+                else if (['people', 'everyone', 'anybody', 'humans', 'individuals', 'persons'].some(word => popText.trim() === word)) {
+                    errorMessages.push("Population is too vague - be specific like 'adults aged 25-45' or 'college students'");
+                    hasErrors = true;
+                }
+                // Check for unhelpful responses
+                else if (['i don\'t know', 'idk', 'not sure', 'unsure'].some(phrase => popText.includes(phrase))) {
+                    errorMessages.push("Please specify a population group - who would you study?");
+                    hasErrors = true;
+                }
+                // Check for unrelated responses
+                else if (['pizza', 'cars', 'music', 'movies'].some(word => popText.includes(word))) {
+                    errorMessages.push("Population should be a group of people, not objects or activities");
+                    hasErrors = true;
+                }
+            } else {
+                errorMessages.push("Population and Setting is required");
             }
-            if (exp && exp.includes('?')) {
-                errorMessages.push("Exposure/Factor should be a variable or intervention, not a question");
-                hasErrors = true;
+
+            // Validate Exposure/Factor field
+            if (exp) {
+                const expText = exp.toLowerCase();
+                
+                // Check for questions
+                if (expText.includes('?') || /^(why|how|what|when|where)\s/.test(expText)) {
+                    errorMessages.push("Exposure/Factor should be a variable or intervention, not a question");
+                    hasErrors = true;
+                }
+                // Check for vague responses
+                else if (['stuff', 'things', 'factors', 'variables', 'issues'].some(word => expText.trim() === word)) {
+                    errorMessages.push("Be specific about the exposure/factor - what exactly are you studying?");
+                    hasErrors = true;
+                }
+                // Check for unhelpful responses
+                else if (['i don\'t know', 'idk', 'not sure', 'unsure', 'anything'].some(phrase => expText.includes(phrase))) {
+                    errorMessages.push("Please specify what exposure or factor you want to study");
+                    hasErrors = true;
+                }
+                // Check for outcome-like responses in exposure field
+                else if (['death', 'mortality', 'disease', 'illness', 'sickness'].some(word => expText.includes(word)) && 
+                         !['risk of', 'exposure to', 'history of'].some(phrase => expText.includes(phrase))) {
+                    errorMessages.push("This sounds like an outcome - put health outcomes in the 'Outcome' field below");
+                    hasErrors = true;
+                }
+            } else {
+                errorMessages.push("Exposure/Factor is required");
             }
-            if (out && out.includes('?')) {
-                errorMessages.push("Outcome should be a measurable result, not a question");
-                hasErrors = true;
+
+            // Validate Outcome field
+            if (out) {
+                const outText = out.toLowerCase();
+                
+                // Check for questions
+                if (outText.includes('?') || /^(why|how|what|when|where)\s/.test(outText)) {
+                    errorMessages.push("Outcome should be a measurable result, not a question");
+                    hasErrors = true;
+                }
+                // Check for vague responses
+                else if (['health', 'outcomes', 'results', 'effects', 'impacts'].some(word => outText.trim() === word)) {
+                    errorMessages.push("Be specific about the outcome - what health measure are you studying?");
+                    hasErrors = true;
+                }
+                // Check for unhelpful responses
+                else if (['i don\'t know', 'idk', 'not sure', 'unsure', 'anything'].some(phrase => outText.includes(phrase))) {
+                    errorMessages.push("Please specify what health outcome you want to measure");
+                    hasErrors = true;
+                }
+                // Check for exposure-like responses in outcome field
+                else if (['social media use', 'exercise', 'smoking', 'diet'].some(behavior => outText.includes(behavior)) && 
+                         !outText.includes('rate') && !outText.includes('level') && !outText.includes('score')) {
+                    errorMessages.push("This sounds like an exposure - put behaviors/factors in the 'Exposure/Factor' field above");
+                    hasErrors = true;
+                }
+                // Check for non-measurable outcomes
+                else if (['happiness', 'wellness', 'feeling good', 'being healthy'].some(phrase => outText.includes(phrase))) {
+                    errorMessages.push("Choose a measurable outcome like 'depression scores,' 'quality of life ratings,' or 'blood pressure levels'");
+                    hasErrors = true;
+                }
+            } else {
+                errorMessages.push("Outcome is required");
             }
 
             // Check if they wrote a full question in one field
-            const fullText = `${pop} ${exp} ${out}`.toLowerCase();
-            if (fullText.includes('what is the relationship') || fullText.includes('how effective') || fullText.includes('what is the prevalence')) {
-                errorMessages.push("It looks like you wrote a full question. Please break it into the three components above.");
+            const allText = `${pop} ${exp} ${out}`.toLowerCase();
+            if (allText.includes('what is the relationship') || allText.includes('how effective') || allText.includes('what is the prevalence')) {
+                errorMessages.push("It looks like you wrote a full question in one field. Please break it into the three components above.");
+                hasErrors = true;
+            }
+
+            // Check for mismatched question type and content
+            if (questionType === 'descriptive' && exp && !exp.toLowerCase().includes('prevalence') && !out.toLowerCase().includes('rate') && !out.toLowerCase().includes('prevalence')) {
+                errorMessages.push("For descriptive questions, focus on prevalence, rates, or frequencies in your outcome");
                 hasErrors = true;
             }
 
@@ -972,7 +1536,7 @@
                 `<div class="result-box">
                     <h4>🎯 Your Research Question:</h4>
                     <p><strong>"${question}"</strong></p>
-                    <p style="margin-top:10px; font-style:italic;">Notice how this is now an <strong>interrogative sentence</strong> that asks what you want to find out!</p>
+                    <p style="margin-top:10px; font-style:italic;">Excellent! This is now a well-formed <strong>research question</strong> that can guide your literature search!</p>
                 </div>`;
         }
 
@@ -981,32 +1545,213 @@
             
             if (!question) {
                 document.getElementById('evaluation').innerHTML = 
-                    '<div class="alert alert-warning">Please enter a research question.</div>';
+                    '<div class="alert alert-warning">Please enter a research question to evaluate.</div>';
                 return;
             }
 
             finalQuestion = question;
             document.getElementById('savedQuestion').textContent = question;
 
-            let score = 0;
-            if (question.length > 20) score++;
-            if (question.includes('?')) score++;
-            if (question.toLowerCase().includes('among') || question.toLowerCase().includes('in')) score++;
-            if (question.toLowerCase().includes('relationship') || question.toLowerCase().includes('effect') || question.toLowerCase().includes('prevalence')) score++;
-
-            if (score >= 3) {
-                document.getElementById('evaluation').innerHTML = 
-                    `<div class="alert alert-success">
-                        <h4>✅ Strong Research Question!</h4>
-                        <p>Your question meets key criteria for good research. You're ready to find literature!</p>
+            // Comprehensive question analysis
+            const analysis = analyzeResearchQuestion(question);
+            
+            // Generate detailed feedback
+            let feedbackHTML = '';
+            let overallScore = analysis.score;
+            
+            if (overallScore >= 7) {
+                feedbackHTML = `
+                    <div class="alert alert-success">
+                        <h4>✅ Excellent Research Question!</h4>
+                        <p><strong>Overall Assessment:</strong> Your question meets the criteria for strong public health research and is well-suited for your PH 425 assignment.</p>
+                        
+                        <div style="background: rgba(255,255,255,0.3); padding: 15px; border-radius: 6px; margin: 15px 0;">
+                            <h5>Why this question works well:</h5>
+                            <ul style="margin-left: 20px;">
+                                ${analysis.strengths.map(strength => `<li>${strength}</li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div style="background: rgba(255,255,255,0.3); padding: 15px; border-radius: 6px; margin: 15px 0;">
+                            <h5>Assignment Suitability:</h5>
+                            <p>✅ This question is perfect for your assignment because you should be able to find multiple peer-reviewed articles on this topic for your literature review and methods analysis.</p>
+                        </div>
+                        
+                        <p><strong>Next Steps:</strong> You're ready to search for your 3 peer-reviewed articles using databases like PubMed or Google Scholar!</p>
+                    </div>`;
+            } else if (overallScore >= 5) {
+                feedbackHTML = `
+                    <div class="alert alert-warning">
+                        <h4>⚠️ Good Question with Room for Improvement</h4>
+                        <p><strong>Overall Assessment:</strong> Your question has good elements but could be strengthened before starting your literature search.</p>
+                        
+                        <div style="background: rgba(255,255,255,0.3); padding: 15px; border-radius: 6px; margin: 15px 0;">
+                            <h5>Strengths of your question:</h5>
+                            <ul style="margin-left: 20px;">
+                                ${analysis.strengths.map(strength => `<li>${strength}</li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div style="background: rgba(255,255,255,0.3); padding: 15px; border-radius: 6px; margin: 15px 0;">
+                            <h5>Areas for improvement:</h5>
+                            <ul style="margin-left: 20px;">
+                                ${analysis.improvements.map(improvement => `<li>${improvement}</li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div style="background: rgba(255,255,255,0.3); padding: 15px; border-radius: 6px; margin: 15px 0;">
+                            <h5>Assignment Suitability:</h5>
+                            <p>${analysis.assignmentSuitability}</p>
+                        </div>
+                        
+                        <p><strong>Recommendation:</strong> Consider revising your question based on the feedback above, then proceed with your literature search.</p>
                     </div>`;
             } else {
-                document.getElementById('evaluation').innerHTML = 
-                    `<div class="alert alert-warning">
-                        <h4>🔧 Needs Improvement</h4>
-                        <p>Consider making your question more specific, adding a clear population, or clarifying the research focus.</p>
+                feedbackHTML = `
+                    <div class="alert alert-warning">
+                        <h4>🔧 Question Needs Significant Revision</h4>
+                        <p><strong>Overall Assessment:</strong> Your question needs substantial improvements before it will work well for your assignment.</p>
+                        
+                        ${analysis.strengths.length > 0 ? `
+                        <div style="background: rgba(255,255,255,0.3); padding: 15px; border-radius: 6px; margin: 15px 0;">
+                            <h5>Current strengths:</h5>
+                            <ul style="margin-left: 20px;">
+                                ${analysis.strengths.map(strength => `<li>${strength}</li>`).join('')}
+                            </ul>
+                        </div>` : ''}
+                        
+                        <div style="background: rgba(255,255,255,0.3); padding: 15px; border-radius: 6px; margin: 15px 0;">
+                            <h5>Issues to address:</h5>
+                            <ul style="margin-left: 20px;">
+                                ${analysis.improvements.map(improvement => `<li>${improvement}</li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div style="background: rgba(255,255,255,0.3); padding: 15px; border-radius: 6px; margin: 15px 0;">
+                            <h5>Assignment Suitability:</h5>
+                            <p>${analysis.assignmentSuitability}</p>
+                        </div>
+                        
+                        <div style="background: rgba(255,255,255,0.3); padding: 15px; border-radius: 6px; margin: 15px 0;">
+                            <h5>💡 Suggested Revision Approach:</h5>
+                            <p>${analysis.revisionSuggestion}</p>
+                        </div>
+                        
+                        <p><strong>Recommendation:</strong> Revise your question using the feedback above, then re-evaluate before proceeding with your assignment.</p>
                     </div>`;
             }
+            
+            document.getElementById('evaluation').innerHTML = feedbackHTML;
+        }
+
+        function analyzeResearchQuestion(question) {
+            const text = question.toLowerCase();
+            let score = 0;
+            let strengths = [];
+            let improvements = [];
+            let assignmentSuitability = '';
+            let revisionSuggestion = '';
+
+            // Check if it's actually a question
+            if (question.includes('?')) {
+                score += 1;
+                strengths.push("Written as a proper question with a question mark");
+            } else {
+                improvements.push("Add a question mark - research questions should be interrogative sentences");
+            }
+
+            // Check for appropriate question starters
+            const goodStarters = ['what is the relationship', 'what is the prevalence', 'how effective', 'is there an association', 'what factors are associated'];
+            if (goodStarters.some(starter => text.includes(starter))) {
+                score += 1;
+                strengths.push("Uses appropriate research question format");
+            } else if (text.startsWith('why') || text.startsWith('how can') || text.startsWith('what should')) {
+                improvements.push("Avoid 'why,' 'how can,' or 'what should' questions - focus on relationships, prevalence, or effectiveness");
+            }
+
+            // Check for specific population
+            const populations = ['adults', 'children', 'adolescents', 'elderly', 'students', 'women', 'men', 'patients', 'residents'];
+            if (populations.some(pop => text.includes(pop)) || text.includes('aged') || text.includes('years old')) {
+                score += 1;
+                strengths.push("Specifies a clear target population");
+            } else {
+                improvements.push("Specify your target population (e.g., 'among adults aged 25-45' or 'among college students')");
+            }
+
+            // Check for measurable variables
+            const measurableTerms = ['rate', 'level', 'score', 'frequency', 'prevalence', 'risk', 'outcome', 'effectiveness', 'association'];
+            if (measurableTerms.some(term => text.includes(term))) {
+                score += 1;
+                strengths.push("Includes measurable variables suitable for quantitative analysis");
+            } else {
+                improvements.push("Include measurable outcomes (e.g., 'rates,' 'levels,' 'scores,' or 'prevalence')");
+            }
+
+            // Check for geographic/setting specificity
+            const settings = ['rural', 'urban', 'community', 'school', 'workplace', 'hospital', 'clinic', 'state', 'county', 'city'];
+            if (settings.some(setting => text.includes(setting)) || /\b[A-Z][a-z]+\b/.test(question)) {
+                score += 1;
+                strengths.push("Includes geographic or setting context");
+            } else {
+                improvements.push("Specify the setting or geographic context (e.g., 'in rural communities' or 'in California')");
+            }
+
+            // Check length and complexity
+            if (question.length > 50 && question.length < 200) {
+                score += 1;
+                strengths.push("Appropriate length - detailed but not overly complex");
+            } else if (question.length < 50) {
+                improvements.push("Question may be too brief - add more specific details about population, setting, or variables");
+            } else {
+                improvements.push("Question may be too long - focus on the core research question");
+            }
+
+            // Check for common problematic patterns
+            if (text.includes('should') || text.includes('ought') || text.includes('must')) {
+                improvements.push("Avoid prescriptive language ('should,' 'ought,' 'must') - focus on describing relationships");
+            }
+
+            if (text.includes('everyone') || text.includes('all people') || text.includes('society')) {
+                improvements.push("Population is too broad - specify a particular demographic group");
+            }
+
+            // Check for research vs. opinion
+            if (text.includes('feel') || text.includes('believe') || text.includes('think') || text.includes('opinion')) {
+                improvements.push("Focus on measurable behaviors or outcomes rather than feelings or opinions");
+            }
+
+            // Assignment suitability assessment
+            const researchableTopics = ['vaccine', 'obesity', 'mental health', 'diabetes', 'smoking', 'exercise', 'nutrition', 'substance', 'depression', 'anxiety', 'healthcare', 'prevention'];
+            const hasResearchableTopic = researchableTopics.some(topic => text.includes(topic));
+
+            if (score >= 6 && hasResearchableTopic) {
+                assignmentSuitability = "✅ Excellent fit for your assignment. This topic has substantial research literature, and you should easily find 3+ peer-reviewed articles for your literature review.";
+            } else if (score >= 4 && hasResearchableTopic) {
+                assignmentSuitability = "⚠️ Good potential for your assignment, but may need refinement. You should be able to find peer-reviewed articles, but a more focused question will make your literature search easier.";
+            } else if (hasResearchableTopic) {
+                assignmentSuitability = "⚠️ The topic area is researchable, but the question needs improvement to work well for your assignment. Focus on making it more specific and measurable.";
+            } else {
+                assignmentSuitability = "❌ May be difficult to find sufficient peer-reviewed literature for this topic. Consider focusing on more established public health research areas like vaccination, obesity, mental health, or substance use.";
+            }
+
+            // Revision suggestions for poor questions
+            if (score < 5) {
+                if (text.includes('why')) {
+                    revisionSuggestion = "Try reframing your 'why' question as 'What is the relationship between...' or 'What factors are associated with...'";
+                } else if (!question.includes('?')) {
+                    revisionSuggestion = "Start with a clear question format like 'What is the prevalence of [health condition] among [population]?' or 'Is there an association between [factor] and [outcome] among [population]?'";
+                } else {
+                    revisionSuggestion = "Use the question builder in Step 5 to create a more structured research question with clear population, exposure/factor, and outcome components.";
+                }
+            }
+
+            return {
+                score,
+                strengths,
+                improvements,
+                assignmentSuitability,
+                revisionSuggestion
+            };
         }
 
         function restart() {

@@ -67,24 +67,38 @@
             color: #000;
         }
         p { margin-bottom: 20px; color: #666; }
-        /* CARD COLORS ONLY: gold, blue, teal; NO borders, NO red */
+        
+        /* CARDS: White background with hover colors */
         .card {
-            border: none;
+            border: 1px solid #eee;
             padding: 24px;
             margin-bottom: 12px;
             cursor: pointer;
-            transition: transform 0.2s, filter 0.2s;
-            background: #ffd700;
-            color: #222;
+            transition: all 0.2s;
+            background: white;
+            color: #000;
         }
-        .section .card:nth-of-type(2) { background: #2acaea; color: #fff; }
-        .section .card:nth-of-type(3) { background: #afeeee; color: #222; }
-        .section .card:nth-of-type(4) { background: #ffd700; color: #222; }
-        .card:hover {
-            filter: brightness(1.07);
-            box-shadow: 0 0 0 2px #8883 inset;
+        .card h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #000;
         }
-        .card h4, .card p { color: inherit !important; }
+        .card p {
+            font-size: 14px;
+            color: #666;
+            margin: 0;
+        }
+        /* Hover colors by position */
+        .section .card:nth-of-type(1):hover { background: #ffd700 !important; border-color: #eee !important; }
+        .section .card:nth-of-type(2):hover { background: #2acaea !important; border-color: #eee !important; }
+        .section .card:nth-of-type(3):hover { background: #afeeee !important; border-color: #eee !important; }
+        .section .card:nth-of-type(4):hover { background: #ffd700 !important; border-color: #eee !important; }
+        /* Keep text readable on hover */
+        .card:hover h4, .card:hover p {
+            color: #000 !important;
+        }
+        
         .form-group { margin-bottom: 40px; }
         label {
             display: block;
@@ -124,9 +138,10 @@
         }
         .example h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #000; }
         .btn-group { text-align: center; margin-top: 60px; }
+        
         /* BUTTONS */
         .btn, .btn-primary {
-            background: #000;
+            background: #cc0002;
             color: white;
             border: none;
             display: inline-block;
@@ -141,11 +156,11 @@
         }
         .btn:hover, .btn-primary:hover {
             background: #dd6263;
-            color: #fff;
+            color: white;
             transform: translateY(-1px);
             box-shadow: 0 4px 8px rgba(0,0,0,0.15);
         }
-        /* Back button */
+        /* Previous button (blue) */
         .btn-previous {
             background: #2acaea !important;
             color: #fff !important;
@@ -154,6 +169,16 @@
             background: #7be9f4 !important;
             color: #fff !important;
         }
+        /* Special action buttons (black with green hover) */
+        .btn-action {
+            background: #000 !important;
+            color: white !important;
+        }
+        .btn-action:hover {
+            background: #4fc14f !important;
+            color: white !important;
+        }
+        
         .result {
             margin-top: 32px;
             padding: 20px;
@@ -314,7 +339,7 @@
                         <div class="hint">Choose a setting you could realistically study</div>
                         <div class="feedback" id="settingFeedback"></div>
                     </div>
-                    <button class="btn" onclick="generateTopic()">Generate Your Research Topic</button>
+                    <button class="btn btn-action" onclick="generateTopic()">Generate Your Research Topic</button>
                     <div id="topicResult"></div>
                 </div>
                 <div class="btn-group">
@@ -354,7 +379,7 @@
                         <label>Outcome</label>
                         <input type="text" id="outcome" placeholder="e.g., frequency of preventive care visits">
                     </div>
-                    <button class="btn" onclick="generateQuestion()">Generate Research Question</button>
+                    <button class="btn btn-action" onclick="generateQuestion()">Generate Research Question</button>
                     <div id="questionResult"></div>
                 </div>
                 <div class="btn-group">
@@ -403,7 +428,7 @@
                         <label>Enter your final research question</label>
                         <textarea id="finalQuestion" rows="3" placeholder="Enter your refined research question here..."></textarea>
                     </div>
-                    <button class="btn" onclick="evaluateQuestion()">Evaluate Question</button>
+                    <button class="btn btn-action" onclick="evaluateQuestion()">Evaluate Question</button>
                     <div id="evaluation"></div>
                 </div>
                 <div class="btn-group">

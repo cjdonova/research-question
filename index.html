@@ -566,41 +566,34 @@
             }
         }
 
-        // Handle research area card selection (max 3)
         function selectResearchArea(card) {
             const selectedCards = document.querySelectorAll('.research-card.selected');
             const feedback = document.getElementById('selection-feedback');
             
             if (card.classList.contains('selected')) {
-                // Deselect the card
                 card.classList.remove('selected');
             } else {
-                // Check if we can select more
                 if (selectedCards.length >= 3) {
                     feedback.innerHTML = '<span style="color: #cc0002;">Maximum 3 areas allowed. Deselect one to choose another.</span>';
                     return;
                 }
-                // Select the card
                 card.classList.add('selected');
             }
             
-            // Update feedback
             const newSelectedCards = document.querySelectorAll('.research-card.selected');
             if (newSelectedCards.length === 0) {
                 feedback.innerHTML = 'Select up to 3 research areas';
             } else if (newSelectedCards.length === 1) {
-                feedback.innerHTML = `<span style="color: #2acaea;">1 area selected. You can select ${3 - newSelectedCards.length} more.</span>`;
+                feedback.innerHTML = '<span style="color: #2acaea;">1 area selected. You can select 2 more.</span>';
             } else if (newSelectedCards.length < 3) {
-                feedback.innerHTML = `<span style="color: #2acaea;">${newSelectedCards.length} areas selected. You can select ${3 - newSelectedCards.length} more.</span>`;
+                feedback.innerHTML = '<span style="color: #2acaea;">' + newSelectedCards.length + ' areas selected. You can select ' + (3 - newSelectedCards.length) + ' more.</span>';
             } else {
                 feedback.innerHTML = '<span style="color: #4fc14f;">3 areas selected (maximum reached)</span>';
             }
             
-            // Store selected areas
             selectedAreas = Array.from(newSelectedCards).map(card => card.dataset.area);
         }
 
-        // Card selection for question type (Step 5) only
         function selectQuestionType(card, type) {
             document.querySelectorAll('#step5 .card').forEach(c => c.classList.remove('selected'));
             card.classList.add('selected');
@@ -635,21 +628,20 @@
                 if (!setting) missing.push("location or setting");
                 
                 document.getElementById('topicResult').innerHTML = 
-                    `<div class="result" style="border-left-color: #cc0002; background: #fff5f5;">
-                        <strong>Please complete the following:</strong><br>
-                        • ${missing.join('<br>• ')}
-                    </div>`;
+                    '<div class="result" style="border-left-color: #cc0002; background: #fff5f5;">' +
+                    '<strong>Please complete the following:</strong><br>' +
+                    '• ' + missing.join('<br>• ') +
+                    '</div>';
                 return;
             }
             
-            // Create a cleaner topic structure
-            const topic = `${aspect.charAt(0).toUpperCase() + aspect.slice(1)} of ${broad} among ${pop} in ${setting}`;
+            const topic = aspect.charAt(0).toUpperCase() + aspect.slice(1) + ' of ' + broad + ' among ' + pop + ' in ' + setting;
             
             document.getElementById('topicResult').innerHTML = 
-                `<div class="result">
-                    <strong>Your Research Topic:</strong><br>
-                    "${topic}"
-                </div>`;
+                '<div class="result">' +
+                '<strong>Your Research Topic:</strong><br>' +
+                '"' + topic + '"' +
+                '</div>';
         }
 
         function generateQuestion() {
@@ -657,7 +649,6 @@
             const exp = document.getElementById('exposure').value.trim();
             const out = document.getElementById('outcome').value.trim();
             
-            // Check if all fields are filled and question type is selected
             if (!pop || !exp || !out || !questionType) {
                 let missing = [];
                 if (!questionType) missing.push("question type (click one of the cards above)");
@@ -666,10 +657,10 @@
                 if (!out) missing.push("outcome");
                 
                 document.getElementById('questionResult').innerHTML = 
-                    `<div class="result" style="border-left-color: #cc0002; background: #fff5f5;">
-                        <strong>Please complete the following:</strong><br>
-                        • ${missing.join('<br>• ')}
-                    </div>`;
+                    '<div class="result" style="border-left-color: #cc0002; background: #fff5f5;">' +
+                    '<strong>Please complete the following:</strong><br>' +
+                    '• ' + missing.join('<br>• ') +
+                    '</div>';
                 return;
             }
             
@@ -681,16 +672,16 @@
             }
             
             const question = questionType === 'descriptive' 
-                ? `${questionStart} ${out} among ${pop}?`
-                : `${questionStart} ${exp} and ${out} among ${pop}?`;
+                ? questionStart + ' ' + out + ' among ' + pop + '?'
+                : questionStart + ' ' + exp + ' and ' + out + ' among ' + pop + '?';
             
             finalQuestion = question;
             document.getElementById('savedQuestion').textContent = question;
             document.getElementById('questionResult').innerHTML = 
-                `<div class="result">
-                    <strong>Your Research Question:</strong><br>
-                    "${question}"
-                </div>`;
+                '<div class="result">' +
+                '<strong>Your Research Question:</strong><br>' +
+                '"' + question + '"' +
+                '</div>';
         }
 
         function evaluateQuestion() {
@@ -701,17 +692,23 @@
             finalQuestion = question;
             document.getElementById('savedQuestion').textContent = question;
             document.getElementById('evaluation').innerHTML = 
-                `<div class="result">
-                    Your question has been evaluated. You're ready to find literature!
-                </div>`;
+                '<div class="result">' +
+                'Your question has been evaluated. You are ready to find literature!' +
+                '</div>';
         }
 
         function restart() {
             currentStep = 1;
             showStep(1);
-            document.querySelectorAll('input, textarea').forEach(input => input.value = '');
-            document.querySelectorAll('.research-card').forEach(card => card.classList.remove('selected'));
-            document.querySelectorAll('.card').forEach(card => card.classList.remove('selected'));
+            document.querySelectorAll('input, textarea').forEach(function(input) {
+                input.value = '';
+            });
+            document.querySelectorAll('.research-card').forEach(function(card) {
+                card.classList.remove('selected');
+            });
+            document.querySelectorAll('.card').forEach(function(card) {
+                card.classList.remove('selected');
+            });
             document.getElementById('savedQuestion').textContent = 'Your question will appear here...';
             document.getElementById('selection-feedback').innerHTML = 'Select up to 3 research areas';
             questionType = '';
@@ -719,7 +716,6 @@
             selectedAreas = [];
         }
 
-        // Initialize
         updateProgress();
     </script>
 </body>

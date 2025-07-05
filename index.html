@@ -1,191 +1,726 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Research Tutorial</title>
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #fafafa;
+            color: #333;
+            line-height: 1.7;
+            font-size: 18px;
+            font-weight: 300;
         }
-        
-        h1 {
-            text-align: center;
+        .container {
+            max-width: 560px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        .header { padding: 80px 0; text-align: center; }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 600;
             color: #000;
+            margin-bottom: 16px;
         }
-        
-        .step {
-            display: none;
-            padding: 20px;
+        .header p {
+            font-size: 18px;
+            color: #666;
+            font-weight: 600;
         }
-        
-        .step.active {
-            display: block;
-        }
-        
-        .card {
-            border: 1px solid #ddd;
-            padding: 15px;
-            margin: 10px 0;
-            background: white;
-            cursor: pointer;
-        }
-        
-        .card:hover {
-            background: #ffd700;
-        }
-        
-        .btn {
-            background: #cc0002;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            margin: 5px;
-            cursor: pointer;
-        }
-        
-        .btn:hover {
-            background: #dd6263;
-        }
-        
-        .btn-previous {
-            background: #2acaea;
-        }
-        
-        .btn-previous:hover {
-            background: #7be9f4;
-        }
-        
         .progress {
-            width: 100%;
-            height: 20px;
-            background: #eee;
-            margin: 20px 0;
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 1px solid #eee;
         }
-        
+        .progress-line {
+            width: 80px;
+            height: 2px;
+            background: #f0f0f0;
+            margin: 0 auto 16px;
+        }
         .progress-fill {
             height: 100%;
             background: #2acaea;
-            width: 14%;
-            transition: width 0.3s;
+            width: 14.3%;
+            transition: width 0.3s ease;
+        }
+        .step-num { font-size: 14px; color: #999; }
+        .content { padding: 60px 0 100px; }
+        .step { display: none; }
+        .step.active { display: block; }
+        .step-title {
+            font-size: 32px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 60px;
+            color: #000;
+        }
+        .section { margin: 60px 0; }
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: #000;
+        }
+        p { margin-bottom: 20px; color: #666; }
+        
+        /* CARDS: White background with hover colors */
+        .card {
+            border: 1px solid #eee;
+            padding: 24px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: white;
+            color: #000;
+        }
+        .card h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #000;
+        }
+        .card p {
+            font-size: 14px;
+            color: #666;
+            margin: 0;
+        }
+        /* Hover colors by position */
+        .section .card:nth-of-type(1):hover { background: #ffd700 !important; border-color: #eee !important; }
+        .section .card:nth-of-type(2):hover { background: #2acaea !important; border-color: #eee !important; }
+        .section .card:nth-of-type(3):hover { background: #afeeee !important; border-color: #eee !important; }
+        .section .card:nth-of-type(4):hover { background: #ffd700 !important; border-color: #eee !important; }
+        .section .card:nth-of-type(5):hover { background: #2acaea !important; border-color: #eee !important; }
+        /* Keep text readable on hover */
+        .card:hover h4, .card:hover p {
+            color: #000 !important;
+        }
+        
+        /* Selected card styling for question types */
+        .card.selected {
+            border-color: #4fc14f;
+            background: #f0fff0;
+            box-shadow: 0 4px 12px rgba(79, 193, 79, 0.2);
+        }
+        
+        .card.selected h4 {
+            color: #2d5016;
+        }
+        
+        /* Research area selection cards */
+        .research-card {
+            border: 2px solid #eee;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: white;
+            color: #000;
+            border-radius: 8px;
+        }
+        
+        .research-card h4 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #000;
+        }
+        
+        .research-card p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .research-card:hover {
+            border-color: #2acaea;
+            background: #f8fbff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(42, 202, 234, 0.15);
+        }
+        
+        .research-card.selected {
+            border-color: #4fc14f;
+            background: #f0fff0;
+            box-shadow: 0 4px 12px rgba(79, 193, 79, 0.2);
+        }
+        
+        .research-card.selected h4 {
+            color: #2d5016;
+        }
+        
+        .form-group { margin-bottom: 40px; }
+        label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 12px;
+            color: #000;
+            font-weight: 600;
+        }
+        input, textarea {
+            width: 100%;
+            border: none;
+            border-bottom: 1px solid #ddd;
+            padding: 12px 0;
+            font-size: 16px;
+            background: transparent;
+            transition: border-color 0.2s;
+            color: #000;
+        }
+        input:focus, textarea:focus { outline: none; border-bottom-color: #2acaea; }
+        .hint { font-size: 12px; color: #999; margin-top: 8px; }
+        .feedback {
+            margin-top: 16px;
+            padding: 16px;
+            border-left: 2px solid #ddd;
+            font-size: 14px;
+            display: none;
+            color: #000;
+        }
+        .feedback.show { display: block; }
+        .feedback.error, .feedback.success { border-left-color: #2acaea; }
+        .feedback.warning { border-left-color: #ffd700; }
+        .example {
+            margin: 40px 0;
+            padding: 20px;
+            border-left: 2px solid #2acaea;
+            background: white;
+        }
+        .example h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #000; }
+        .btn-group { text-align: center; margin-top: 60px; }
+        
+        /* BUTTONS */
+        .btn, .btn-primary {
+            background: #cc0002;
+            color: white;
+            border: none;
+            display: inline-block;
+            padding: 16px 32px;
+            margin: 0 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .btn:hover, .btn-primary:hover {
+            background: #dd6263;
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        /* Previous button (blue) */
+        .btn-previous {
+            background: #2acaea !important;
+            color: #fff !important;
+        }
+        .btn-previous:hover, .btn-previous:focus {
+            background: #7be9f4 !important;
+            color: #fff !important;
+        }
+        /* Special action buttons (black with green hover) */
+        .btn-action {
+            background: #000 !important;
+            color: white !important;
+        }
+        .btn-action:hover {
+            background: #4fc14f !important;
+            color: white !important;
+        }
+        
+        .result {
+            margin-top: 32px;
+            padding: 20px;
+            border-left: 2px solid #ffd700;
+            background: white;
+        }
+        .checklist-item {
+            border-bottom: 1px solid #eee;
+            padding: 20px 0;
+            cursor: pointer;
+        }
+        .checklist-item:last-child { border-bottom: none; }
+        .checklist-header { display: flex; align-items: center; }
+        .checkbox { margin-right: 16px; color: #ddd; }
+        .checklist-item.completed .checkbox { color: #2acaea; }
+        .checklist-item.completed { background: white; }
+        .checklist-text { flex: 1; font-size: 14px; color: #000; }
+        .expand { font-size: 12px; color: #ffd700; }
+        .explanation {
+            display: none;
+            padding-top: 16px;
+            margin-left: 32px;
+            font-size: 12px;
+            color: #666;
+        }
+        .checklist-item.expanded .explanation { display: block; }
+        .final {
+            text-align: center;
+            margin: 80px 0;
+            padding: 40px;
+            border: 1px solid #2acaea;
+            background: white;
+        }
+        .final h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #000;
+        }
+        @media (max-width: 600px) {
+            .container { padding: 0 20px; }
+            .header h1 { font-size: 32px; }
+            .step-title { font-size: 24px; }
+            .btn { padding: 14px 28px; font-size: 15px; margin: 0 8px; }
         }
     </style>
 </head>
 <body>
-    <h1>Research Tutorial</h1>
-    
-    <div class="progress">
-        <div class="progress-fill" id="progress"></div>
-    </div>
-    
-    <p>Step <span id="stepNum">1</span> of 7</p>
-    
-    <div id="step1" class="step active">
-        <h2>Welcome</h2>
-        <p>This tutorial guides you through selecting a public health research topic.</p>
-        <button class="btn" onclick="nextStep()">Start</button>
-    </div>
-    
-    <div id="step2" class="step">
-        <h2>Strong Research Topics</h2>
-        <p>A strong research topic should meet these criteria:</p>
-        
-        <div class="card">
-            <h4>Specific</h4>
-            <p>Focused enough to be manageable</p>
+    <div class="container">
+        <div class="header">
+            <h1>Research Tutorial</h1>
+            <p>Learn to craft research topics and questions</p>
         </div>
-        
-        <div class="card">
-            <h4>Measurable</h4>
-            <p>Can be studied using quantitative methods</p>
+        <div class="progress">
+            <div class="progress-line">
+                <div class="progress-fill" id="progress"></div>
+            </div>
+            <div class="step-num">Step <span id="stepNum">1</span> of 7</div>
         </div>
-        
-        <div class="card">
-            <h4>Achievable</h4>
-            <p>Realistic given your resources</p>
-        </div>
-        
-        <div class="card">
-            <h4>Relevant</h4>
-            <p>Addresses current public health challenges</p>
-        </div>
-        
-        <button class="btn btn-previous" onclick="prevStep()">Previous</button>
-        <button class="btn" onclick="nextStep()">Continue</button>
-    </div>
-    
-    <div id="step3" class="step">
-        <h2>Choose Your Interest Area</h2>
-        <p>Select areas that interest you:</p>
-        
-        <div class="card">
-            <h4>Disease & Conditions</h4>
-            <p>Chronic disease, infectious disease, mental health</p>
-        </div>
-        
-        <div class="card">
-            <h4>Population Health</h4>
-            <p>Aging populations, maternal health, women's health</p>
-        </div>
-        
-        <div class="card">
-            <h4>Environment & Systems</h4>
-            <p>Environmental health, food safety, community health</p>
-        </div>
-        
-        <div class="card">
-            <h4>Social & Policy</h4>
-            <p>Health disparities, social determinants, policy</p>
-        </div>
-        
-        <button class="btn btn-previous" onclick="prevStep()">Previous</button>
-        <button class="btn" onclick="nextStep()">Continue</button>
-    </div>
-    
-    <div id="step4" class="step">
-        <h2>Complete</h2>
-        <p>Tutorial complete! Your GitHub version has all the full features.</p>
-        <button class="btn btn-previous" onclick="prevStep()">Previous</button>
-        <button class="btn" onclick="restart()">Start Over</button>
-    </div>
+        <div class="content">
+            <!-- Step 1 -->
+            <div class="step active" id="step1">
+                <h2 class="step-title">Welcome</h2>
+                <div class="section">
+                    <h3>What you'll learn</h3>
+                    <p>This tutorial guides you through selecting a public health research topic and developing a focused research question for your assignment.</p>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="nextStep()">Start</button>
+                </div>
+            </div>
+            <!-- Step 2 -->
+            <div class="step" id="step2">
+                <h2 class="step-title">Strong Research Topics</h2>
+                <div class="section">
+                    <h3>Key characteristics</h3>
+                    <p>A strong research topic should meet these criteria:</p>
+                    <div class="card">
+                        <h4>Specific</h4>
+                        <p>Focused enough to be manageable</p>
+                    </div>
+                    <div class="card">
+                        <h4>Measurable</h4>
+                        <p>Can be studied using quantitative methods</p>
+                    </div>
+                    <div class="card">
+                        <h4>Achievable</h4>
+                        <p>Realistic given your resources</p>
+                    </div>
+                    <div class="card">
+                        <h4>Relevant</h4>
+                        <p>Addresses current public health challenges</p>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-previous" onclick="prevStep()">Previous</button>
+                    <button class="btn btn-primary" onclick="nextStep()">Continue</button>
+                </div>
+            </div>
+            <!-- Step 3 -->
+            <div class="step" id="step3">
+                <h2 class="step-title">Choose Your Interest Areas</h2>
+                <div class="section">
+                    <h3>Public health research areas</h3>
+                    <p>Select up to 3 broad areas that interest you most:</p>
+                    
+                    <div class="research-card" data-area="diseases-conditions" onclick="selectResearchArea(this)">
+                        <h4>🦠 Diseases & Conditions</h4>
+                        <p><strong>Research Areas:</strong> Chronic Disease, Infectious Disease, Mental Health, Substance Use</p>
+                        <p><strong>Examples:</strong> Diabetes management programs, COVID-19 testing equity, telehealth therapy access, naloxone distribution</p>
+                    </div>
 
+                    <div class="research-card" data-area="populations" onclick="selectResearchArea(this)">
+                        <h4>👥 Populations</h4>
+                        <p><strong>Research Areas:</strong> Aging & Older Adults, Maternal & Child Health, Children's Health, Women's Health, Men's Health, Disability</p>
+                        <p><strong>Examples:</strong> Fall prevention programs, reducing maternal mortality disparities, school-based dental care, contraception access</p>
+                    </div>
+
+                    <div class="research-card" data-area="environment-systems" onclick="selectResearchArea(this)">
+                        <h4>🌍 Community, Environment & Health Systems</h4>
+                        <p><strong>Research Areas:</strong> Environmental Health, Food Safety, Community Health, Emergency Preparedness</p>
+                        <p><strong>Examples:</strong> Childhood lead exposure, salmonella outbreak response, walkability and physical activity, COVID-19 response in unhoused populations</p>
+                    </div>
+
+                    <div class="research-card" data-area="social-policy" onclick="selectResearchArea(this)">
+                        <h4>⚖️ Social & Policy</h4>
+                        <p><strong>Research Areas:</strong> Health Disparities, Social Determinants of Health, Public Health Policy</p>
+                        <p><strong>Examples:</strong> Racial disparities in maternal mortality, housing quality and childhood asthma, Medicaid expansion impact on preventive care</p>
+                    </div>
+
+                    <div class="research-card" data-area="prevention-wellness" onclick="selectResearchArea(this)">
+                        <h4>🏃‍♀️ Prevention & Wellness</h4>
+                        <p><strong>Research Areas:</strong> Nutrition, Exercise</p>
+                        <p><strong>Examples:</strong> Food insecurity and chronic disease, school lunch reform and childhood obesity, physical activity programs in older adults</p>
+                    </div>
+
+                    <div id="selection-feedback" style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 4px; font-size: 14px; color: #666;">
+                        Select up to 3 research areas
+                    </div>
+                </div>
+                <div class="section">
+                    <div class="form-group">
+                        <label>What public health issues interest you most?</label>
+                        <textarea rows="3" placeholder="Think about issues in your community..."></textarea>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-previous" onclick="prevStep()">Previous</button>
+                    <button class="btn btn-primary" onclick="nextStep()">Continue</button>
+                </div>
+            </div>
+            <!-- Step 4 -->
+            <div class="step" id="step4">
+                <h2 class="step-title">Narrow Your Topic</h2>
+                <div class="section">
+                    <h3>Systematic narrowing process</h3>
+                    <div class="form-group">
+                        <label>1. Start with a broad public health topic</label>
+                        <input type="text" id="broadTopic" placeholder="e.g., diabetes, mental health, obesity">
+                        <div class="hint">Choose a general health condition or issue</div>
+                        <div class="feedback" id="topicFeedback"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>2. Who is most affected by this issue?</label>
+                        <input type="text" id="targetPop" placeholder="e.g., adolescents, elderly adults, low-income families">
+                        <div class="feedback" id="popFeedback"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>3. What specific aspect do you want to focus on?</label>
+                        <input type="text" id="focusAspect" placeholder="e.g., prevention strategies, treatment access, risk factors">
+                        <div class="feedback" id="aspectFeedback"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>4. Choose a location or setting in the United States</label>
+                        <input type="text" id="setting" placeholder="e.g., rural Texas, urban California, nursing homes">
+                        <div class="hint">Choose a setting you could realistically study</div>
+                        <div class="feedback" id="settingFeedback"></div>
+                    </div>
+                    <button class="btn btn-action" onclick="generateTopic()">Generate Your Research Topic</button>
+                    <div id="topicResult"></div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-previous" onclick="prevStep()">Previous</button>
+                    <button class="btn btn-primary" onclick="nextStep()">Continue</button>
+                </div>
+            </div>
+            <!-- Step 5 -->
+            <div class="step" id="step5">
+                <h2 class="step-title">Craft Your Research Question</h2>
+                <div class="section">
+                    <h3>Question types</h3>
+                    <div class="card" onclick="selectQuestionType(this, 'descriptive')">
+                        <h4>Descriptive</h4>
+                        <p>"What is the prevalence of...?"</p>
+                    </div>
+                    <div class="card" onclick="selectQuestionType(this, 'analytical')">
+                        <h4>Analytical</h4>
+                        <p>"What is the relationship between...?"</p>
+                    </div>
+                    <div class="card" onclick="selectQuestionType(this, 'evaluative')">
+                        <h4>Evaluative</h4>
+                        <p>"How effective is...?"</p>
+                    </div>
+                </div>
+                <div class="section">
+                    <h3>Question builder</h3>
+                    <div class="form-group">
+                        <label>Population and Setting</label>
+                        <input type="text" id="questionPop" placeholder="e.g., adults aged 18-65 in rural communities">
+                    </div>
+                    <div class="form-group">
+                        <label>Exposure/Factor</label>
+                        <input type="text" id="exposure" placeholder="e.g., access to telehealth services">
+                    </div>
+                    <div class="form-group">
+                        <label>Outcome</label>
+                        <input type="text" id="outcome" placeholder="e.g., frequency of preventive care visits">
+                    </div>
+                    <button class="btn btn-action" onclick="generateQuestion()">Generate Research Question</button>
+                    <div id="questionResult"></div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-previous" onclick="prevStep()">Previous</button>
+                    <button class="btn btn-primary" onclick="nextStep()">Continue</button>
+                </div>
+            </div>
+            <!-- Step 6 -->
+            <div class="step" id="step6">
+                <h2 class="step-title">Evaluate Your Question</h2>
+                <div class="section">
+                    <h3>Quality checklist</h3>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checklist-header">
+                            <span class="checkbox">☐</span>
+                            <span class="checklist-text">Does my question allow for multiple possible answers?</span>
+                            <span class="expand">+</span>
+                        </div>
+                        <div class="explanation">
+                            Your question shouldn't have just one obvious answer. Good research questions are open-ended.
+                        </div>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checklist-header">
+                            <span class="checkbox">☐</span>
+                            <span class="checklist-text">Is it testable with available research methods?</span>
+                            <span class="expand">+</span>
+                        </div>
+                        <div class="explanation">
+                            You should be able to imagine how researchers could study this using surveys, data analysis, or observations.
+                        </div>
+                    </div>
+                    <div class="checklist-item" onclick="toggleCheck(this)">
+                        <div class="checklist-header">
+                            <span class="checkbox">☐</span>
+                            <span class="checklist-text">Is the question clear and precise?</span>
+                            <span class="expand">+</span>
+                        </div>
+                        <div class="explanation">
+                            Someone else should understand exactly what you're asking. Avoid vague terms.
+                        </div>
+                    </div>
+                </div>
+                <div class="section">
+                    <div class="form-group">
+                        <label>Enter your final research question</label>
+                        <textarea id="finalQuestion" rows="3" placeholder="Enter your refined research question here..."></textarea>
+                    </div>
+                    <button class="btn btn-action" onclick="evaluateQuestion()">Evaluate Question</button>
+                    <div id="evaluation"></div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-previous" onclick="prevStep()">Previous</button>
+                    <button class="btn btn-primary" onclick="nextStep()">Finish</button>
+                </div>
+            </div>
+            <!-- Step 7 -->
+            <div class="step" id="step7">
+                <h2 class="step-title">Congratulations</h2>
+                <div class="final">
+                    <h3>Tutorial Complete</h3>
+                    <p>You now have the tools to create strong research topics and questions.</p>
+                    <div style="margin: 20px 0; padding: 16px; border-left: 2px solid #2acaea;">
+                        <strong>Your Research Question:</strong><br>
+                        <span id="savedQuestion">Your question will appear here...</span>
+                    </div>
+                </div>
+                <div class="section">
+                    <h3>Next steps for your assignment</h3>
+                    <p>1. Find three peer-reviewed articles using PubMed or Google Scholar</p>
+                    <p>2. Create a summary table of key information</p>
+                    <p>3. Analyze the research methods used</p>
+                    <p>4. Write your research paper</p>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-previous" onclick="prevStep()">Previous</button>
+                    <button class="btn" onclick="restart()">Start Over</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
         let currentStep = 1;
-        
-        function nextStep() {
-            if (currentStep < 4) {
-                currentStep++;
-                showStep();
-            }
-        }
-        
-        function prevStep() {
-            if (currentStep > 1) {
-                currentStep--;
-                showStep();
-            }
-        }
-        
-        function showStep() {
-            // Hide all steps
-            for (let i = 1; i <= 4; i++) {
-                document.getElementById('step' + i).classList.remove('active');
-            }
-            // Show current step
-            document.getElementById('step' + currentStep).classList.add('active');
-            
-            // Update progress
-            const progress = (currentStep / 4) * 100;
+        let questionType = '';
+        let finalQuestion = '';
+        let selectedAreas = [];
+
+        function updateProgress() {
+            const progress = (currentStep / 7) * 100;
             document.getElementById('progress').style.width = progress + '%';
             document.getElementById('stepNum').textContent = currentStep;
         }
-        
+
+        function showStep(step) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step' + step).classList.add('active');
+            updateProgress();
+        }
+
+        function nextStep() {
+            if (currentStep < 7) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        }
+
+        // Handle research area card selection (max 3)
+        function selectResearchArea(card) {
+            const selectedCards = document.querySelectorAll('.research-card.selected');
+            const feedback = document.getElementById('selection-feedback');
+            
+            if (card.classList.contains('selected')) {
+                // Deselect the card
+                card.classList.remove('selected');
+            } else {
+                // Check if we can select more
+                if (selectedCards.length >= 3) {
+                    feedback.innerHTML = '<span style="color: #cc0002;">Maximum 3 areas allowed. Deselect one to choose another.</span>';
+                    return;
+                }
+                // Select the card
+                card.classList.add('selected');
+            }
+            
+            // Update feedback
+            const newSelectedCards = document.querySelectorAll('.research-card.selected');
+            if (newSelectedCards.length === 0) {
+                feedback.innerHTML = 'Select up to 3 research areas';
+            } else if (newSelectedCards.length === 1) {
+                feedback.innerHTML = `<span style="color: #2acaea;">1 area selected. You can select ${3 - newSelectedCards.length} more.</span>`;
+            } else if (newSelectedCards.length < 3) {
+                feedback.innerHTML = `<span style="color: #2acaea;">${newSelectedCards.length} areas selected. You can select ${3 - newSelectedCards.length} more.</span>`;
+            } else {
+                feedback.innerHTML = '<span style="color: #4fc14f;">3 areas selected (maximum reached)</span>';
+            }
+            
+            // Store selected areas
+            selectedAreas = Array.from(newSelectedCards).map(card => card.dataset.area);
+        }
+
+        // Card selection for question type (Step 5) only
+        function selectQuestionType(card, type) {
+            document.querySelectorAll('#step5 .card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            questionType = type;
+        }
+
+        function toggleCheck(item) {
+            const checkbox = item.querySelector('.checkbox');
+            const expand = item.querySelector('.expand');
+            if (item.classList.contains('completed')) {
+                item.classList.remove('completed');
+                checkbox.textContent = '☐';
+            } else {
+                item.classList.add('completed');
+                checkbox.textContent = '☑';
+            }
+            item.classList.toggle('expanded');
+            expand.textContent = item.classList.contains('expanded') ? '×' : '+';
+        }
+
+        function generateTopic() {
+            const broad = document.getElementById('broadTopic').value.trim();
+            const pop = document.getElementById('targetPop').value.trim();
+            const aspect = document.getElementById('focusAspect').value.trim();
+            const setting = document.getElementById('setting').value.trim();
+            
+            if (!broad || !pop || !aspect || !setting) {
+                let missing = [];
+                if (!broad) missing.push("broad public health topic");
+                if (!pop) missing.push("target population");
+                if (!aspect) missing.push("specific aspect to focus on");
+                if (!setting) missing.push("location or setting");
+                
+                document.getElementById('topicResult').innerHTML = 
+                    `<div class="result" style="border-left-color: #cc0002; background: #fff5f5;">
+                        <strong>Please complete the following:</strong><br>
+                        • ${missing.join('<br>• ')}
+                    </div>`;
+                return;
+            }
+            
+            // Create a cleaner topic structure
+            const topic = `${aspect.charAt(0).toUpperCase() + aspect.slice(1)} of ${broad} among ${pop} in ${setting}`;
+            
+            document.getElementById('topicResult').innerHTML = 
+                `<div class="result">
+                    <strong>Your Research Topic:</strong><br>
+                    "${topic}"
+                </div>`;
+        }
+
+        function generateQuestion() {
+            const pop = document.getElementById('questionPop').value.trim();
+            const exp = document.getElementById('exposure').value.trim();
+            const out = document.getElementById('outcome').value.trim();
+            
+            // Check if all fields are filled and question type is selected
+            if (!pop || !exp || !out || !questionType) {
+                let missing = [];
+                if (!questionType) missing.push("question type (click one of the cards above)");
+                if (!pop) missing.push("population and setting");
+                if (!exp) missing.push("exposure/factor");
+                if (!out) missing.push("outcome");
+                
+                document.getElementById('questionResult').innerHTML = 
+                    `<div class="result" style="border-left-color: #cc0002; background: #fff5f5;">
+                        <strong>Please complete the following:</strong><br>
+                        • ${missing.join('<br>• ')}
+                    </div>`;
+                return;
+            }
+            
+            let questionStart = 'What is the relationship between';
+            if (questionType === 'descriptive') {
+                questionStart = 'What is the prevalence of';
+            } else if (questionType === 'evaluative') {
+                questionStart = 'How effective is';
+            }
+            
+            const question = questionType === 'descriptive' 
+                ? `${questionStart} ${out} among ${pop}?`
+                : `${questionStart} ${exp} and ${out} among ${pop}?`;
+            
+            finalQuestion = question;
+            document.getElementById('savedQuestion').textContent = question;
+            document.getElementById('questionResult').innerHTML = 
+                `<div class="result">
+                    <strong>Your Research Question:</strong><br>
+                    "${question}"
+                </div>`;
+        }
+
+        function evaluateQuestion() {
+            const question = document.getElementById('finalQuestion').value.trim();
+            if (!question) {
+                return;
+            }
+            finalQuestion = question;
+            document.getElementById('savedQuestion').textContent = question;
+            document.getElementById('evaluation').innerHTML = 
+                `<div class="result">
+                    Your question has been evaluated. You're ready to find literature!
+                </div>`;
+        }
+
         function restart() {
             currentStep = 1;
-            showStep();
+            showStep(1);
+            document.querySelectorAll('input, textarea').forEach(input => input.value = '');
+            document.querySelectorAll('.research-card').forEach(card => card.classList.remove('selected'));
+            document.querySelectorAll('.card').forEach(card => card.classList.remove('selected'));
+            document.getElementById('savedQuestion').textContent = 'Your question will appear here...';
+            document.getElementById('selection-feedback').innerHTML = 'Select up to 3 research areas';
+            questionType = '';
+            finalQuestion = '';
+            selectedAreas = [];
         }
+
+        // Initialize
+        updateProgress();
     </script>
 </body>
 </html>

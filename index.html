@@ -154,9 +154,38 @@
             background: #f8fff9;
         }
 
-        .card h4 {
-            color: #2c3e50;
-            margin-bottom: 8px;
+        .expandable-card {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .expandable-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .expandable-card.expanded {
+            grid-column: 1 / -1;
+            transform: none;
+        }
+
+        .card-examples {
+            display: none;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #dee2e6;
+            font-size: 0.9em;
+            line-height: 1.4;
+            color: #495057;
+        }
+
+        .expandable-card.expanded .card-examples {
+            display: block;
+            animation: fadeInExamples 0.3s ease;
+        }
+
+        @keyframes fadeInExamples {
+            from { opacity: 0; max-height: 0; }
+            to { opacity: 1; max-height: 100px; }
         }
 
         .form-section {
@@ -549,33 +578,51 @@
 
                 <div class="info-card">
                     <h3>🌐 Public Health Research Areas</h3>
-                    <p>Select areas that interest you (you can choose multiple):</p>
+                    <p>Select areas that interest you (you can choose multiple). Click each category to see specific topic examples:</p>
                 </div>
 
                 <div class="grid">
-                    <div class="card" onclick="selectCard(this)">
-                        <h4>🦠 Epidemiology</h4>
-                        <p>Disease patterns, outbreaks, risk factors</p>
+                    <div class="card expandable-card" onclick="selectTopicCard(this, 'disease-conditions')">
+                        <h4>🦠 Disease & Conditions</h4>
+                        <p>Study of health conditions and their impacts</p>
+                        <div class="card-examples">
+                            <strong>Examples:</strong> Chronic disease management, infectious disease prevention, mental health treatment, substance use disorders, diabetes care, depression screening, COVID-19 response, addiction recovery programs
+                        </div>
                     </div>
-                    <div class="card" onclick="selectCard(this)">
-                        <h4>🌱 Environmental Health</h4>
-                        <p>Air quality, water safety, climate change</p>
+                    <div class="card expandable-card" onclick="selectTopicCard(this, 'population-health')">
+                        <h4>👥 Population Health</h4>
+                        <p>Health of specific demographic groups</p>
+                        <div class="card-examples">
+                            <strong>Examples:</strong> Aging and older populations, maternal and child health, women's health, disability and accessibility, adolescent health, senior care, pregnancy outcomes, infant mortality, reproductive health
+                        </div>
                     </div>
-                    <div class="card" onclick="selectCard(this)">
-                        <h4>🧠 Behavioral Health</h4>
-                        <p>Mental health, lifestyle, substance use</p>
+                    <div class="card expandable-card" onclick="selectTopicCard(this, 'environment-systems')">
+                        <h4>🌍 Environment & Systems</h4>
+                        <p>Environmental factors and community systems</p>
+                        <div class="card-examples">
+                            <strong>Examples:</strong> Environmental health, food safety, community health, emergency preparedness, air quality, water safety, climate change impacts, foodborne illness prevention, disaster response
+                        </div>
                     </div>
-                    <div class="card" onclick="selectCard(this)">
-                        <h4>⚖️ Health Equity</h4>
-                        <p>Health disparities, social determinants</p>
+                    <div class="card expandable-card" onclick="selectTopicCard(this, 'social-policy')">
+                        <h4>⚖️ Social & Policy</h4>
+                        <p>Social factors and policy interventions</p>
+                        <div class="card-examples">
+                            <strong>Examples:</strong> Health disparities, social determinants of health, public health policy, healthcare access, income inequality and health, racial health equity, healthcare legislation, insurance coverage
+                        </div>
                     </div>
-                    <div class="card" onclick="selectCard(this)">
-                        <h4>🌍 Global Health</h4>
-                        <p>International health, infectious diseases</p>
+                    <div class="card expandable-card" onclick="selectTopicCard(this, 'lifestyle-prevention')">
+                        <h4>🏃‍♀️ Lifestyle & Prevention</h4>
+                        <p>Individual behaviors and prevention strategies</p>
+                        <div class="card-examples">
+                            <strong>Examples:</strong> Nutrition and diet, exercise and physical activity, preventive care, health education, obesity prevention, smoking cessation, vaccination programs, health screening
+                        </div>
                     </div>
-                    <div class="card" onclick="selectCard(this)">
-                        <h4>📋 Health Policy</h4>
-                        <p>Healthcare systems, policy evaluation</p>
+                    <div class="card expandable-card" onclick="selectTopicCard(this, 'epidemiology')">
+                        <h4>🔍 Epidemiology & Research</h4>
+                        <p>Disease patterns and research methods</p>
+                        <div class="card-examples">
+                            <strong>Examples:</strong> Disease surveillance, outbreak investigation, risk factor analysis, health data analysis, biostatistics, health surveys, longitudinal studies, case-control studies
+                        </div>
                     </div>
                 </div>
 
@@ -951,8 +998,27 @@
             }
         }
 
-        function selectCard(card) {
+        function selectTopicCard(card, category) {
+            // Toggle selection
             card.classList.toggle('selected');
+            
+            // Toggle expansion
+            const wasExpanded = card.classList.contains('expanded');
+            
+            // Collapse all cards first
+            document.querySelectorAll('.expandable-card').forEach(c => {
+                c.classList.remove('expanded');
+            });
+            
+            // If this card wasn't expanded, expand it
+            if (!wasExpanded) {
+                card.classList.add('expanded');
+                
+                // Auto-collapse after 5 seconds
+                setTimeout(() => {
+                    card.classList.remove('expanded');
+                }, 5000);
+            }
         }
 
         function selectQuestionType(card, type) {

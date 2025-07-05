@@ -193,10 +193,33 @@
             box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
         }
 
-        .form-hint {
+        .feedback-text {
             font-size: 0.85rem;
-            color: #6c757d;
             margin-top: 5px;
+            padding: 8px;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .feedback-text.warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            display: block;
+        }
+
+        .feedback-text.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            display: block;
+        }
+
+        .feedback-text.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            display: block;
         }
 
         .example-box {
@@ -524,26 +547,52 @@
                         <label>1. Start with a broad public health topic:</label>
                         <input type="text" class="form-control" id="broadTopic" placeholder="e.g., mental health and social media, food insecurity, vaccine hesitancy">
                         <div class="form-hint">Choose a general area of interest, not yet specific enough for research</div>
+                        <div id="topicFeedback" class="feedback-text"></div>
                     </div>
 
                     <div class="form-group">
                         <label>2. Who is most affected by this issue?</label>
                         <input type="text" class="form-control" id="targetPop" placeholder="e.g., adolescents, elderly adults, low-income communities, college students">
+                        <div id="popFeedback" class="feedback-text"></div>
                     </div>
 
                     <div class="form-group">
                         <label>3. What specific aspect do you want to focus on?</label>
                         <input type="text" class="form-control" id="focusAspect" placeholder="e.g., causes, effects, interventions, barriers, disparities">
+                        <div id="aspectFeedback" class="feedback-text"></div>
                     </div>
 
                     <div class="form-group">
                         <label>4. Choose a location or setting in the United States:</label>
                         <input type="text" class="form-control" id="setting" placeholder="e.g., rural communities, urban areas, college campuses, California">
                         <div class="form-hint">Choose a setting you could realistically study with available research</div>
+                        <div id="settingFeedback" class="feedback-text"></div>
                     </div>
 
                     <button class="btn btn-success" onclick="generateTopic()">Generate Your Research Topic</button>
                     <div id="topicResult"></div>
+                </div>
+
+                <div class="info-card">
+                    <h3>🎓 Understanding Research Topics vs. Questions</h3>
+                    <div style="background: white; padding: 15px; border-radius: 6px; margin: 10px 0;">
+                        <h4 style="color: #2c3e50; margin-bottom: 10px;">A Research Topic is:</h4>
+                        <ul style="margin-left: 20px; color: #495057;">
+                            <li>A <strong>statement</strong> that describes the focus of your study</li>
+                            <li>Broad enough to encompass multiple potential questions</li>
+                            <li>The <strong>what</strong> you want to study</li>
+                            <li><strong>Example:</strong> "The relationship between social media use and sleep quality among college students"</li>
+                        </ul>
+                    </div>
+                    <div style="background: white; padding: 15px; border-radius: 6px; margin: 10px 0;">
+                        <h4 style="color: #2c3e50; margin-bottom: 10px;">A Research Question is:</h4>
+                        <ul style="margin-left: 20px; color: #495057;">
+                            <li>An <strong>interrogative sentence</strong> that asks what you want to find out</li>
+                            <li>Specific and answerable through research</li>
+                            <li>The <strong>how</strong> you will investigate your topic</li>
+                            <li><strong>Example:</strong> "Is there an association between daily social media use duration and sleep quality scores among college students?"</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <div class="example-box">
@@ -759,9 +808,64 @@
             const aspect = document.getElementById('focusAspect').value.trim();
             const setting = document.getElementById('setting').value.trim();
 
+            // Clear previous feedback
+            clearFeedback();
+
+            // Validate inputs with sophisticated feedback
+            let hasErrors = false;
+
+            // Check if broad topic is actually a question
+            if (broad && (broad.includes('?') || broad.toLowerCase().startsWith('how') || broad.toLowerCase().startsWith('what') || broad.toLowerCase().startsWith('why'))) {
+                showFeedback('topicFeedback', 'error', '❌ This looks like a question, not a topic. Try a general subject area like "vaccine hesitancy" instead of "Why don\'t people get vaccines?"');
+                hasErrors = true;
+            } else if (broad && broad.length < 10) {
+                showFeedback('topicFeedback', 'warning', '⚠️ This might be too narrow. Try combining 2-3 concepts like "mental health and social media" or "food insecurity in urban areas"');
+                hasErrors = true;
+            } else if (broad && broad.length > 100) {
+                showFeedback('topicFeedback', 'warning', '⚠️ This is getting quite specific. Save the details for the narrowing steps below.');
+                hasErrors = true;
+            } else if (broad) {
+                showFeedback('topicFeedback', 'success', '✅ Good broad topic!');
+            }
+
+            // Validate population
+            if (pop && (pop.includes('?') || pop.toLowerCase().includes('how') || pop.toLowerCase().includes('what'))) {
+                showFeedback('popFeedback', 'error', '❌ This should be a population group, not a question. Examples: "college students", "elderly adults", "pregnant women"');
+                hasErrors = true;
+            } else if (pop && pop.toLowerCase().includes('everyone') || pop.toLowerCase().includes('all people')) {
+                showFeedback('popFeedback', 'warning', '⚠️ "Everyone" is too broad for research. Choose a specific demographic group you can actually study.');
+                hasErrors = true;
+            } else if (pop) {
+                showFeedback('popFeedback', 'success', '✅ Good population focus!');
+            }
+
+            // Validate aspect
+            if (aspect && (aspect.includes('?') || aspect.toLowerCase().startsWith('how') || aspect.toLowerCase().startsWith('what'))) {
+                showFeedback('aspectFeedback', 'error', '❌ This should describe what aspect you want to study, not ask a question. Examples: "prevention strategies", "risk factors", "treatment outcomes"');
+                hasErrors = true;
+            } else if (aspect) {
+                showFeedback('aspectFeedback', 'success', '✅ Good research focus!');
+            }
+
+            // Validate setting
+            if (setting && (setting.includes('?') || setting.toLowerCase().includes('everywhere'))) {
+                showFeedback('settingFeedback', 'error', '❌ Choose a specific geographic area or type of setting where you could realistically conduct research.');
+                hasErrors = true;
+            } else if (setting) {
+                showFeedback('settingFeedback', 'success', '✅ Good setting choice!');
+            }
+
+            // Check if all fields are filled
             if (!broad || !pop || !aspect || !setting) {
                 document.getElementById('topicResult').innerHTML = 
-                    '<div class="alert alert-warning">Please fill in all fields.</div>';
+                    '<div class="alert alert-warning">Please fill in all fields to generate your research topic.</div>';
+                return;
+            }
+
+            // If there are errors, don't generate topic
+            if (hasErrors) {
+                document.getElementById('topicResult').innerHTML = 
+                    '<div class="alert alert-warning">Please address the feedback above before generating your topic.</div>';
                 return;
             }
 
@@ -770,8 +874,22 @@
                 `<div class="result-box">
                     <h4>🎯 Your Research Topic:</h4>
                     <p><strong>"${topic}"</strong></p>
-                    <p style="margin-top:10px; font-style:italic;">This topic is now focused enough for research!</p>
+                    <p style="margin-top:10px; font-style:italic;">This topic is now focused enough for research! Notice how this is a <strong>statement</strong>, not a question.</p>
                 </div>`;
+        }
+
+        function clearFeedback() {
+            document.querySelectorAll('.feedback-text').forEach(fb => {
+                fb.style.display = 'none';
+                fb.className = 'feedback-text';
+            });
+        }
+
+        function showFeedback(elementId, type, message) {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.className = `feedback-text ${type}`;
+            element.style.display = 'block';
         }
 
         function generateQuestion() {
@@ -779,9 +897,60 @@
             const exp = document.getElementById('exposure').value.trim();
             const out = document.getElementById('outcome').value.trim();
 
-            if (!pop || !exp || !out) {
+            // Clear previous feedback
+            document.getElementById('questionResult').innerHTML = '';
+
+            // Validate inputs
+            let hasErrors = false;
+            let errorMessages = [];
+
+            // Check if they wrote a topic instead of filling out the fields
+            if (!pop && !exp && !out) {
                 document.getElementById('questionResult').innerHTML = 
-                    '<div class="alert alert-warning">Please fill in all fields.</div>';
+                    '<div class="alert alert-warning">Please fill in all three fields above to build your research question.</div>';
+                return;
+            }
+
+            // Check for missing fields
+            if (!pop) errorMessages.push("Population and Setting is required");
+            if (!exp) errorMessages.push("Exposure/Factor is required");
+            if (!out) errorMessages.push("Outcome is required");
+
+            // Check if no question type selected
+            if (!questionType) {
+                errorMessages.push("Please select a question type above (Descriptive, Analytical, or Evaluative)");
+                hasErrors = true;
+            }
+
+            // Check if they put questions instead of components
+            if (pop && pop.includes('?')) {
+                errorMessages.push("Population should be a group description, not a question");
+                hasErrors = true;
+            }
+            if (exp && exp.includes('?')) {
+                errorMessages.push("Exposure/Factor should be a variable or intervention, not a question");
+                hasErrors = true;
+            }
+            if (out && out.includes('?')) {
+                errorMessages.push("Outcome should be a measurable result, not a question");
+                hasErrors = true;
+            }
+
+            // Check if they wrote a full question in one field
+            const fullText = `${pop} ${exp} ${out}`.toLowerCase();
+            if (fullText.includes('what is the relationship') || fullText.includes('how effective') || fullText.includes('what is the prevalence')) {
+                errorMessages.push("It looks like you wrote a full question. Please break it into the three components above.");
+                hasErrors = true;
+            }
+
+            if (errorMessages.length > 0) {
+                document.getElementById('questionResult').innerHTML = 
+                    `<div class="alert alert-warning">
+                        <h4>Please address these issues:</h4>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            ${errorMessages.map(msg => `<li>${msg}</li>`).join('')}
+                        </ul>
+                    </div>`;
                 return;
             }
 
@@ -803,6 +972,7 @@
                 `<div class="result-box">
                     <h4>🎯 Your Research Question:</h4>
                     <p><strong>"${question}"</strong></p>
+                    <p style="margin-top:10px; font-style:italic;">Notice how this is now an <strong>interrogative sentence</strong> that asks what you want to find out!</p>
                 </div>`;
         }
 

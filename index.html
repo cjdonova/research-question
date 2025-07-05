@@ -59,7 +59,7 @@
 
         .progress-fill {
             height: 100%;
-            background: #2cc8c7;
+            background: #2acaea;
             width: 14.3%;
             transition: width 0.3s ease;
         }
@@ -112,38 +112,42 @@
             cursor: pointer;
             transition: all 0.2s;
             background: white;
+            color: #000;
         }
-
-        .card:hover {
-            border-color: #2cc8c7;
-            background: #f0fffe;
-        }
-
         .card.selected {
-            border-color: #00bfff;
-            background: #00bfff;
-            color: white;
+            border-color: #eee;
+            background: white;
+            color: #000;
         }
-
+        .card.selected h4,
+        .card.selected p {
+            color: #000;
+        }
         .card h4 {
             font-size: 16px;
             font-weight: 600;
             margin-bottom: 8px;
             color: #000;
         }
-
-        .card.selected h4 {
-            color: white;
-        }
-
         .card p {
             font-size: 14px;
             color: #666;
             margin: 0;
         }
 
-        .card.selected p {
-            color: rgba(255,255,255,0.9);
+        /* Only these hover colors for cards, by order in section */
+        .section .card:nth-of-type(1):hover { background: #ffd700 !important; border-color: #eee !important; }
+        .section .card:nth-of-type(2):hover { background: #2acaea !important; border-color: #eee !important; }
+        .section .card:nth-of-type(3):hover { background: #afeeee !important; border-color: #eee !important; }
+        .section .card:nth-of-type(4):hover { background: #ffd700 !important; border-color: #eee !important; }
+        .section .card:not(:nth-of-type(1)):not(:nth-of-type(2)):not(:nth-of-type(3)):not(:nth-of-type(4)):hover {
+            background: white !important;
+            border-color: #eee !important;
+        }
+
+        /* Always keep text readable on hover */
+        .card:hover, .card:hover h4, .card:hover p {
+            color: #000 !important;
         }
 
         .form-group {
@@ -171,7 +175,7 @@
 
         input:focus, textarea:focus {
             outline: none;
-            border-bottom-color: #2cc8c7;
+            border-bottom-color: #2acaea;
         }
 
         .hint {
@@ -194,21 +198,21 @@
         }
 
         .feedback.error {
-            border-left-color: #cc0002;
+            border-left-color: #2acaea;
         }
 
         .feedback.success {
-            border-left-color: #2cc8c7;
+            border-left-color: #2acaea;
         }
 
         .feedback.warning {
-            border-left-color: #fdcc0d;
+            border-left-color: #ffd700;
         }
 
         .example {
             margin: 40px 0;
             padding: 20px;
-            border-left: 2px solid #2cc8c7;
+            border-left: 2px solid #2acaea;
             background: white;
         }
 
@@ -224,40 +228,44 @@
             margin-top: 60px;
         }
 
-        .btn {
+        /* BUTTONS: Start/Continue/Finish (Red) */
+        .btn, .btn-primary {
+            background: #cc0002;
+            color: white;
+            border: none;
             display: inline-block;
-            padding: 12px 24px;
-            margin: 0 8px;
-            border: 1px solid #2cc8c7;
-            background: white;
-            color: #000;
-            text-decoration: none;
-            font-size: 14px;
+            padding: 16px 32px;
+            margin: 0 12px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-
-        .btn:hover {
-            background: #2cc8c7;
+        .btn:hover, .btn-primary:hover {
+            background: #dd6263;
             color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
         }
 
-        .btn-primary {
-            background: #00bfff;
-            color: white;
-            border-color: #00bfff;
+        /* BUTTON: Previous (Blue) */
+        .btn-previous {
+            background: #007af5 !important;
+            color: #fff !important;
+            border: none;
         }
-
-        .btn-primary:hover {
-            background: #0099cc;
-            border-color: #0099cc;
+        .btn-previous:hover,
+        .btn-previous:focus {
+            background: #5aa6fa !important;
+            color: #fff !important;
         }
 
         .result {
             margin-top: 32px;
             padding: 20px;
-            border-left: 2px solid #fdcc0d;
+            border-left: 2px solid #ffd700;
             background: white;
         }
 
@@ -282,7 +290,7 @@
         }
 
         .checklist-item.completed .checkbox {
-            color: #2cc8c7;
+            color: #2acaea;
         }
 
         .checklist-item.completed {
@@ -297,7 +305,7 @@
 
         .expand {
             font-size: 12px;
-            color: #fdcc0d;
+            color: #ffd700;
         }
 
         .explanation {
@@ -316,7 +324,7 @@
             text-align: center;
             margin: 80px 0;
             padding: 40px;
-            border: 1px solid #2cc8c7;
+            border: 1px solid #2acaea;
             background: white;
         }
 
@@ -338,6 +346,12 @@
             
             .step-title {
                 font-size: 24px;
+            }
+            
+            .btn, .btn-primary {
+                padding: 14px 28px;
+                font-size: 15px;
+                margin: 0 8px;
             }
         }
     </style>
@@ -398,7 +412,7 @@
                 </div>
 
                 <div class="btn-group">
-                    <button class="btn" onclick="prevStep()">Previous</button>
+                    <button class="btn btn-previous" onclick="prevStep()">Previous</button>
                     <button class="btn btn-primary" onclick="nextStep()">Continue</button>
                 </div>
             </div>
@@ -437,7 +451,7 @@
                 </div>
 
                 <div class="btn-group">
-                    <button class="btn" onclick="prevStep()">Previous</button>
+                    <button class="btn btn-previous" onclick="prevStep()">Previous</button>
                     <button class="btn btn-primary" onclick="nextStep()">Continue</button>
                 </div>
             </div>
@@ -475,12 +489,12 @@
                         <div class="feedback" id="settingFeedback"></div>
                     </div>
 
-                    <button class="btn" onclick="generateTopic()">Generate Your Research Topic</button>
+                    <button class="btn btn-primary" onclick="generateTopic()">Generate Your Research Topic</button>
                     <div id="topicResult"></div>
                 </div>
 
                 <div class="btn-group">
-                    <button class="btn" onclick="prevStep()">Previous</button>
+                    <button class="btn btn-previous" onclick="prevStep()">Previous</button>
                     <button class="btn btn-primary" onclick="nextStep()">Continue</button>
                 </div>
             </div>
@@ -524,12 +538,12 @@
                         <input type="text" id="outcome" placeholder="e.g., frequency of preventive care visits">
                     </div>
 
-                    <button class="btn" onclick="generateQuestion()">Generate Research Question</button>
+                    <button class="btn btn-primary" onclick="generateQuestion()">Generate Research Question</button>
                     <div id="questionResult"></div>
                 </div>
 
                 <div class="btn-group">
-                    <button class="btn" onclick="prevStep()">Previous</button>
+                    <button class="btn btn-previous" onclick="prevStep()">Previous</button>
                     <button class="btn btn-primary" onclick="nextStep()">Continue</button>
                 </div>
             </div>
@@ -580,12 +594,12 @@
                         <label>Enter your final research question</label>
                         <textarea id="finalQuestion" rows="3" placeholder="Enter your refined research question here..."></textarea>
                     </div>
-                    <button class="btn" onclick="evaluateQuestion()">Evaluate Question</button>
+                    <button class="btn btn-primary" onclick="evaluateQuestion()">Evaluate Question</button>
                     <div id="evaluation"></div>
                 </div>
 
                 <div class="btn-group">
-                    <button class="btn" onclick="prevStep()">Previous</button>
+                    <button class="btn btn-previous" onclick="prevStep()">Previous</button>
                     <button class="btn btn-primary" onclick="nextStep()">Finish</button>
                 </div>
             </div>
@@ -598,7 +612,7 @@
                     <h3>Tutorial Complete</h3>
                     <p>You now have the tools to create strong research topics and questions.</p>
                     
-                    <div style="margin: 20px 0; padding: 16px; border-left: 2px solid #ddd;">
+                    <div style="margin: 20px 0; padding: 16px; border-left: 2px solid #2acaea;">
                         <strong>Your Research Question:</strong><br>
                         <span id="savedQuestion">Your question will appear here...</span>
                     </div>
@@ -613,8 +627,8 @@
                 </div>
 
                 <div class="btn-group">
-                    <button class="btn" onclick="prevStep()">Previous</button>
-                    <button class="btn" onclick="restart()">Start Over</button>
+                    <button class="btn btn-previous" onclick="prevStep()">Previous</button>
+                    <button class="btn btn-primary" onclick="restart()">Start Over</button>
                 </div>
             </div>
         </div>

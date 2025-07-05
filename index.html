@@ -13,7 +13,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: white;
+            background: #fafafa;
             color: #333;
             line-height: 1.7;
             font-size: 18px;
@@ -34,7 +34,7 @@
         .header h1 {
             font-size: 42px;
             font-weight: 200;
-            color: #000;
+            color: #cc0002;
             margin-bottom: 16px;
         }
 
@@ -51,14 +51,14 @@
 
         .progress-line {
             width: 80px;
-            height: 1px;
-            background: #ddd;
+            height: 2px;
+            background: #f0f0f0;
             margin: 0 auto 16px;
         }
 
         .progress-fill {
             height: 100%;
-            background: #000;
+            background: #cc0002;
             width: 14.3%;
             transition: width 0.3s ease;
         }
@@ -85,7 +85,7 @@
             font-weight: 200;
             text-align: center;
             margin-bottom: 60px;
-            color: #000;
+            color: #333;
         }
 
         .section {
@@ -96,7 +96,7 @@
             font-size: 20px;
             font-weight: 400;
             margin-bottom: 24px;
-            color: #000;
+            color: #2cc8c7;
         }
 
         p {
@@ -109,28 +109,40 @@
             padding: 24px;
             margin-bottom: 12px;
             cursor: pointer;
-            transition: border-color 0.2s;
+            transition: all 0.2s;
+            background: white;
         }
 
         .card:hover {
-            border-color: #ccc;
+            border-color: #2cc8c7;
+            background: #f0fffe;
         }
 
         .card.selected {
-            border-color: #000;
+            border-color: #cc0002;
+            background: #cc0002;
+            color: white;
         }
 
         .card h4 {
             font-size: 16px;
             font-weight: 400;
             margin-bottom: 8px;
-            color: #000;
+            color: #333;
+        }
+
+        .card.selected h4 {
+            color: white;
         }
 
         .card p {
             font-size: 14px;
             color: #999;
             margin: 0;
+        }
+
+        .card.selected p {
+            color: rgba(255,255,255,0.8);
         }
 
         .form-group {
@@ -141,7 +153,8 @@
             display: block;
             font-size: 14px;
             margin-bottom: 12px;
-            color: #000;
+            color: #2cc8c7;
+            font-weight: 400;
         }
 
         input, textarea {
@@ -156,7 +169,7 @@
 
         input:focus, textarea:focus {
             outline: none;
-            border-bottom-color: #000;
+            border-bottom-color: #cc0002;
         }
 
         .hint {
@@ -178,31 +191,32 @@
         }
 
         .feedback.error {
-            border-left-color: #ff4444;
-            color: #cc0000;
+            border-left-color: #cc0002;
+            color: #cc0002;
         }
 
         .feedback.success {
-            border-left-color: #00cc44;
-            color: #006600;
+            border-left-color: #2cc8c7;
+            color: #2cc8c7;
         }
 
         .feedback.warning {
-            border-left-color: #ff8800;
-            color: #cc6600;
+            border-left-color: #00bfff;
+            color: #00bfff;
         }
 
         .example {
             margin: 40px 0;
             padding: 20px;
-            border-left: 2px solid #eee;
+            border-left: 2px solid #2cc8c7;
+            background: white;
         }
 
         .example h4 {
             font-size: 14px;
             font-weight: 400;
             margin-bottom: 8px;
-            color: #000;
+            color: #2cc8c7;
         }
 
         .btn-group {
@@ -214,9 +228,9 @@
             display: inline-block;
             padding: 12px 24px;
             margin: 0 8px;
-            border: 1px solid #000;
+            border: 1px solid #cc0002;
             background: white;
-            color: #000;
+            color: #cc0002;
             text-decoration: none;
             font-size: 14px;
             cursor: pointer;
@@ -224,23 +238,24 @@
         }
 
         .btn:hover {
-            background: #000;
+            background: #cc0002;
             color: white;
         }
 
         .btn-primary {
-            background: #000;
+            background: #cc0002;
             color: white;
         }
 
         .btn-primary:hover {
-            background: #333;
+            background: #aa0002;
         }
 
         .result {
             margin-top: 32px;
             padding: 20px;
-            border-left: 2px solid #ddd;
+            border-left: 2px solid #2cc8c7;
+            background: white;
         }
 
         .checklist-item {
@@ -264,7 +279,11 @@
         }
 
         .checklist-item.completed .checkbox {
-            color: #000;
+            color: #2cc8c7;
+        }
+
+        .checklist-item.completed {
+            background: white;
         }
 
         .checklist-text {
@@ -274,7 +293,7 @@
 
         .expand {
             font-size: 12px;
-            color: #999;
+            color: #00bfff;
         }
 
         .explanation {
@@ -293,13 +312,15 @@
             text-align: center;
             margin: 80px 0;
             padding: 40px;
-            border: 1px solid #eee;
+            border: 1px solid #2cc8c7;
+            background: white;
         }
 
         .final h3 {
             font-size: 24px;
             font-weight: 200;
             margin-bottom: 20px;
+            color: #cc0002;
         }
 
         @media (max-width: 600px) {

@@ -1,145 +1,191 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Research Tutorial</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #fafafa;
-            color: #333;
-            line-height: 1.7;
-            font-size: 18px;
-            font-weight: 300;
-        }
-        .container {
-            max-width: 560px;
+            font-family: Arial, sans-serif;
+            max-width: 600px;
             margin: 0 auto;
-            padding: 0 24px;
+            padding: 20px;
+            background: #fafafa;
         }
-        .header { padding: 80px 0; text-align: center; }
-        .header h1 {
-            font-size: 42px;
-            font-weight: 600;
-            color: #000;
-            margin-bottom: 16px;
-        }
-        .header p {
-            font-size: 18px;
-            color: #666;
-            font-weight: 600;
-        }
-        .progress {
+        
+        h1 {
             text-align: center;
-            padding: 40px 0;
-            border-bottom: 1px solid #eee;
+            color: #000;
         }
-        .progress-line {
-            width: 80px;
-            height: 2px;
-            background: #f0f0f0;
-            margin: 0 auto 16px;
+        
+        .step {
+            display: none;
+            padding: 20px;
         }
+        
+        .step.active {
+            display: block;
+        }
+        
+        .card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            background: white;
+            cursor: pointer;
+        }
+        
+        .card:hover {
+            background: #ffd700;
+        }
+        
+        .btn {
+            background: #cc0002;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            margin: 5px;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: #dd6263;
+        }
+        
+        .btn-previous {
+            background: #2acaea;
+        }
+        
+        .btn-previous:hover {
+            background: #7be9f4;
+        }
+        
+        .progress {
+            width: 100%;
+            height: 20px;
+            background: #eee;
+            margin: 20px 0;
+        }
+        
         .progress-fill {
             height: 100%;
             background: #2acaea;
-            width: 14.3%;
-            transition: width 0.3s ease;
+            width: 14%;
+            transition: width 0.3s;
         }
-        .step-num { font-size: 14px; color: #999; }
-        .content { padding: 60px 0 100px; }
-        .step { display: none; }
-        .step.active { display: block; }
-        .step-title {
-            font-size: 32px;
-            font-weight: 600;
-            text-align: center;
-            margin-bottom: 60px;
-            color: #000;
+    </style>
+</head>
+<body>
+    <h1>Research Tutorial</h1>
+    
+    <div class="progress">
+        <div class="progress-fill" id="progress"></div>
+    </div>
+    
+    <p>Step <span id="stepNum">1</span> of 7</p>
+    
+    <div id="step1" class="step active">
+        <h2>Welcome</h2>
+        <p>This tutorial guides you through selecting a public health research topic.</p>
+        <button class="btn" onclick="nextStep()">Start</button>
+    </div>
+    
+    <div id="step2" class="step">
+        <h2>Strong Research Topics</h2>
+        <p>A strong research topic should meet these criteria:</p>
+        
+        <div class="card">
+            <h4>Specific</h4>
+            <p>Focused enough to be manageable</p>
+        </div>
+        
+        <div class="card">
+            <h4>Measurable</h4>
+            <p>Can be studied using quantitative methods</p>
+        </div>
+        
+        <div class="card">
+            <h4>Achievable</h4>
+            <p>Realistic given your resources</p>
+        </div>
+        
+        <div class="card">
+            <h4>Relevant</h4>
+            <p>Addresses current public health challenges</p>
+        </div>
+        
+        <button class="btn btn-previous" onclick="prevStep()">Previous</button>
+        <button class="btn" onclick="nextStep()">Continue</button>
+    </div>
+    
+    <div id="step3" class="step">
+        <h2>Choose Your Interest Area</h2>
+        <p>Select areas that interest you:</p>
+        
+        <div class="card">
+            <h4>Disease & Conditions</h4>
+            <p>Chronic disease, infectious disease, mental health</p>
+        </div>
+        
+        <div class="card">
+            <h4>Population Health</h4>
+            <p>Aging populations, maternal health, women's health</p>
+        </div>
+        
+        <div class="card">
+            <h4>Environment & Systems</h4>
+            <p>Environmental health, food safety, community health</p>
+        </div>
+        
+        <div class="card">
+            <h4>Social & Policy</h4>
+            <p>Health disparities, social determinants, policy</p>
+        </div>
+        
+        <button class="btn btn-previous" onclick="prevStep()">Previous</button>
+        <button class="btn" onclick="nextStep()">Continue</button>
+    </div>
+    
+    <div id="step4" class="step">
+        <h2>Complete</h2>
+        <p>Tutorial complete! Your GitHub version has all the full features.</p>
+        <button class="btn btn-previous" onclick="prevStep()">Previous</button>
+        <button class="btn" onclick="restart()">Start Over</button>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        
+        function nextStep() {
+            if (currentStep < 4) {
+                currentStep++;
+                showStep();
+            }
         }
-        .section { margin: 60px 0; }
-        h3 {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 24px;
-            color: #000;
+        
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep();
+            }
         }
-        p { margin-bottom: 20px; color: #666; }
-        .card {
-            border: 1px solid #eee;
-            padding: 24px;
-            margin-bottom: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-            background: white;
-            color: #000;
+        
+        function showStep() {
+            // Hide all steps
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById('step' + i).classList.remove('active');
+            }
+            // Show current step
+            document.getElementById('step' + currentStep).classList.add('active');
+            
+            // Update progress
+            const progress = (currentStep / 4) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+            document.getElementById('stepNum').textContent = currentStep;
         }
-        .card h4 {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #000;
+        
+        function restart() {
+            currentStep = 1;
+            showStep();
         }
-        .card p {
-            font-size: 14px;
-            color: #666;
-            margin: 0;
-        }
-        .section .card:nth-of-type(1):hover { background: #ffd700 !important; border-color: #eee !important; }
-        .section .card:nth-of-type(2):hover { background: #2acaea !important; border-color: #eee !important; }
-        .section .card:nth-of-type(3):hover { background: #afeeee !important; border-color: #eee !important; }
-        .section .card:nth-of-type(4):hover { background: #ffd700 !important; border-color: #eee !important; }
-        .card:hover h4, .card:hover p {
-            color: #000 !important;
-        }
-        .form-group { margin-bottom: 40px; }
-        label {
-            display: block;
-            font-size: 14px;
-            margin-bottom: 12px;
-            color: #000;
-            font-weight: 600;
-        }
-        select, input, textarea {
-            width: 100%;
-            border: none;
-            border-bottom: 1px solid #ddd;
-            padding: 12px 0;
-            font-size: 16px;
-            background: transparent;
-            transition: border-color 0.2s;
-            color: #000;
-            margin-bottom: 18px;
-        }
-        select:focus, input:focus, textarea:focus { outline: none; border-bottom-color: #2acaea; }
-        .hint { font-size: 12px; color: #999; margin-top: 8px; }
-        .btn-group { text-align: center; margin-top: 60px; }
-        .btn, .btn-primary {
-            background: #cc0002;
-            color: white;
-            border: none;
-            display: inline-block;
-            padding: 16px 32px;
-            margin: 0 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .btn:hover, .btn-primary:hover {
-            background: #dd6263;
-            color: white;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        }
-        .btn-previous {
-            background: #2acaea !important;
-            color: #fff !important;
-        }
-        .btn-previous:hover, .btn-previous:focus {
-            background: #7be9f4 !important*
-
+    </script>
+</body>
+</html>

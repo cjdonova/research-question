@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Research Tutorial</title>
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #fafafa;
@@ -18,10 +19,7 @@
             margin: 0 auto;
             padding: 0 24px;
         }
-        .header {
-            padding: 80px 0;
-            text-align: center;
-        }
+        .header { padding: 80px 0; text-align: center; }
         .header h1 {
             font-size: 42px;
             font-weight: 600;
@@ -50,19 +48,10 @@
             width: 14.3%;
             transition: width 0.3s ease;
         }
-        .step-num {
-            font-size: 14px;
-            color: #999;
-        }
-        .content {
-            padding: 60px 0 100px;
-        }
-        .step {
-            display: none;
-        }
-        .step.active {
-            display: block;
-        }
+        .step-num { font-size: 14px; color: #999; }
+        .content { padding: 60px 0 100px; }
+        .step { display: none; }
+        .step.active { display: block; }
         .step-title {
             font-size: 32px;
             font-weight: 600;
@@ -70,20 +59,15 @@
             margin-bottom: 60px;
             color: #000;
         }
-        .section {
-            margin: 60px 0;
-        }
+        .section { margin: 60px 0; }
         h3 {
             font-size: 20px;
             font-weight: 600;
             margin-bottom: 24px;
             color: #000;
         }
-        p {
-            margin-bottom: 20px;
-            color: #666;
-        }
-        /* CARD COLORS */
+        p { margin-bottom: 20px; color: #666; }
+        /* CARD COLORS ONLY: gold, blue, teal; NO borders, NO red */
         .card {
             border: none;
             padding: 24px;
@@ -93,30 +77,15 @@
             background: #ffd700;
             color: #222;
         }
-        .section .card:nth-of-type(2) {
-            background: #2acaea;
-            color: #fff;
-        }
-        .section .card:nth-of-type(3) {
-            background: #afeeee;
-            color: #222;
-        }
-        .section .card:nth-of-type(4) {
-            background: #ffd700;
-            color: #222;
-        }
-        .card:hover,
-        .card.selected {
+        .section .card:nth-of-type(2) { background: #2acaea; color: #fff; }
+        .section .card:nth-of-type(3) { background: #afeeee; color: #222; }
+        .section .card:nth-of-type(4) { background: #ffd700; color: #222; }
+        .card:hover, .card.selected {
             filter: brightness(1.07);
             box-shadow: 0 0 0 2px #8883 inset;
         }
-        .card h4,
-        .card p {
-            color: inherit !important;
-        }
-        .form-group {
-            margin-bottom: 40px;
-        }
+        .card h4, .card p { color: inherit !important; }
+        .form-group { margin-bottom: 40px; }
         label {
             display: block;
             font-size: 14px;
@@ -134,15 +103,8 @@
             transition: border-color 0.2s;
             color: #000;
         }
-        input:focus, textarea:focus {
-            outline: none;
-            border-bottom-color: #2acaea;
-        }
-        .hint {
-            font-size: 12px;
-            color: #999;
-            margin-top: 8px;
-        }
+        input:focus, textarea:focus { outline: none; border-bottom-color: #2acaea; }
+        .hint { font-size: 12px; color: #999; margin-top: 8px; }
         .feedback {
             margin-top: 16px;
             padding: 16px;
@@ -151,32 +113,17 @@
             display: none;
             color: #000;
         }
-        .feedback.show {
-            display: block;
-        }
-        .feedback.error,
-        .feedback.success {
-            border-left-color: #2acaea;
-        }
-        .feedback.warning {
-            border-left-color: #ffd700;
-        }
+        .feedback.show { display: block; }
+        .feedback.error, .feedback.success { border-left-color: #2acaea; }
+        .feedback.warning { border-left-color: #ffd700; }
         .example {
             margin: 40px 0;
             padding: 20px;
             border-left: 2px solid #2acaea;
             background: white;
         }
-        .example h4 {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #000;
-        }
-        .btn-group {
-            text-align: center;
-            margin-top: 60px;
-        }
+        .example h4 { font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #000; }
+        .btn-group { text-align: center; margin-top: 60px; }
         /* BUTTONS */
         .btn, .btn-primary {
             background: #000;
@@ -203,8 +150,7 @@
             background: #2acaea !important;
             color: #fff !important;
         }
-        .btn-previous:hover,
-        .btn-previous:focus {
+        .btn-previous:hover, .btn-previous:focus {
             background: #7be9f4 !important;
             color: #fff !important;
         }
@@ -219,32 +165,13 @@
             padding: 20px 0;
             cursor: pointer;
         }
-        .checklist-item:last-child {
-            border-bottom: none;
-        }
-        .checklist-header {
-            display: flex;
-            align-items: center;
-        }
-        .checkbox {
-            margin-right: 16px;
-            color: #ddd;
-        }
-        .checklist-item.completed .checkbox {
-            color: #2acaea;
-        }
-        .checklist-item.completed {
-            background: white;
-        }
-        .checklist-text {
-            flex: 1;
-            font-size: 14px;
-            color: #000;
-        }
-        .expand {
-            font-size: 12px;
-            color: #ffd700;
-        }
+        .checklist-item:last-child { border-bottom: none; }
+        .checklist-header { display: flex; align-items: center; }
+        .checkbox { margin-right: 16px; color: #ddd; }
+        .checklist-item.completed .checkbox { color: #2acaea; }
+        .checklist-item.completed { background: white; }
+        .checklist-text { flex: 1; font-size: 14px; color: #000; }
+        .expand { font-size: 12px; color: #ffd700; }
         .explanation {
             display: none;
             padding-top: 16px;
@@ -252,9 +179,7 @@
             font-size: 12px;
             color: #666;
         }
-        .checklist-item.expanded .explanation {
-            display: block;
-        }
+        .checklist-item.expanded .explanation { display: block; }
         .final {
             text-align: center;
             margin: 80px 0;
@@ -269,20 +194,10 @@
             color: #000;
         }
         @media (max-width: 600px) {
-            .container {
-                padding: 0 20px;
-            }
-            .header h1 {
-                font-size: 32px;
-            }
-            .step-title {
-                font-size: 24px;
-            }
-            .btn {
-                padding: 14px 28px;
-                font-size: 15px;
-                margin: 0 8px;
-            }
+            .container { padding: 0 20px; }
+            .header h1 { font-size: 32px; }
+            .step-title { font-size: 24px; }
+            .btn { padding: 14px 28px; font-size: 15px; margin: 0 8px; }
         }
     </style>
 </head>
